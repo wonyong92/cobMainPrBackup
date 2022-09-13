@@ -41,17 +41,21 @@ public class MemberService {
         try{
             String LoginId = dto.getLoginId();
             String password = dto.getPassword();
+            String Nickname = dto.getNickname();
             Member member = new Member();
             member.setLoginId(LoginId);
             member.setPassword(password);
+            member.setNickname(Nickname);
 
             memberRepository.save(member);
             Member result = memberRepository.findById(member.getId()).orElseThrow();
 
             Profile profile = new Profile();
-            profile.setNickname(member.getNickNam());
+            profile.setNickname(member.getNickname());
+
             profileRepository.save(profile);
             Profile Presult = profileRepository.findById(profile.getId()).orElseThrow();
+            result.setProfileId(Presult.getId());
 
             return result;
 

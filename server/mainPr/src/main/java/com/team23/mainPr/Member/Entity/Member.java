@@ -28,12 +28,12 @@ public class Member {
 
     private String LoginId;
     private String Password;
-    private String NickNam;
+    private String Nickname;
     private String Email;
     private String Phone;
 
     private LocalDateTime CreatedAt = LocalDateTime.now();
 
-    private String ProfileId;
+    private Integer ProfileId;
 
 }

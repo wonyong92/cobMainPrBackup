@@ -11,6 +11,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static springfox.documentation.builders.PathSelectors.regex;
+
 @Configuration
 
 @EnableSwagger2
@@ -22,7 +24,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/user/**"))
+                .paths(regex("/(user|profile)/.*"))//스웨거에 여러 path 추가하기
+
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .build();
     }

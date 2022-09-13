@@ -44,18 +44,21 @@ public class ProfileService {
             Profile profile = profileRepository.findById(profileId).orElseThrow();
             //else 문 줄이기
             //래퍼클래스 끼리 값 비교 - 내부캐시(-128~127)를 넘어서는 값은 논리에러 발생 가능. equals 쓰기 
-            if(profile.getId().equals(profileId))
-            {
-                return null;
-            }
+//            if(profile.getId().equals(profileId))
+//            {
+//                System.out.println("null1");
+//                return null;
+//            }
 
             profile.setNickname(dto.getNickname());
+
             profileRepository.flush();
 
             return profile;
         }
         catch(Exception e)
         {
+            System.out.println("null2");
             return null;
         }
 

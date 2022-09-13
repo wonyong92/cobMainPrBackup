@@ -17,6 +17,6 @@ public class CreateMemberDto {
     public String LoginId;
     @ApiModelProperty(value="패스워드 - 특수문자 [@!#%&] 최소 1글자 이상 포함, 최소 6글자 최대 20 글자 ",example = "password@@@password")
     public String Password;
-
+    @ApiModelProperty(value="닉네임 ",example = "Nickname5586")
     public String Nickname;
 }
