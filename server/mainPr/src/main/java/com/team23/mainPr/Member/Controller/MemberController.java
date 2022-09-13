@@ -45,7 +45,7 @@ public class MemberController {
      */
 
     @ApiOperation(value = "회원 가입 기능.", notes = "데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답한다.")
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity createMember(@RequestBody @ApiParam(name = "CreateMemberDto", value = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
 
         Member member = memberService.createMember(dto);
@@ -58,20 +58,16 @@ public class MemberController {
      */
 
     @ApiOperation(value = "유저 정보 확인 기능.", notes = "데이터베이스에서 회원 정보를 찾아 응답한다.")
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity getMember(@RequestParam @ApiParam(name = "memberId", value = "회원 식별 번호.", required = true) Integer memberId) {
-
         Member member = memberService.getMember(memberId);
-
         return new ResponseEntity(member, HttpStatus.OK);
     }//createMember
 
     @ApiOperation(value = "유저 정보 삭제 기능.", notes = "데이터베이스에서 회원 정보를 찾아 삭제 후 성공여부를 응답한다.")
-    @DeleteMapping("getMember")
+    @DeleteMapping
     public ResponseEntity deleteMember(@RequestParam @ApiParam(name = "memberId", value = "회원 식별 번호.", required = true) Integer memberId) {
-
         Member member = memberService.getMember(memberId);
-
         return new ResponseEntity(member, HttpStatus.OK);
     }//deleteMember
 
@@ -81,9 +77,7 @@ public class MemberController {
 
     @ExceptionHandler(NullPointerException.class)
     public String handleNullException(Exception e) {
-
         System.err.println(e.getClass());
-
         return "null pointer exception occurred";
     }
 }

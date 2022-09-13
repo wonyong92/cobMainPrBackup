@@ -48,7 +48,6 @@ public class MemberService {
     public Member createMember(CreateMemberDto dto) throws NullPointerException{
 
         try {
-
             String LoginId = dto.getLoginId();
             String password = dto.getPassword();
             String Nickname = dto.getNickname();
@@ -77,7 +76,6 @@ public class MemberService {
     public Member getMember(Integer memberId) {
 
         try {
-
             Member member = memberRepository.findById(memberId).orElseThrow();
             return member;
         } catch (Exception e) {
