@@ -20,7 +20,7 @@ public class MemberService {
      * refactor : spring validation 적용시 서비스 삭제 가능 할듯
      */
 
-    public boolean loginValidation(CreateMemberDto dto) {
+    public boolean loginValidation(CreateMemberDto dto) throws NullPointerException {
 
         try {
             String idPattern = "^[a-zA-Z][\\w]{4,10}$";
@@ -45,7 +45,7 @@ public class MemberService {
     * ETC : rdbms 쓸때 처럼 auto increment 적용 안되나?
     */
 
-    public Member createMember(CreateMemberDto dto) {
+    public Member createMember(CreateMemberDto dto) throws NullPointerException{
 
         try {
 

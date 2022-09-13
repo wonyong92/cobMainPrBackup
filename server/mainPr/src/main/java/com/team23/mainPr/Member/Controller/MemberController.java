@@ -74,4 +74,16 @@ public class MemberController {
 
         return new ResponseEntity(member, HttpStatus.OK);
     }//deleteMember
+
+    /*
+    * refactor : @RestControllerAdvice를 사용해서 별도의 컨트롤러 전용 에러 핸들링 클래스 생성 가능 - 가독성 증가!
+    * */
+
+    @ExceptionHandler(NullPointerException.class)
+    public String handleNullException(Exception e) {
+
+        System.err.println(e.getClass());
+
+        return "null pointer exception occurred";
+    }
 }
