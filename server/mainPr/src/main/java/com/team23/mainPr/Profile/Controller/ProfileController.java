@@ -5,6 +5,7 @@ import com.team23.mainPr.Profile.Entity.Profile;
 import com.team23.mainPr.Profile.Service.ProfileService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/profile")
+@RequiredArgsConstructor
 public class ProfileController {
 
-    @Autowired
-    ProfileService profileService;
+    private final ProfileService profileService;
 
     @ApiOperation(value = "프로필 데이터 조회하기.", notes = "프로필 식별자 번호를 파라미터로 받아, 해당하는 프로필 정보 응답.")
     @PostMapping("/")

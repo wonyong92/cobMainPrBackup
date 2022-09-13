@@ -3,6 +3,7 @@ package com.team23.mainPr.Profile.Service;
 import com.team23.mainPr.Profile.Dto.ProfileUpdateDto;
 import com.team23.mainPr.Profile.Entity.Profile;
 import com.team23.mainPr.Profile.Repository.ProfileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@RequiredArgsConstructor
 public class ProfileService {
 
     /*
@@ -18,8 +20,7 @@ public class ProfileService {
      * refactor : 커스텀 예외 클래스 생성으로 오류 상황에 대해서 친절한 응답 만들기
      * */
 
-    @Autowired
-    ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
 
     public Profile getProfile(Integer postId) {
 

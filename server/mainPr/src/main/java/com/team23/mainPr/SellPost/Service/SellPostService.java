@@ -3,6 +3,7 @@ package com.team23.mainPr.SellPost.Service;
 import com.team23.mainPr.SellPost.Dto.CreateSellPostDto;
 import com.team23.mainPr.SellPost.Entity.SellPost;
 import com.team23.mainPr.SellPost.Repository.SellPostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@RequiredArgsConstructor
 public class SellPostService {
 
-    @Autowired
-    SellPostRepository sellPostRepository;
+    private final SellPostRepository sellPostRepository;
 
     public SellPost createSellPost(CreateSellPostDto dto) {
 

@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class MemberService {
 
-    MemberRepository memberRepository;
-    ProfileRepository profileRepository;
+    private final MemberRepository memberRepository;
+    private final ProfileRepository profileRepository;
 
     /*
      * refactor : spring validation 적용시 서비스 삭제 가능 할듯
