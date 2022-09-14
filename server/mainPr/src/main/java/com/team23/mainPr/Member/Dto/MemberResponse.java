@@ -2,11 +2,7 @@ package com.team23.mainPr.Member.Dto;
 
 import com.team23.mainPr.Dto.CommonDtoBoundary;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,4 +16,5 @@ public class MemberResponse extends CommonDtoBoundary {
     private String phone;
     private LocalDateTime createdAt;
     private Integer profileId;
+
 }

@@ -12,6 +12,7 @@ import springfox.documentation.swagger.web.DocExpansion;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
@@ -19,8 +20,8 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
     /*
-    * description : .paths(regex("/(user|profile|RentPost)/.*")) : 스웨거에 여러 path 추가하기
-    * */
+     * description : .paths(regex("/(user|profile|RentPost)/.*")) : 스웨거에 여러 path 추가하기
+     * */
 
     @Bean
     public Docket restAPI() {
@@ -35,8 +36,8 @@ public class SwaggerConfig {
     }
 
     /*
-    * ETC : 3자리 version의 의미 : 배포.개발.패치
-    * */
+     * ETC : 3자리 version의 의미 : 배포.개발.패치
+     * */
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
@@ -46,11 +47,14 @@ public class SwaggerConfig {
                 .build();
     }
 
+    /*
+     * ETC : 스웨거 api 전체 열기 상태를 기본값으로 설정
+     * */
+
     @Bean
     UiConfiguration uiConfig() {
         return UiConfigurationBuilder.builder()
                 .docExpansion(DocExpansion.FULL) // or DocExpansion.NONE or DocExpansion.FULL
                 .build();
     }
-
 }

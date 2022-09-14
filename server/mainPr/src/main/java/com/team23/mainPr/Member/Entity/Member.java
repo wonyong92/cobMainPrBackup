@@ -2,6 +2,7 @@ package com.team23.mainPr.Member.Entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

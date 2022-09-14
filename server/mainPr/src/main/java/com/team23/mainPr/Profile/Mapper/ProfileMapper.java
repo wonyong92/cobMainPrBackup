@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {
-    ProfileResponse ProfileToProfileResponse (Profile profile);
+    ProfileResponse ProfileToProfileResponse(Profile profile);
 }

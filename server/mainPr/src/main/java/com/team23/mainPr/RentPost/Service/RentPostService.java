@@ -7,7 +7,6 @@ import com.team23.mainPr.RentPost.Mapper.RentPostMapper;
 import com.team23.mainPr.RentPost.Repository.RentPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -35,20 +34,18 @@ public class RentPostService {
 
             RentPost result = rentPostRepository.findById(post.getId()).get();
 
-            if(result != null)
-            {
-                response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
-            }
-            else
-                response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+            if (result != null) {
+                response = new CommonDto("true", rentPostMapper.RentPostToRentPostResponse(result));
+            } else
+                response = new CommonDto("false", rentPostMapper.RentPostToRentPostResponse(result));
 
-            if(response == null)
+            if (response == null)
                 throw new Exception();
 
             return response;
         } catch (Exception e) {
 
-            response = new CommonDto("Error",null);
+            response = new CommonDto("Error", null);
 
             return response;
         }
@@ -67,22 +64,20 @@ public class RentPostService {
 
             RentPost result = rentPostRepository.findById(postId).get();
 
-            if(result != null)
-            {
-                if(result.getContents().equals(dto.getContents()))
-                {
-                    response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
+            if (result != null) {
+                if (result.getContents().equals(dto.getContents())) {
+                    response = new CommonDto("true", rentPostMapper.RentPostToRentPostResponse(result));
 
                     return response;
                 }
             }
 
-            response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+            response = new CommonDto("false", rentPostMapper.RentPostToRentPostResponse(result));
 
             return response;
         } catch (Exception e) {
 
-            response = new CommonDto("Error",null);
+            response = new CommonDto("Error", null);
 
             return response;
         }
@@ -97,15 +92,15 @@ public class RentPostService {
             rentPostRepository.delete(post);
 
             RentPost result = rentPostRepository.findById(post.getId()).orElse(null);
-            if(result == null)
-                response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
+            if (result == null)
+                response = new CommonDto("true", rentPostMapper.RentPostToRentPostResponse(result));
             else
-                response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+                response = new CommonDto("false", rentPostMapper.RentPostToRentPostResponse(result));
 
             return response;
         } catch (Exception e) {
 
-            response = new CommonDto("Error",null);
+            response = new CommonDto("Error", null);
 
             return response;
         }
@@ -118,18 +113,16 @@ public class RentPostService {
         try {
             RentPost result = rentPostRepository.findById(postId).orElseThrow();
 
-            if(result.getId() == postId)
-            {
-                response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
-            }
-            else
-                response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+            if (result.getId() == postId) {
+                response = new CommonDto("true", rentPostMapper.RentPostToRentPostResponse(result));
+            } else
+                response = new CommonDto("false", rentPostMapper.RentPostToRentPostResponse(result));
 
 
             return response;
         } catch (Exception e) {
 
-            response = new CommonDto("Error",null);
+            response = new CommonDto("Error", null);
 
             return response;
         }

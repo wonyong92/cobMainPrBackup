@@ -5,11 +5,7 @@ import com.team23.mainPr.Profile.Dto.ProfileUpdateDto;
 import com.team23.mainPr.Profile.Entity.Profile;
 import com.team23.mainPr.Profile.Mapper.ProfileMapper;
 import com.team23.mainPr.Profile.Repository.ProfileRepository;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /*
@@ -35,18 +31,18 @@ public class ProfileService {
         try {
             Profile profile = profileRepository.findById(postId).get();
 
-            if(profile!=null)
-                response = new CommonDto("true",profileMapper.ProfileToProfileResponse(profile));
+            if (profile != null)
+                response = new CommonDto("true", profileMapper.ProfileToProfileResponse(profile));
             else
-                response = new CommonDto("false",null);
+                response = new CommonDto("false", null);
 
-            if(response == null)
+            if (response == null)
                 throw new Exception();
 
             return response;
         } catch (Exception e) {
 
-            response = new CommonDto("Error",null);
+            response = new CommonDto("Error", null);
 
             return response;
         }
@@ -68,25 +64,23 @@ public class ProfileService {
         try {
             Profile profile = profileRepository.findById(profileId).get();
 
-            if(profile!=null)
-            {
+            if (profile != null) {
                 profile.setNickname(dto.getNickname());
                 profileRepository.flush();
 
-                response = new CommonDto("true",profileMapper.ProfileToProfileResponse(profile));
+                response = new CommonDto("true", profileMapper.ProfileToProfileResponse(profile));
 
                 return response;
-            }
-            else
-                response = new CommonDto("false",null);
+            } else
+                response = new CommonDto("false", null);
 
-            if(response == null)
+            if (response == null)
                 throw new Exception();
 
             return response;
         } catch (Exception e) {
 
-            response = new CommonDto("Error",null);
+            response = new CommonDto("Error", null);
 
             return response;
         }
