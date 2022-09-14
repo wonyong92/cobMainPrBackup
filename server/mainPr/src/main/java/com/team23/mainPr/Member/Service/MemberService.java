@@ -1,5 +1,6 @@
 package com.team23.mainPr.Member.Service;
 
+import com.team23.mainPr.CustomException.MemberNameException;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
 import com.team23.mainPr.Member.Entity.Member;
 import com.team23.mainPr.Member.Repository.MemberRepository;
@@ -20,22 +21,26 @@ public class MemberService {
      * refactor : spring validation 적용시 서비스 삭제 가능 할듯
      */
 
-    public boolean loginValidation(CreateMemberDto dto) throws NullPointerException {
+    public boolean loginValidation(CreateMemberDto dto) throws RuntimeException {
 
-        try {
+
             String idPattern = "^[a-zA-Z][\\w]{4,10}$";
             String passworedPattern = "^([@!#%&]{0,}[\\w]{0,}[@!#%&]{0,}){1,}$";
             String nickPattern = "^[\\w]{5,30}$";
 
-            if (Pattern.matches(idPattern, dto.getLoginId()) && Pattern.matches(passworedPattern, dto.getPassword()) && dto.getPassword().length() <= 20 && dto.getPassword().length() >= 6
-                    && Pattern.matches(nickPattern, dto.getNickname())) {
-                return true;
-            }
+            if (!Pattern.matches(idPattern, dto.getLoginId()))
+                throw new MemberNameException("check member login ID input");
 
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
+            if(!Pattern.matches(passworedPattern, dto.getPassword()))
+                throw new MemberNameException("check member login ID input");
+
+            if(dto.getPassword().length() <= 20&& dto.getPassword().length() >= 6)
+                throw new MemberNameException("check member password input");
+
+            if(!Pattern.matches(nickPattern, dto.getNickname()))
+                throw new MemberNameException("check member nickname input");
+
+                return true;
     }
 
     /*
