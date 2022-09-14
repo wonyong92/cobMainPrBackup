@@ -2,9 +2,11 @@ package com.team23.mainPr.Member.Service;
 
 import com.team23.mainPr.CustomException.CustomException;
 import com.team23.mainPr.CustomException.Errordata;
-import com.team23.mainPr.CustomException.MemberNameException;
+import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
+import com.team23.mainPr.Member.Dto.MemberResponse;
 import com.team23.mainPr.Member.Entity.Member;
+import com.team23.mainPr.Member.Mapper.MemberMapper;
 import com.team23.mainPr.Member.Repository.MemberRepository;
 import com.team23.mainPr.Profile.Entity.Profile;
 import com.team23.mainPr.Profile.Repository.ProfileRepository;
@@ -18,9 +20,13 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
+    private final MemberMapper memberMapper;
 
     /*
      * refactor : spring validation 적용시 서비스 삭제 가능 할듯
+     * refactor : 컨트롤러 단으로 예외 위임 하기전에 , 서비스 단에서 발생하는 예외는 처리가 안되니까 조건문에서 확실히 걸러줘야한다
+     * dto.getLoginId()==null 와 같이 가장 발생확률이 높은 null 에러에 대해서 처리가 필요
+     * -> 그냥 dto 만들때 초기화 하면 되지 않나? 왜 굳이 더 힘든 방법을 쓴거지?
      */
 
     public boolean loginValidation(CreateMemberDto dto) throws RuntimeException {
@@ -52,7 +58,7 @@ public class MemberService {
     * ETC : rdbms 쓸때 처럼 auto increment 적용 안되나?
     */
 
-    public Member createMember(CreateMemberDto dto) throws NullPointerException{
+    public CommonDto createMember(CreateMemberDto dto) throws NullPointerException{
 
         try {
             String LoginId = dto.getLoginId();
@@ -74,7 +80,11 @@ public class MemberService {
             Profile Presult = profileRepository.findById(profile.getId()).orElseThrow();
             result.setProfileId(Presult.getId());
 
-            return result;
+            CommonDto response = new CommonDto();
+            response.setMsg("ture");
+            response.SetDto(memberMapper.memberToMemberResponse(result));
+
+            return response;
         } catch (Exception e) {
             return null;
         }

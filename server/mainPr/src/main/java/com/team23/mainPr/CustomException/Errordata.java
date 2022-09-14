@@ -22,6 +22,7 @@ public enum Errordata {
     INVALID_REGISTER_MEMBER_ID("1001", "잘못된 로그인 ID 형식"),
     INVALID_REGISTER_MEMBER_PASSWORD("1002", "잘못된 로그인 비밀번호 형식"),
     INVALID_REGISTER_MEMBER_NICKNAME("1001", "잘못된 로그인 ID 형식"),
+    CLASS_CASTING_EXCEPTION("1501", "잘못된 BODY 입력"),
     ;
 
     private final String code;

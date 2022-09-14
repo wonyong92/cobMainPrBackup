@@ -26,9 +26,10 @@ public class SwaggerConfig {
     public Docket restAPI() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(regex("/(user|profile|RentPost)/.*"))//스웨거에 여러 path 추가하기
+                .paths(regex("/(member|profile|RentPost)/.*"))//스웨거에 여러 path 추가하기
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .build();
     }

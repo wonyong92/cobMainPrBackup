@@ -1,10 +1,14 @@
 package com.team23.mainPr.Member.Controller;
 
+import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
 import com.team23.mainPr.Member.Entity.Member;
 import com.team23.mainPr.Member.Service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +34,18 @@ public class MemberController {
      * ETC : 모델 어트리뷰트 vs 리퀘스트 바디
      * ETC : 스프링 validation
      * description : 회원 가입에 연관된 기능이니까 register의 하위 리소스? 컨트롤러?로 네이밍
+     * refactor : 공통 응답 dto를 만들까? - 수행결과 메세지(String) + 개별 응답 dto(Object? 인터페이스 하나 만들어서 제네릭으로 타입세이프?) - mapstruct 이용해서?
+     * refactor : 500 에러 핸들링을 위해서 throws ClassCastException 추가
+     *
      */
 
     @ApiOperation(value = "회원 가입 정보 유효성 검사.", notes = "회원 가입을 위해 입력 받은 정보를 정규식을 이용하여 검증.")
+    @ApiResponses({
+            @ApiResponse( code = 200, message = "생성 성공"),
+            @ApiResponse( code = 201, message = "생성된 자원 정보", responseContainer = "List"),
+            @ApiResponse( code = 409, message = "로직 수행 불가 모순 발생", responseContainer = "List")})
     @PostMapping("/register/check-input")
-    public boolean checkInput(@RequestBody @ApiParam(name = "CreateMemberDto", value = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
+    public boolean checkInput(@RequestBody @ApiParam(name = "CreateMemberDto", value = "입력한 회원 정보.", required = true) CreateMemberDto dto) throws RuntimeException {
 
         boolean result = memberService.loginValidation(dto);
 
@@ -49,9 +60,9 @@ public class MemberController {
     @PostMapping("/register")
     public ResponseEntity createMember(@RequestBody @ApiParam(name = "CreateMemberDto", value = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
 
-        Member member = memberService.createMember(dto);
+        CommonDto response = memberService.createMember(dto);
 
-        return new ResponseEntity(member, HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }//createMember
 
     /*
