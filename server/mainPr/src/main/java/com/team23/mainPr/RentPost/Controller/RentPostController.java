@@ -46,7 +46,7 @@ public class RentPostController {
     * ETC : api 설명 작성할때 비슷한 기능은 같은 용어를 사용해야 혼동을 줄이고, 통일감을 줄 수 있다.
     * */
 
-    @ApiOperation(value = "렌트 물품 게시글 업데이트.", notes = "데이터베이스에 물품 렌트 글을 확인하여, 수정 완료한 게시글 데이터를 응답한다.")
+    @ApiOperation(value = "렌트 물품 게시글 업데이트.", notes = "데이터베이스에 물품 렌트 글을 확인하여, 업데이트 완료한 게시글 데이터를 응답한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 가입 성공."),
             @ApiResponse(code = 400, message = "잘못된 입력."),

@@ -22,7 +22,7 @@ class MainPrApplicationTests {
     MemberController memberController;
     String loginId = "wonyong92@github.com";
     String password = "password@@password";
-    String nickname = "nick닉네임5586";
+    String nickname = "닉네임1524";
     CreateMemberDto createMemberDto = new CreateMemberDto(loginId, password, nickname);
 
     @Test
@@ -40,10 +40,10 @@ class MainPrApplicationTests {
         ResponseEntity result = memberController.checkInput(createMemberDto);
         CommonDto dto = (CommonDto) result.getBody();
 
-        Assert.isTrue(dto.getMsg().equals(true), "user ID, password check function test");
+        Assert.isTrue(dto.getMsg().equals("true"), "user ID, password check function test");
     }
 	/*
-    *ResponseEntity 내부에 제네릭(오브젝트라고 봐도 무방)으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
+    *ResponseEntity 내부에 제네릭으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
     */
 
     @Test
