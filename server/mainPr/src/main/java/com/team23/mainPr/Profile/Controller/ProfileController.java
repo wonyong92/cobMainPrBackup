@@ -29,9 +29,9 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @ApiOperation(value = "프로필 데이터 조회하기.", notes = "프로필 식별자 번호를 파라미터로 받아, 해당하는 프로필 정보 응답.")
-    @PostMapping
-    public ResponseEntity getProfileData(@RequestParam @ApiParam(name = "profileId", value = "프로필 식별 번호.", required = true) Integer profileId) {
+    @ApiOperation(value = "프로필 정보 조회.", notes = "프로필 식별자 번호를 파라미터로 받아, 해당하는 프로필 정보 응답.")
+    @GetMapping("/{profileId}")
+    public ResponseEntity getProfileData(@PathVariable @ApiParam(name = "profileId", value = "프로필 식별 번호.", required = true) Integer profileId) {
         Profile profile = profileService.getProfile(profileId);
         return new ResponseEntity(profile, HttpStatus.OK);
     }
@@ -40,8 +40,8 @@ public class ProfileController {
      * description : 프로필 데이터를 리퀘스트 바디로 받아와서 업데이트 수행, 프로필 식별자(유저 식별자와 동일한 번호)를 함께 입력받아야 한다
      * */
 
-    @ApiOperation(value = "프로필 데이터 업데이트.", notes = "프로필 식별자 번호, 수정된 프로필 정보를 요청으로 받아, 해당하는 프로필의 데이터를 수정.")
-    @PutMapping
+    @ApiOperation(value = "프로필 정보 업데이트.", notes = "프로필 식별자 번호, 수정된 프로필 정보를 요청으로 받아, 해당하는 프로필의 데이터를 수정.")
+    @PutMapping("/update")
     public ResponseEntity updateProfileData(@RequestParam @ApiParam(name = "profileId", value = "프로필 식별 번호.", required = true) Integer profileId,
                                             @RequestBody @ApiParam(name = "ProfileUpdateDto", value = "프로필 업데이트 정보.", required = true) ProfileUpdateDto dto) {
         Profile profile = profileService.updateProfile(profileId, dto);

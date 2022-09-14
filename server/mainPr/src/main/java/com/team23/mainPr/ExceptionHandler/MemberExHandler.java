@@ -1,26 +1,18 @@
 package com.team23.mainPr.ExceptionHandler;
 
-import com.team23.mainPr.CustomException.MemberNameException;
-import com.team23.mainPr.CustomException.MemberNicknameException;
+import com.team23.mainPr.CustomException.CustomException;
+import com.team23.mainPr.CustomException.Errordata;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice("com.team23.mainPr.Member")
 public class MemberExHandler {
 
-    @ExceptionHandler(MemberNameException.class)
-    public String handleMemberNameException(Exception e) {
+    @ExceptionHandler
+    public Errordata handleMemberNameException(Exception e) {
 
-        MemberNameException ex = (MemberNameException) e;
+        CustomException ex = (CustomException) e;
 
-        return ex.getMsg();
-    }
-
-    @ExceptionHandler(MemberNicknameException.class)
-    public String handleMemberNicknameException(Exception e) {
-
-        MemberNicknameException ex = (MemberNicknameException) e;
-
-        return ex.getMsg();
+        return ex.getErrordata();
     }
 }

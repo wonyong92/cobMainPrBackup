@@ -8,6 +8,9 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.DocExpansion;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -16,7 +19,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
     /*
-    * description : .paths(regex("/(user|profile|sellPost)/.*")) : 스웨거에 여러 path 추가하기
+    * description : .paths(regex("/(user|profile|RentPost)/.*")) : 스웨거에 여러 path 추가하기
     * */
 
     @Bean
@@ -25,7 +28,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(regex("/(user|profile|sellPost)/.*"))//스웨거에 여러 path 추가하기
+                .paths(regex("/(user|profile|RentPost)/.*"))//스웨거에 여러 path 추가하기
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .build();
     }
@@ -41,4 +44,12 @@ public class SwaggerConfig {
                 .description("author : Jang won yong")
                 .build();
     }
+
+    @Bean
+    UiConfiguration uiConfig() {
+        return UiConfigurationBuilder.builder()
+                .docExpansion(DocExpansion.FULL) // or DocExpansion.NONE or DocExpansion.FULL
+                .build();
+    }
+
 }

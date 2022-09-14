@@ -32,7 +32,7 @@ class MainPrApplicationTests {
     @Test
     void validateCreateUserData() {
 
-        boolean result = memberController.validation(createMemberDto);
+        boolean result = memberController.checkInput(createMemberDto);
 
         Assert.isTrue(result, "user ID, password check function test");
     }

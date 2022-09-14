@@ -1,5 +1,7 @@
 package com.team23.mainPr.Member.Service;
 
+import com.team23.mainPr.CustomException.CustomException;
+import com.team23.mainPr.CustomException.Errordata;
 import com.team23.mainPr.CustomException.MemberNameException;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
 import com.team23.mainPr.Member.Entity.Member;
@@ -29,16 +31,16 @@ public class MemberService {
             String nickPattern = "^[\\w]{5,30}$";
 
             if (!Pattern.matches(idPattern, dto.getLoginId()))
-                throw new MemberNameException("check member login ID input");
+                throw new CustomException(Errordata.INVALID_REGISTER_MEMBER_ID);
 
             if(!Pattern.matches(passworedPattern, dto.getPassword()))
-                throw new MemberNameException("check member login ID input");
+                throw new CustomException(Errordata.INVALID_REGISTER_MEMBER_PASSWORD);
 
-            if(dto.getPassword().length() <= 20&& dto.getPassword().length() >= 6)
-                throw new MemberNameException("check member password input");
+            if(!(dto.getPassword().length() <= 20&& dto.getPassword().length() >= 6))
+                throw new CustomException(Errordata.INVALID_REGISTER_MEMBER_PASSWORD);
 
             if(!Pattern.matches(nickPattern, dto.getNickname()))
-                throw new MemberNameException("check member nickname input");
+                throw new CustomException(Errordata.INVALID_REGISTER_MEMBER_NICKNAME);
 
                 return true;
     }
