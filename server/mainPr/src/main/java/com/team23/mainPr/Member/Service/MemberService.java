@@ -27,14 +27,15 @@ public class MemberService {
      * refactor : 컨트롤러 단으로 예외 위임 하기전에 , 서비스 단에서 발생하는 예외는 처리가 안되니까 조건문에서 확실히 걸러줘야한다
      * dto.getLoginId()==null 와 같이 가장 발생확률이 높은 null 에러에 대해서 처리가 필요
      * -> 그냥 dto 만들때 초기화 하면 되지 않나? 왜 굳이 더 힘든 방법을 쓴거지?
+     * refactor : 중복 확인 기능과 결합 될 예정
      */
 
-    public boolean loginValidation(CreateMemberDto dto) throws RuntimeException {
+    public CommonDto loginValidation(CreateMemberDto dto) throws RuntimeException {
 
 
-            String idPattern = "^[a-zA-Z][\\w]{4,10}$";
+            String idPattern = "^[a-zA-Z][\\w]{4,20}@{1,1}[\\w]{2,10}(\\.com|\\.net)$";
             String passworedPattern = "^([@!#%&]{0,}[\\w]{0,}[@!#%&]{0,}){1,}$";
-            String nickPattern = "^[\\w]{5,30}$";
+            String nickPattern = "^[\\w가-힣]{2,30}$";
 
             if (!Pattern.matches(idPattern, dto.getLoginId()))
                 throw new CustomException(Errordata.INVALID_REGISTER_MEMBER_ID);
@@ -48,7 +49,10 @@ public class MemberService {
             if(!Pattern.matches(nickPattern, dto.getNickname()))
                 throw new CustomException(Errordata.INVALID_REGISTER_MEMBER_NICKNAME);
 
-                return true;
+            CommonDto response = new CommonDto();
+            response.setMsg("true");
+
+            return response;
     }
 
     /*
@@ -90,13 +94,36 @@ public class MemberService {
         }
     }//createMember
 
-    public Member getMember(Integer memberId) {
+    public CommonDto getMember(Integer memberId) {
 
         try {
             Member member = memberRepository.findById(memberId).orElseThrow();
-            return member;
+            CommonDto response = new CommonDto("true",memberMapper.memberToMemberResponse(member));
+            return response;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    /*
+    * Todo : 연관될 리소스 - 게시글, 댓글, 프로필, 좋아요 도 함꼐 삭제되도록 구성하여야 한다 - cascade 사용 예정
+    * */
+    
+    public CommonDto deleteMember(Integer memberId) {
+
+        CommonDto response = new CommonDto();
+
+        try {
+            Member member = memberRepository.findById(memberId).orElseThrow();
+            memberRepository.delete(member);
+
+            response.setMsg("true");
+
+            return response;
+        } catch (Exception e) {
+            response.setMsg("false");
+
+            return response;
         }
     }
 }

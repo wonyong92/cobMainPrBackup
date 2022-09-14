@@ -1,5 +1,11 @@
 package com.team23.mainPr.Dto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommonDto <T extends CommonDtoBoundary>{
 
     String msg = "";

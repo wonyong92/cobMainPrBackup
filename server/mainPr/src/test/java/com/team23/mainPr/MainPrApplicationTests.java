@@ -1,7 +1,9 @@
 package com.team23.mainPr;
 
+import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.Member.Controller.MemberController;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
+import com.team23.mainPr.Member.Dto.MemberResponse;
 import com.team23.mainPr.Member.Entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,10 @@ class MainPrApplicationTests {
 
     @Autowired
     MemberController memberController;
-    CreateMemberDto createMemberDto = new CreateMemberDto("wonyong92", "jangwonyong@@@", "oreooreo");
+    String loginId = "wonyong92@github.com";
+    String password = "password@@password";
+    String nickname = "nick닉네임5586";
+    CreateMemberDto createMemberDto = new CreateMemberDto(loginId, password, nickname);
 
     @Test
     void contextLoads() {
@@ -32,25 +37,26 @@ class MainPrApplicationTests {
     @Test
     void validateCreateUserData() {
 
-        boolean result = memberController.checkInput(createMemberDto);
+        ResponseEntity result = memberController.checkInput(createMemberDto);
+        CommonDto dto = (CommonDto) result.getBody();
 
-        Assert.isTrue(result, "user ID, password check function test");
+        Assert.isTrue(dto.getMsg().equals(true), "user ID, password check function test");
     }
 	/*
-    *ResponseEntity 내부에 제네릭으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
+    *ResponseEntity 내부에 제네릭(오브젝트라고 봐도 무방)으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
     */
 
     @Test
     void createUserTest() {
 
         ResponseEntity result = memberController.createMember(createMemberDto);
-        Member created = (Member) result.getBody();//명시적으로 캐스팅해주어야 한다.
+        CommonDto Cdto = (CommonDto) result.getBody();
+        MemberResponse dto = (MemberResponse) Cdto.getDto();
 
-        System.out.println(created.getLoginId());
 
-        Assert.isTrue(created.getLoginId().equals("wonyong92"), "user ID check");
-        Assert.isTrue(created.getPassword().equals("jangwonyong@@@"), "password check");
-        Assert.isTrue(created.getNickname().equals("oreooreo"), "Nickname check");
+        Assert.isTrue(dto.getLoginId().equals(loginId), "user ID check");
+        Assert.isTrue(dto.getPassword().equals(password), "password check");
+        Assert.isTrue(dto.getNickname().equals(nickname), "Nickname check");
     }
 
     @Test
