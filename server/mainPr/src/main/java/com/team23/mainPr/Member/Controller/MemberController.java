@@ -2,13 +2,11 @@ package com.team23.mainPr.Member.Controller;
 
 import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
-import com.team23.mainPr.Member.Entity.Member;
 import com.team23.mainPr.Member.Service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
  * create user profile by auto
  * delete user data
  * user data validation check
+ *
+ * refactor : 현재 리턴문에 대해 같은 코드가 중복되고 있다 - 이후에 기능 구현이 상세해지면 분기가 달라질 가능성이 있어서 남겨두고
+ * 만약 분기가 나누어 지지 않는다면 하나의 static 메소드로 만들어서 response에 들어갈 객체만 제네릭을 이용해서 처리 가능하게 만들기
+ *
  * */
 
 @RestController
@@ -41,17 +43,17 @@ public class MemberController {
 
     @ApiOperation(value = "회원 가입 정보 유효성 검사.(이후에 중복 검사와 결합 예정)", notes = "회원 가입을 위해 입력 받은 정보를 정규식을 이용하여 검증.")
     @ApiResponses({
-            @ApiResponse( code = 200, message = "유효한 입력."),
-            @ApiResponse( code = 400, message = "잘못된 입력.")})
+            @ApiResponse(code = 200, message = "유효한 입력."),
+            @ApiResponse(code = 400, message = "잘못된 입력.")})
     @PostMapping("/register/check-input")
     public ResponseEntity checkInput(@RequestBody @ApiParam(name = "CreateMemberDto", value = "입력한 회원 정보.", required = true) CreateMemberDto dto) throws RuntimeException {
 
         CommonDto response = memberService.loginValidation(dto);
 
-        if(response.getMsg().equals("true"))
-            return new ResponseEntity(response,HttpStatus.OK);
+        if (response.getMsg().equals("true"))
+            return new ResponseEntity(response, HttpStatus.OK);
         else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }//validation
 
     /*
@@ -59,15 +61,21 @@ public class MemberController {
      */
 
     @ApiOperation(value = "회원 가입.", notes = "데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 가입 성공."),
+            @ApiResponse(code = 400, message = "잘못된 입력."),
+            @ApiResponse(code = 500, message = "서버 내부 에러")})
     @PostMapping("/register")
     public ResponseEntity createMember(@RequestBody @ApiParam(name = "CreateMemberDto", value = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
 
         CommonDto response = memberService.createMember(dto);
 
-        if(response.getMsg().equals("true"))
-            return new ResponseEntity(response,HttpStatus.OK);
+        if (response.getMsg().equals("true"))
+            return new ResponseEntity(response, HttpStatus.OK);
+        else if (response.getMsg().equals("false"))
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }//createMember
 
     /*
@@ -78,26 +86,38 @@ public class MemberController {
      */
 
     @ApiOperation(value = "회원 정보 확인.", notes = "데이터베이스에서 회원 정보를 찾아 응답한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공."),
+            @ApiResponse(code = 400, message = "잘못된 입력 혹은 존재하지 않는 회원 식별 번호."),
+            @ApiResponse(code = 500, message = "서버 내부 에러 혹은 존재하지 않는 회원 식별 번호.")})
     @GetMapping("/{memberId}")
     public ResponseEntity getMember(@PathVariable @ApiParam(name = "memberId", value = "회원 식별 번호.", required = true) Integer memberId) {
 
         CommonDto response = memberService.getMember(memberId);
 
-        if(response.getMsg().equals("true"))
-            return new ResponseEntity(response,HttpStatus.OK);
+        if (response.getMsg().equals("true"))
+            return new ResponseEntity(response, HttpStatus.OK);
+        else if (response.getMsg().equals("false"))
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         else
-            return new ResponseEntity(response,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }//createMember
 
     @ApiOperation(value = "회원 정보 삭제(이후 회원탈퇴 기능으로 전환 예정).", notes = "데이터베이스에서 회원 정보를 찾아 삭제 후 성공여부를 응답한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공."),
+            @ApiResponse(code = 400, message = "잘못된 입력 혹은 존재하지 않는 회원 식별 번호."),
+            @ApiResponse(code = 500, message = "서버 내부 에러 혹은 존재하지 않는 회원 식별 번호.")})
     @DeleteMapping("/delete")
     public ResponseEntity deleteMember(@RequestParam @ApiParam(name = "memberId", value = "회원 식별 번호.", required = true) Integer memberId) {
 
         CommonDto response = memberService.deleteMember(memberId);
 
-        if(response.getMsg().equals("true"))
-            return new ResponseEntity(response,HttpStatus.OK);
+        if (response.getMsg().equals("true"))
+            return new ResponseEntity(response, HttpStatus.OK);
+        else if (response.getMsg().equals("false"))
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         else
-            return new ResponseEntity(response,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }//deleteMember
 }

@@ -1,12 +1,13 @@
 package com.team23.mainPr.Profile.Controller;
 
+import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.Profile.Dto.ProfileUpdateDto;
-import com.team23.mainPr.Profile.Entity.Profile;
 import com.team23.mainPr.Profile.Service.ProfileService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,21 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @ApiOperation(value = "프로필 정보 조회.", notes = "프로필 식별자 번호를 파라미터로 받아, 해당하는 프로필 정보 응답.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 가입 성공."),
+            @ApiResponse(code = 400, message = "잘못된 입력."),
+            @ApiResponse(code = 500, message = "서버 내부 에러")})
     @GetMapping("/{profileId}")
     public ResponseEntity getProfileData(@PathVariable @ApiParam(name = "profileId", value = "프로필 식별 번호.", required = true) Integer profileId) {
-        Profile profile = profileService.getProfile(profileId);
-        return new ResponseEntity(profile, HttpStatus.OK);
+
+        CommonDto response = profileService.getProfile(profileId);
+
+        if (response.getMsg().equals("true"))
+            return new ResponseEntity(response, HttpStatus.OK);
+        else if (response.getMsg().equals("false"))
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /*
@@ -41,10 +53,20 @@ public class ProfileController {
      * */
 
     @ApiOperation(value = "프로필 정보 업데이트.", notes = "프로필 식별자 번호, 수정된 프로필 정보를 요청으로 받아, 해당하는 프로필의 데이터를 수정.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 가입 성공."),
+            @ApiResponse(code = 400, message = "잘못된 입력."),
+            @ApiResponse(code = 500, message = "서버 내부 에러")})
     @PutMapping("/update")
     public ResponseEntity updateProfileData(@RequestParam @ApiParam(name = "profileId", value = "프로필 식별 번호.", required = true) Integer profileId,
                                             @RequestBody @ApiParam(name = "ProfileUpdateDto", value = "프로필 업데이트 정보.", required = true) ProfileUpdateDto dto) {
-        Profile profile = profileService.updateProfile(profileId, dto);
-        return new ResponseEntity(profile, HttpStatus.OK);
+        CommonDto response = profileService.updateProfile(profileId, dto);
+
+        if (response.getMsg().equals("true"))
+            return new ResponseEntity(response, HttpStatus.OK);
+        else if (response.getMsg().equals("false"))
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -1,10 +1,15 @@
 package com.team23.mainPr.Profile.Service;
 
+import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.Profile.Dto.ProfileUpdateDto;
 import com.team23.mainPr.Profile.Entity.Profile;
+import com.team23.mainPr.Profile.Mapper.ProfileMapper;
 import com.team23.mainPr.Profile.Repository.ProfileRepository;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /*
@@ -21,15 +26,29 @@ public class ProfileService {
      * */
 
     private final ProfileRepository profileRepository;
+    private final ProfileMapper profileMapper;
 
-    public Profile getProfile(Integer postId) {
+    public CommonDto getProfile(Integer postId) {
+
+        CommonDto response = null;
 
         try {
-            Profile profile = profileRepository.findById(postId).orElseThrow();
+            Profile profile = profileRepository.findById(postId).get();
 
-            return profile;
+            if(profile!=null)
+                response = new CommonDto("true",profileMapper.ProfileToProfileResponse(profile));
+            else
+                response = new CommonDto("false",null);
+
+            if(response == null)
+                throw new Exception();
+
+            return response;
         } catch (Exception e) {
-            return null;
+
+            response = new CommonDto("Error",null);
+
+            return response;
         }
     }//getProfile
 
@@ -42,20 +61,34 @@ public class ProfileService {
      *
      */
 
-    public Profile updateProfile(Integer profileId, ProfileUpdateDto dto) {
+    public CommonDto updateProfile(Integer profileId, ProfileUpdateDto dto) {
+
+        CommonDto response = null;
 
         try {
-            Profile profile = profileRepository.findById(profileId).orElseThrow();
-            profile.setNickname(dto.getNickname());
+            Profile profile = profileRepository.findById(profileId).get();
 
-            profileRepository.flush();
+            if(profile!=null)
+            {
+                profile.setNickname(dto.getNickname());
+                profileRepository.flush();
 
-            return profile;
+                response = new CommonDto("true",profileMapper.ProfileToProfileResponse(profile));
+
+                return response;
+            }
+            else
+                response = new CommonDto("false",null);
+
+            if(response == null)
+                throw new Exception();
+
+            return response;
         } catch (Exception e) {
 
-            System.out.println("null2");
+            response = new CommonDto("Error",null);
 
-            return null;
+            return response;
         }
     }//updateProfile
 }

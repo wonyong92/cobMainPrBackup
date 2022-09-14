@@ -1,7 +1,9 @@
 package com.team23.mainPr.RentPost.Service;
 
+import com.team23.mainPr.Dto.CommonDto;
 import com.team23.mainPr.RentPost.Dto.CreateRentPostDto;
 import com.team23.mainPr.RentPost.Entity.RentPost;
+import com.team23.mainPr.RentPost.Mapper.RentPostMapper;
 import com.team23.mainPr.RentPost.Repository.RentPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,11 @@ import org.springframework.stereotype.Service;
 public class RentPostService {
 
     private final RentPostRepository RentPostRepository;
+    private final RentPostMapper rentPostMapper;
 
-    public RentPost createRentPost(CreateRentPostDto dto) {
+    public CommonDto createRentPost(CreateRentPostDto dto) {
+
+        CommonDto response = null;
 
         try {
             RentPost post = new RentPost();
@@ -26,13 +31,30 @@ public class RentPostService {
             post.setName(dto.getName());
             RentPostRepository.save(post);
 
-            return post;
+            RentPost result = RentPostRepository.findById(post.getId()).get();
+
+            if(result != null)
+            {
+                response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
+            }
+            else
+                response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+
+            if(response == null)
+                throw new Exception();
+
+            return response;
         } catch (Exception e) {
-            return null;
+
+            response = new CommonDto("Error",null);
+
+            return response;
         }
     }
 
-    public RentPost updateRentPost(Integer postId, CreateRentPostDto dto) {
+    public CommonDto updateRentPost(Integer postId, CreateRentPostDto dto) {
+
+        CommonDto response = null;
 
         try {
             RentPost post = RentPostRepository.findById(postId).orElseThrow();
@@ -41,32 +63,73 @@ public class RentPostService {
 
             RentPostRepository.flush();
 
-            return post;
+            RentPost result = RentPostRepository.findById(postId).get();
+
+            if(result != null)
+            {
+                if(result.getContents().equals(dto.getContents()))
+                {
+                    response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
+
+                    return response;
+                }
+            }
+
+            response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+
+            return response;
         } catch (Exception e) {
-            return null;
+
+            response = new CommonDto("Error",null);
+
+            return response;
         }
     }
 
-    public boolean deleteRentPost(Integer postId) {
+    public CommonDto deleteRentPost(Integer postId) {
+
+        CommonDto response = null;
 
         try {
             RentPost post = RentPostRepository.findById(postId).orElseThrow();
             RentPostRepository.delete(post);
 
-            return true;
+            RentPost result = RentPostRepository.findById(post.getId()).get();
+            if(result == null)
+                response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
+            else
+                response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+
+            return response;
         } catch (Exception e) {
-            return false;
+
+            response = new CommonDto("Error",null);
+
+            return response;
         }
     }
 
-    public RentPost getRentPost(Integer postId) {
+    public CommonDto getRentPost(Integer postId) {
+
+        CommonDto response = null;
 
         try {
-            RentPost post = RentPostRepository.findById(postId).orElseThrow();
+            RentPost result = RentPostRepository.findById(postId).orElseThrow();
 
-            return post;
+            if(result.getId() == postId)
+            {
+                response = new CommonDto("true",rentPostMapper.RentPostToRentPostResponse(result));
+            }
+            else
+                response = new CommonDto("false",rentPostMapper.RentPostToRentPostResponse(result));
+
+
+            return response;
         } catch (Exception e) {
-            return null;
+
+            response = new CommonDto("Error",null);
+
+            return response;
         }
     }
 }
