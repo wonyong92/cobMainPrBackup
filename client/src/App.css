@@ -1,0 +1,30 @@
+*  {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0px;
+  background-color: #EFFFFD;
+  
+}
+
+@media (min-width: 375px) {
+  .App {
+    width: 375px;
+    background-color: white;
+    }
+  }
+
+#root {
+  display: flex;
+  
+}
+
+.App {
+  min-height: 100vh;
+  margin: 0;
+}
