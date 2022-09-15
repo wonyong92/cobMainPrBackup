@@ -11,8 +11,7 @@ import com.team23.mainPr.Profile.Entity.Profile;
 import com.team23.mainPr.Profile.Repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
 import java.util.regex.Pattern;
 
 @Service
