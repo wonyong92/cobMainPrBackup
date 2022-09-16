@@ -24,5 +24,6 @@ spring:
       matching-strategy: ant_path_matcher
 
 timeZone:
-  ZoneId:
+  location:
+    asia_seoul: "Asia/Seoul"
 

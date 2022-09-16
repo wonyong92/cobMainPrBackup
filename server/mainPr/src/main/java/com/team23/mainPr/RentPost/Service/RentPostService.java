@@ -1,5 +1,6 @@
 package com.team23.mainPr.RentPost.Service;
 
+import com.team23.mainPr.DefaultTimeZone;
 import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.RentPost.Dto.CreateRentPostDto;
 import com.team23.mainPr.RentPost.Entity.RentPost;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import static com.team23.mainPr.Enum.ChildCommonDtoMsgList.*;
-import static com.team23.mainPr.MainPrApplication.DEFAULT_TIME_ZONE;
 
 /**<pre>
  * 어떤 작성자 정보를 넣을까.
@@ -33,6 +33,9 @@ public class RentPostService {
             RentPost post = new RentPost();
             post.setContents(dto.getContents());
             post.setName(dto.getName());
+            post.setUpdateDate(new DefaultTimeZone().getNow());
+            post.setWriteDate(new DefaultTimeZone().getNow());
+
             rentPostRepository.save(post);
 
             RentPost result = rentPostRepository.findById(post.getId()).orElse(null);
@@ -43,7 +46,7 @@ public class RentPostService {
                 return new ChildCommonDto(FALSE.getMsg(), HttpStatus.BAD_REQUEST, rentPostMapper.RentPostToRentPostResponse(result));
 
         } catch (Exception e) {
-
+            System.out.println("---------"+e.getMessage());
             return new ChildCommonDto(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);
 
         }
@@ -56,7 +59,7 @@ public class RentPostService {
             RentPost post = rentPostRepository.findById(postId).orElseThrow();
             post.setContents(dto.getContents());
             post.setName(dto.getName());
-            post.setUpdateDate(ZonedDateTime.now(DEFAULT_TIME_ZONE));
+            post.setUpdateDate(ZonedDateTime.now(new DefaultTimeZone().getZoneId()));
             rentPostRepository.flush();
 
             RentPost result = rentPostRepository.findById(postId).orElse(null);
