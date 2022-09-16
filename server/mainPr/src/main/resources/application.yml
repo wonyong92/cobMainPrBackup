@@ -8,7 +8,7 @@ spring:
       settings:
         web-allow-others: true
   datasource:
-    url: 'jdbc:h2:~/test1;'
+    url: 'jdbc:h2:~/test2;'
     driverClassName: org.h2.Driver
     username: sa
   jpa:
@@ -22,3 +22,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+timeZone:
+  location:
+    asia_seoul: "Asia/Seoul"
+

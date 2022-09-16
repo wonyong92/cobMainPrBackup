@@ -1,16 +1,20 @@
 package com.team23.mainPr;
 
+import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.Member.Controller.MemberController;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
-import com.team23.mainPr.Member.Entity.Member;
+import com.team23.mainPr.Member.Dto.MemberResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 
-/*
- * ETC : @SpringBootTest 사용시 서버가 돌아가고 있으면 에러가 발생한다. 이전에 실행된 스프링부트가 꺼져야 한다.
+import static com.team23.mainPr.Enum.ChildCommonDtoMsgList.TRUE;
+import static org.assertj.core.api.Assertions.*;
+
+/**<pre>
+ * \@SpringBootTest 사용시 서버가 돌아가고 있으면 에러가 발생한다. 이전에 실행된 스프링부트가 꺼져야 한다.
  * */
 
 @SpringBootTest
@@ -18,39 +22,43 @@ class MainPrApplicationTests {
 
     @Autowired
     MemberController memberController;
-    CreateMemberDto createMemberDto = new CreateMemberDto("wonyong92", "jangwonyong@@@", "oreooreo");
+    String loginId = "wonyong92@github.com";
+    String password = "password@@password";
+    String nickname = "닉네임1524";
+    CreateMemberDto createMemberDto = new CreateMemberDto(loginId, password, nickname);
 
     @Test
     void contextLoads() {
     }
 
-    /*
-     * refactor : 유스케이스 늘리기
-     *
-     * */
 
+    @DisplayName(value = "회원가입 입력 데이터 유효성 검증 기능 테스트 = 성공/실패 검증")
     @Test
     void validateCreateUserData() {
 
-        boolean result = memberController.validation(createMemberDto);
-
-        Assert.isTrue(result, "user ID, password check function test");
+        ResponseEntity<ChildCommonDto> result = memberController.checkInput(createMemberDto);
+        ChildCommonDto dto = (ChildCommonDto) result.getBody();
+        assertThat(dto.getMsg()).isEqualTo(TRUE.getMsg())
+                .as("check user ID, password");
     }
-	/*
-    *ResponseEntity 내부에 제네릭으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
+	/**<pre>
+    *ResponseEntity<ChildCommonDto> 내부에 제네릭으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
     */
 
+    @DisplayName(value = "회원가입 기능 테스트 = 응답의 아이디,비밀번호, 닉네임 검증")
     @Test
     void createUserTest() {
 
-        ResponseEntity result = memberController.createMember(createMemberDto);
-        Member created = (Member) result.getBody();//명시적으로 캐스팅해주어야 한다.
+        ResponseEntity<ChildCommonDto> result = memberController.createMember(createMemberDto);
+        ChildCommonDto Cdto = (ChildCommonDto) result.getBody();
+        MemberResponse dto = (MemberResponse) Cdto.getDto();
 
-        System.out.println(created.getLoginId());
-
-        Assert.isTrue(created.getLoginId().equals("wonyong92"), "user ID check");
-        Assert.isTrue(created.getPassword().equals("jangwonyong@@@"), "password check");
-        Assert.isTrue(created.getNickname().equals("oreooreo"), "Nickname check");
+        assertThat(dto.getLoginId()).isEqualTo(loginId)
+                .as("check user ID");
+        assertThat(dto.getPassword()).isEqualTo(password)
+                .as("check user password");
+        assertThat(dto.getNickname()).isEqualTo(nickname)
+                .as("check user Nickname");
     }
 
     @Test
