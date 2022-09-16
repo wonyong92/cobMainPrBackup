@@ -19,8 +19,9 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    /**
+    /**<pre>
      * .paths(regex("/(user|profile|RentPost)/.*")) : 스웨거에 여러 path 추가하기
+     * </pre>
      * */
 
     @Bean
@@ -35,8 +36,9 @@ public class SwaggerConfig {
                 .build();
     }
 
-    /**
+    /**<pre>
      * 3자리 version의 의미 : 배포.개발.패치
+     * </pre>
      * */
 
     private ApiInfo apiInfo() {

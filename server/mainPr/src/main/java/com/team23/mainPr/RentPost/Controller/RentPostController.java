@@ -20,8 +20,9 @@ public class RentPostController {
 
     private final RentPostService RentPostService;
 
-    /**
+    /**<pre>
      * MemberController 와 URI 통일성을 위해 register 사용, 대안으로는 write 를 사용가능
+     * </pre>
      * */
 
     @Operation(summary = "렌트 물품 게시글 등록.", description = "데이터베이스에 물품 렌트 글을 생성하고, 생성된 게시글 데이터를 응답한다.")
@@ -41,8 +42,9 @@ public class RentPostController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /**
+    /**<pre>
      * api 설명 작성할때 비슷한 기능은 같은 용어를 사용해야 혼동을 줄이고, 통일감을 줄 수 있다.
+     * </pre>
      * */
 
     @Operation(summary = "렌트 물품 게시글 업데이트.", description = "데이터베이스에 물품 렌트 글을 확인하여, 업데이트 완료한 게시글 데이터를 응답한다.")
@@ -70,8 +72,9 @@ public class RentPostController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    /**
+    /**<pre>
      * 조회에 관련된 uri는 PathVariable 사용하기
+     * </pre>
      * */
 
     @Operation(summary = "렌트 물품 게시글 조회.", description = "데이터베이스에 물품 렌트 글을 확인하여, 게시글 정보를 응답.")

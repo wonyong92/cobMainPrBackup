@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-/**
+/**<pre>
  * 구현할 기능
  * 조회
  * 생성-삭제 : member 에서 수행 : 서비스 분리할때 문제 발생가능 : member 와 profile 을 합하는 건 어때?
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * 서브 기능 : 프로필 이미지 업로드+수정, 다운로드
  *
  * 진행 상태, 결과를 모니터링 및 로깅
+ * </pre>
  * */
 
 @Controller
@@ -43,8 +44,9 @@ public class ProfileController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    /*
+    /** <pre>
      * description : 프로필 데이터를 리퀘스트 바디로 받아와서 업데이트 수행, 프로필 식별자(유저 식별자와 동일한 번호)를 함께 입력받아야 한다
+     * </pre>
      * */
 
     @Operation(summary = "프로필 정보 업데이트.", description = "프로필 식별자 번호, 수정된 프로필 정보를 요청으로 받아, 해당하는 프로필의 데이터를 수정.")

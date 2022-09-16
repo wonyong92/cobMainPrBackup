@@ -23,7 +23,7 @@ public class MemberService {
     private final ProfileRepository profileRepository;
     private final MemberMapper memberMapper;
 
-    /**
+    /**<pre>
      * spring Bean validate 적용시 서비스 삭제 가능 할듯
      * 컨트롤러 단으로 예외 위임 하기전에 , 서비스 단에서 발생하는 예외는 처리가 안되니까 조건문에서 확실히 걸러줘야한다
      * dto.getLoginId()==null 와 같이 가장 발생확률이 높은 null 에러에 대해서 처리가 필요
@@ -53,7 +53,7 @@ public class MemberService {
         return new ChildCommonDto(TRUE.getMsg(), HttpStatus.OK, null);
     }
 
-    /**
+    /**<pre>
      * 트랜젝션 적용 필요
      * 생성 후 확인 과정에서 어떤 필드 하나라도 null 이면 실패 및 롤백 필요
      * 캐시, 샤딩 적용하면 저장하는 방법이 복잡해질듯 - 캐싱 전략은 추후에 공부하여 적용
@@ -112,10 +112,10 @@ public class MemberService {
         }
     }
 
-    /**
+    /**<pre>
      * Todo : 연관될 리소스 - 게시글, 댓글, 프로필, 좋아요 도 함꼐 삭제되도록 구성하여야 한다 - cascade 사용 예정
      * delete 수행시 영속성 컨텍스트의 1차 캐시에서도 삭제(detach)된다. - entityManager.detach(member) 로 테스트 완료
-     *
+     * </pre>
      * */
 
     public ChildCommonDto deleteMember(Integer memberId) {

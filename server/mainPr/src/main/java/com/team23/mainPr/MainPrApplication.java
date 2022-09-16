@@ -10,10 +10,12 @@ import static com.team23.mainPr.Enum.TimeZone.ASIA_SEOUL;
 
 @SpringBootApplication
 public class MainPrApplication {
+
+    public static final ZoneId DEFAULT_TIME_ZONE = ASIA_SEOUL.getZoneId();
     public static void main(String[] args) {
 
         SpringApplication.run(MainPrApplication.class, args);
-    }    public static final ZoneId DEFAULT_TIME_ZONE = ASIA_SEOUL.getZoneId();
+    }
 
 
 }

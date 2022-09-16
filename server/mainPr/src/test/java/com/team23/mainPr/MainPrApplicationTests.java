@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import static com.team23.mainPr.Enum.ChildCommonDtoMsgList.TRUE;
 import static org.assertj.core.api.Assertions.*;
 
-/**
+/**<pre>
  * \@SpringBootTest 사용시 서버가 돌아가고 있으면 에러가 발생한다. 이전에 실행된 스프링부트가 꺼져야 한다.
  * */
 
@@ -38,9 +38,10 @@ class MainPrApplicationTests {
 
         ResponseEntity<ChildCommonDto> result = memberController.checkInput(createMemberDto);
         ChildCommonDto dto = (ChildCommonDto) result.getBody();
-        assertThat(dto.getMsg()).as("check user ID, password").isEqualTo(TRUE.getMsg());
+        assertThat(dto.getMsg()).isEqualTo(TRUE.getMsg())
+                .as("check user ID, password");
     }
-	/**
+	/**<pre>
     *ResponseEntity<ChildCommonDto> 내부에 제네릭으로 body가 선언되어 있다. 가져와서 내부 데이터를 검증할수 있다.
     */
 
@@ -52,9 +53,12 @@ class MainPrApplicationTests {
         ChildCommonDto Cdto = (ChildCommonDto) result.getBody();
         MemberResponse dto = (MemberResponse) Cdto.getDto();
 
-        assertThat(dto.getLoginId()).as("check user ID").isEqualTo(loginId);
-        assertThat(dto.getPassword()).as("check user password").isEqualTo(password);
-        assertThat(dto.getNickname()).as("check user Nickname").isEqualTo(nickname);
+        assertThat(dto.getLoginId()).isEqualTo(loginId)
+                .as("check user ID");
+        assertThat(dto.getPassword()).isEqualTo(password)
+                .as("check user password");
+        assertThat(dto.getNickname()).isEqualTo(nickname)
+                .as("check user Nickname");
     }
 
     @Test

@@ -6,10 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
+/**<pre>
  * getter는 쓰는게 맞는데 setter 꼭 있어야 하나? : 라이브러리 종속도가 너무 높은 상태
  * http converter 의 동작: 자동 맵핑 동작 개념 확인
  * setter 있으면 스웨거에서 setter 부분에 대한 이상한 example이 생성된다. nickname:string 이런 데이터
+ * </pre>
  */
 
 @NoArgsConstructor
