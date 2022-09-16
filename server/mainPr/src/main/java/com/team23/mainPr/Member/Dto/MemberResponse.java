@@ -1,12 +1,12 @@
 package com.team23.mainPr.Member.Dto;
 
-import com.team23.mainPr.Dto.CommonDtoBoundary;
+import com.team23.mainPr.Dto.ParentCommonDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class MemberResponse extends CommonDtoBoundary {
+public class MemberResponse extends ParentCommonDto {
 
     private Integer id;
     private String loginId;

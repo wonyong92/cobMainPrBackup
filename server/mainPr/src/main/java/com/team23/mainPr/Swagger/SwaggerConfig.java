@@ -2,7 +2,7 @@ package com.team23.mainPr.Swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -19,8 +19,8 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    /*
-     * description : .paths(regex("/(user|profile|RentPost)/.*")) : 스웨거에 여러 path 추가하기
+    /**
+     * .paths(regex("/(user|profile|RentPost)/.*")) : 스웨거에 여러 path 추가하기
      * */
 
     @Bean
@@ -31,12 +31,12 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(regex("/(member|profile|RentPost)/.*"))//스웨거에 여러 path 추가하기
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                .apis(RequestHandlerSelectors.withClassAnnotation(Controller.class))
                 .build();
     }
 
-    /*
-     * ETC : 3자리 version의 의미 : 배포.개발.패치
+    /**
+     * 3자리 version의 의미 : 배포.개발.패치
      * */
 
     private ApiInfo apiInfo() {

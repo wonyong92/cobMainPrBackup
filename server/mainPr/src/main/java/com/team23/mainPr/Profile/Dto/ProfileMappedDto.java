@@ -1,10 +1,10 @@
 package com.team23.mainPr.Profile.Dto;
 
-import com.team23.mainPr.Dto.CommonDtoBoundary;
+import com.team23.mainPr.Dto.ParentCommonDto;
 import lombok.Data;
 
 @Data
-public class ProfileResponse extends CommonDtoBoundary {
+public class ProfileMappedDto extends ParentCommonDto {
 
     Integer id;
     String nickname;

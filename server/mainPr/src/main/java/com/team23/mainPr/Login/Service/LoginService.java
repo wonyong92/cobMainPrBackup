@@ -1,25 +1,26 @@
 package com.team23.mainPr.Login.Service;
 
-import com.team23.mainPr.Dto.CommonDto;
-import com.team23.mainPr.Jwt.Service.JwtService;
+import com.team23.mainPr.Dto.ChildCommonDto;
+import com.team23.mainPr.Jwt.Service.JwtBuilder;
 import com.team23.mainPr.Login.Dto.DoLoginDto;
 import com.team23.mainPr.Member.Entity.Member;
 import com.team23.mainPr.Member.Mapper.MemberMapper;
 import com.team23.mainPr.Member.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import static com.team23.mainPr.Enum.ChildCommonDtoMsgList.*;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final JwtService jwtService;
+    private final JwtBuilder jwtService;
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
 
-    public CommonDto doLogin(DoLoginDto dto) {
-
-        CommonDto response = null;
+    public ChildCommonDto doLogin(DoLoginDto dto) {
 
         try {
             Member member = memberRepository.findByLoginId(dto.getLoginId());
@@ -27,23 +28,19 @@ public class LoginService {
             if (member != null) {
                 if (member.getPassword().equals(dto.getPassword())) {
 
-                    String token = "empty";
-                    token = jwtService.buildJwt(member);
+                    String token = jwtService.buildJwt(member);
 
-                    response = new CommonDto(token, memberMapper.MemberToMemberResponse(member));
-                    return response;
+                    return new ChildCommonDto(token, HttpStatus.OK, memberMapper.MemberToMemberResponse(member));
                 }
 
-                response = new CommonDto("not matched password", null);
-                return response;
+                return new ChildCommonDto(NOT_MATCH_ID.getMsg(), HttpStatus.BAD_REQUEST, null);
             }
 
-            response = new CommonDto("not matched loginId", null);
-            return response;
+            return new ChildCommonDto(NOT_MATCH_PASSWORD.getMsg(), HttpStatus.BAD_REQUEST, null);
 
         } catch (Exception e) {
-            response = new CommonDto("Error", null);
-            return response;
+
+            return new ChildCommonDto(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 }

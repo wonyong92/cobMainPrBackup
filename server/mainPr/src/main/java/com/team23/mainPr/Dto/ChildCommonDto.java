@@ -1,13 +1,22 @@
 package com.team23.mainPr.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommonDto<T extends CommonDtoBoundary> {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ChildCommonDto<T extends ParentCommonDto> {
 
     String msg = "";
+
+    @JsonIgnore
+    HttpStatus httpStatus;
+
+
     T t;
 
     public void SetDto(T dto) {
@@ -24,5 +33,9 @@ public class CommonDto<T extends CommonDtoBoundary> {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return this.httpStatus;
     }
 }
