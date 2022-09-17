@@ -2,9 +2,11 @@ package com.team23.mainPr.Member.Controller;
 
 import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
+import com.team23.mainPr.Member.Dto.MemberResponse;
 import com.team23.mainPr.Member.Service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +47,9 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "유효한 입력."),
             @ApiResponse(responseCode = "400", description = "잘못된 입력.")})
     @PostMapping("/register/check-input")
-    public ResponseEntity<ChildCommonDto> checkInput(@RequestBody @Parameter(name = "CreateMemberDto", description = "입력한 회원 정보.", required = true) CreateMemberDto dto) throws RuntimeException {
+    public ResponseEntity<ChildCommonDto<MemberResponse>> checkInput(@RequestBody @Parameter(name = "CreateMemberDto", description = "입력한 회원 정보.", required = true) CreateMemberDto dto) throws RuntimeException {
 
-        ChildCommonDto response = memberService.loginValidation(dto);
+        ChildCommonDto<MemberResponse> response = memberService.loginValidation(dto);
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }//validation
@@ -62,9 +64,9 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "잘못된 입력."),
             @ApiResponse(responseCode = "500", description = "서버 내부 에러")})
     @PostMapping("/register")
-    public ResponseEntity<ChildCommonDto> createMember(@RequestBody @Parameter(name = "CreateMemberDto", description = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
+    public ResponseEntity<ChildCommonDto<MemberResponse>> createMember(@RequestBody @Parameter(name = "CreateMemberDto", description = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
 
-        ChildCommonDto response = memberService.createMember(dto);
+        ChildCommonDto<MemberResponse> response = memberService.createMember(dto);
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }//createMember
@@ -82,9 +84,9 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "잘못된 입력 혹은 존재하지 않는 회원 식별 번호."),
             @ApiResponse(responseCode = "500", description = "서버 내부 에러 혹은 존재하지 않는 회원 식별 번호.")})
     @GetMapping("/{memberId}")
-    public ResponseEntity<ChildCommonDto> getMember(@PathVariable @Parameter(name = "memberId", description = "회원 식별 번호.", required = true) Integer memberId) {
+    public ResponseEntity<ChildCommonDto<MemberResponse>> getMember(@PathVariable @Parameter(name = "memberId", description = "회원 식별 번호.", required = true,style= ParameterStyle.SIMPLE) Integer memberId) {
 
-        ChildCommonDto response = memberService.getMember(memberId);
+        ChildCommonDto<MemberResponse> response = memberService.getMember(memberId);
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }//createMember
@@ -95,10 +97,12 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "잘못된 입력 혹은 존재하지 않는 회원 식별 번호."),
             @ApiResponse(responseCode = "500", description = "서버 내부 에러 혹은 존재하지 않는 회원 식별 번호.")})
     @DeleteMapping("/delete")
-    public ResponseEntity<ChildCommonDto> deleteMember(@RequestParam @Parameter(name = "memberId", description = "회원 식별 번호.", required = true) Integer memberId) {
+    public ResponseEntity<ChildCommonDto<MemberResponse>> deleteMember(@RequestParam @Parameter(name = "memberId", description = "회원 식별 번호.", required = true) Integer memberId) {
 
-        ChildCommonDto response = memberService.deleteMember(memberId);
+        ChildCommonDto<MemberResponse> response = memberService.deleteMember(memberId);
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }//deleteMember
+
+
 }

@@ -22,8 +22,7 @@ public class JwtBuilder {
         return JWT.create()
                 .withSubject("cos jwt token")
                 .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000)))
-                .withClaim("memberId", member.getId())
-                .withClaim("username", member.getLoginId())
+                .withClaim("memberId", member.getMemberId())
                 .sign(Algorithm.HMAC512("cos_jwt_token"));
     }
 }

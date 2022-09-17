@@ -27,14 +27,14 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer memberId;
     private String loginId;
     private String password;
     private String nickname;
     private String email;
-    private String phone;
     @CreationTimestamp
     private LocalDateTime createdAt;
-    private Integer profileId;
+    private String profileImageId;
+    private Integer rentHistory;
 
 }

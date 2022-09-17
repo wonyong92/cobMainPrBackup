@@ -25,7 +25,7 @@ class MainPrApplicationTests {
     String loginId = "wonyong92@github.com";
     String password = "password@@password";
     String nickname = "닉네임1524";
-    CreateMemberDto createMemberDto = new CreateMemberDto(loginId, password, nickname);
+    CreateMemberDto createMemberDto = new CreateMemberDto(loginId, password, nickname,null,null,null);
 
     @Test
     void contextLoads() {
@@ -36,8 +36,8 @@ class MainPrApplicationTests {
     @Test
     void validateCreateUserData() {
 
-        ResponseEntity<ChildCommonDto> result = memberController.checkInput(createMemberDto);
-        ChildCommonDto dto = (ChildCommonDto) result.getBody();
+        ResponseEntity<ChildCommonDto<MemberResponse>> result = memberController.checkInput(createMemberDto);
+        ChildCommonDto<MemberResponse> dto = (ChildCommonDto) result.getBody();
         assertThat(dto.getMsg()).isEqualTo(TRUE.getMsg())
                 .as("check user ID, password");
     }
@@ -49,8 +49,8 @@ class MainPrApplicationTests {
     @Test
     void createUserTest() {
 
-        ResponseEntity<ChildCommonDto> result = memberController.createMember(createMemberDto);
-        ChildCommonDto Cdto = (ChildCommonDto) result.getBody();
+        ResponseEntity<ChildCommonDto<MemberResponse>> result = memberController.createMember(createMemberDto);
+        ChildCommonDto<MemberResponse> Cdto = (ChildCommonDto) result.getBody();
         MemberResponse dto = (MemberResponse) Cdto.getDto();
 
         assertThat(dto.getLoginId()).isEqualTo(loginId)
