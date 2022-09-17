@@ -1,13 +1,12 @@
 package com.team23.mainPr.Member.Entity;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**<pre>
  * timetolive 속성 응용
@@ -27,14 +26,12 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer memberId;
     private String loginId;
     private String password;
     private String nickname;
     private String email;
-    private String phone;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    private Integer profileId;
+    private ZonedDateTime createdAt;
+    private String profileImageId;
 
 }

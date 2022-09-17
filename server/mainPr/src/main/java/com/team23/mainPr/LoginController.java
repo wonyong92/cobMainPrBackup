@@ -1,7 +1,6 @@
-package com.team23.mainPr.Login.Controller;
+package com.team23.mainPr;
 
 import com.team23.mainPr.Dto.ChildCommonDto;
-import com.team23.mainPr.Login.Dto.DoLoginDto;
 import com.team23.mainPr.Login.Service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<ChildCommonDto> doLogin(@RequestBody DoLoginDto dto) {
+    public ResponseEntity<ChildCommonDto> doLogin(@RequestBody CreateLoginDto dto) {
 
         ChildCommonDto response = loginService.doLogin(dto);
 

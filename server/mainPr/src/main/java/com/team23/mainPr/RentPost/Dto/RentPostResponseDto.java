@@ -6,11 +6,12 @@ import lombok.Data;
 import java.time.ZonedDateTime;
 
 @Data
-public class RentPostResponse extends ParentCommonDto {
+public class RentPostResponseDto extends ParentCommonDto {
 
-    private Integer id;
-    private String contents;
-    private String name;
+    private Integer rentPostId;
+    private String rentPostContents;
+    private String rentPostName;
     private ZonedDateTime writeDate;
     private ZonedDateTime updateDate;
+    Boolean rented;
 }

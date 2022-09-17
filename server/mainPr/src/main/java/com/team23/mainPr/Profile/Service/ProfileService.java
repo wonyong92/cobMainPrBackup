@@ -1,5 +1,6 @@
 package com.team23.mainPr.Profile.Service;
 
+import com.team23.mainPr.DefaultTimeZone;
 import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.Profile.Dto.UpdateProfileDto;
 import com.team23.mainPr.Profile.Entity.Profile;
@@ -8,6 +9,7 @@ import com.team23.mainPr.Profile.Repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import static com.team23.mainPr.Enum.ChildCommonDtoMsgList.*;
 
 @Service
@@ -22,6 +24,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
+    private final DefaultTimeZone defaultTimeZone;
 
     public ChildCommonDto getProfile(Integer postId) {
 

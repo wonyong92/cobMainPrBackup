@@ -2,6 +2,7 @@ package com.team23.mainPr.Member.Service;
 
 import com.team23.mainPr.CustomException.CustomException;
 import com.team23.mainPr.CustomException.ErrorData;
+import com.team23.mainPr.DefaultTimeZone;
 import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
 import com.team23.mainPr.Member.Entity.Member;
@@ -12,7 +13,9 @@ import com.team23.mainPr.Profile.Repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import java.util.regex.Pattern;
+
 import static com.team23.mainPr.Enum.ChildCommonDtoMsgList.*;
 
 @Service
@@ -22,6 +25,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
     private final MemberMapper memberMapper;
+    private final DefaultTimeZone defaultTimeZone;
+
 
     /**<pre>
      * spring Bean validate 적용시 서비스 삭제 가능 할듯
@@ -66,34 +71,31 @@ public class MemberService {
 
     public ChildCommonDto createMember(CreateMemberDto dto) throws NullPointerException {
 
-        try {
-            String LoginId = dto.getLoginId();
-            String password = dto.getPassword();
-            String Nickname = dto.getNickname();
+//        try {
             Member member = new Member();
-            member.setLoginId(LoginId);
-            member.setPassword(password);
-            member.setNickname(Nickname);
+            member.setLoginId(dto.getLoginId());
+            member.setPassword(dto.getPassword());
+            member.setNickname(dto.getNickname());
+            member.setEmail(dto.getEmail());
+            member.setProfileImageId(dto.getProfileImageId());
+            member.setCreatedAt(defaultTimeZone.getNow());
 
-            memberRepository.save(member);
-
-            Member result = memberRepository.findById(member.getId()).orElseThrow();
+            Member created = memberRepository.save(member);
 
             Profile profile = new Profile();
             profile.setNickname(member.getNickname());
             profileRepository.save(profile);
 
             Profile Presult = profileRepository.findById(profile.getId()).orElseThrow();
-            result.setProfileId(Presult.getId());
 
-            if (result != null && Presult != null)
-                return new ChildCommonDto(TRUE.getMsg(), HttpStatus.OK, memberMapper.MemberToMemberResponse(result));
+            if (created != null && Presult != null)
+                return new ChildCommonDto(TRUE.getMsg(), HttpStatus.OK, memberMapper.MemberToMemberResponse(created));
 
-            return new ChildCommonDto(FALSE.getMsg(), HttpStatus.BAD_REQUEST, memberMapper.MemberToMemberResponse(result));
-        } catch (Exception e) {
-
-            return new ChildCommonDto(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);
-        }
+            return new ChildCommonDto(FALSE.getMsg(), HttpStatus.BAD_REQUEST, memberMapper.MemberToMemberResponse(created));
+//        } catch (Exception e) {
+//
+//            return new ChildCommonDto(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+//        }
     }//createMember
 
     public ChildCommonDto getMember(Integer memberId) {
@@ -122,7 +124,7 @@ public class MemberService {
 
         try {
             Member member = memberRepository.findById(memberId).orElseThrow();
-            System.out.println("\n\n" + memberRepository.findById(memberId).orElse(null).getId() + "\n\n");
+
             memberRepository.delete(member);
 
             if (memberRepository.findById(memberId).orElse(null) == null)
