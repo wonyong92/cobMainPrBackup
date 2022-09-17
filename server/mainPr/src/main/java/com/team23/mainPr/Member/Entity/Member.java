@@ -1,13 +1,12 @@
 package com.team23.mainPr.Member.Entity;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**<pre>
  * timetolive 속성 응용
@@ -32,9 +31,7 @@ public class Member {
     private String password;
     private String nickname;
     private String email;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private ZonedDateTime createdAt;
     private String profileImageId;
-    private Integer rentHistory;
 
 }

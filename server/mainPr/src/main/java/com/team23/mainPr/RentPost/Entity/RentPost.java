@@ -1,6 +1,5 @@
 package com.team23.mainPr.RentPost.Entity;
 
-import com.team23.mainPr.DefaultTimeZone;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -22,9 +21,10 @@ public class RentPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String contents;
-    private String name;
+    private Integer rentPostId;
+    private String rentPostContents;
+    private String rentPostName;
     private ZonedDateTime writeDate;
     private ZonedDateTime updateDate;
+    Boolean rented = false;
 }
