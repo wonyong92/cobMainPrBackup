@@ -5,10 +5,6 @@ import com.team23.mainPr.Member.Dto.CreateMemberDto;
 import com.team23.mainPr.Member.Dto.MemberResponseDto;
 import com.team23.mainPr.Member.Service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterStyle;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,12 +38,9 @@ public class MemberController {
      *
      */
 
-    @Operation(summary = "회원 가입 정보 유효성 검사.(이후에 중복 검사와 결합 예정)", description = "회원 가입을 위해 입력 받은 정보를 정규식을 이용하여 검증.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "유효한 입력."),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력.")})
+    @Operation
     @PostMapping("/register/check-input")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkInput(@RequestBody @Parameter(name = "CreateMemberDto", description = "입력한 회원 정보.", required = true) CreateMemberDto dto) throws RuntimeException {
+    public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkInput(@RequestBody CreateMemberDto dto) throws RuntimeException {
 
         ChildCommonDto<MemberResponseDto> response = memberService.loginValidation(dto);
 
@@ -59,12 +52,8 @@ public class MemberController {
      */
 
     @Operation(summary = "회원 가입.", description = "데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "회원 가입 성공."),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력."),
-            @ApiResponse(responseCode = "500", description = "서버 내부 에러")})
     @PostMapping("/register")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> createMember(@RequestBody @Parameter(name = "CreateMemberDto", description = "입력한 회원 정보.", required = true) CreateMemberDto dto) {
+    public ResponseEntity<ChildCommonDto<MemberResponseDto>> createMember(@RequestBody CreateMemberDto dto) {
 
         ChildCommonDto<MemberResponseDto> response = memberService.createMember(dto);
 
@@ -78,26 +67,27 @@ public class MemberController {
      * Todo : 서비스 레이어 응답을 어떻게 바꾸어야 계층간 느스한 결합, 재사용성이 좋게 구현할수 있을까 고민하기!
      */
 
-    @Operation(summary = "회원 정보 확인.", description = "데이터베이스에서 회원 정보를 찾아 응답한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 성공."),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력 혹은 존재하지 않는 회원 식별 번호."),
-            @ApiResponse(responseCode = "500", description = "서버 내부 에러 혹은 존재하지 않는 회원 식별 번호.")})
+    @Operation
     @GetMapping("/{memberId}")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> getMember(@PathVariable @Parameter(name = "memberId", description = "회원 식별 번호.", required = true,style= ParameterStyle.SIMPLE) Integer memberId) {
+    public ResponseEntity<ChildCommonDto<MemberResponseDto>> getMember(@PathVariable Integer memberId) {
 
         ChildCommonDto<MemberResponseDto> response = memberService.getMember(memberId);
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }//createMember
 
-    @Operation(summary = "회원 정보 삭제(이후 회원탈퇴 기능으로 전환 예정).", description = "데이터베이스에서 회원 정보를 찾아 삭제 후 성공여부를 응답한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 성공."),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력 혹은 존재하지 않는 회원 식별 번호."),
-            @ApiResponse(responseCode = "500", description = "서버 내부 에러 혹은 존재하지 않는 회원 식별 번호.")})
+    @Operation
+    @GetMapping("profile/{memberId}")
+    public ResponseEntity<ChildCommonDto<MemberResponseDto>> getProfile(@PathVariable Integer memberId) {
+
+        ChildCommonDto<MemberResponseDto> response = memberService.getProfile(memberId);
+
+        return new ResponseEntity<>(response, response.getHttpStatus());
+    }//createMember
+
+    @Operation
     @DeleteMapping("/delete")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> deleteMember(@RequestParam @Parameter(name = "memberId", description = "회원 식별 번호.", required = true) Integer memberId) {
+    public ResponseEntity<ChildCommonDto<MemberResponseDto>> deleteMember(@RequestParam Integer memberId) {
 
         ChildCommonDto<MemberResponseDto> response = memberService.deleteMember(memberId);
 

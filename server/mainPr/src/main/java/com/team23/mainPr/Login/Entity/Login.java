@@ -1,4 +1,4 @@
-package com.team23.mainPr;
+package com.team23.mainPr.Login.Entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

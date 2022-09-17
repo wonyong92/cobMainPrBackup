@@ -1,4 +1,4 @@
-package com.team23.mainPr;
+package com.team23.mainPr.Login.Dto;
 
 import lombok.Data;
 

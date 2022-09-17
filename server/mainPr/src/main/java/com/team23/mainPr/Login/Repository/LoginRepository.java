@@ -1,4 +1,4 @@
-package com.team23.mainPr.Repository;
+package com.team23.mainPr.Login.Repository;
 
 import com.team23.mainPr.Login.Entity.Login;
 import org.springframework.data.jpa.repository.JpaRepository;

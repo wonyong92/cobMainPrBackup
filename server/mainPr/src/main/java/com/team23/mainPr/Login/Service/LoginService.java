@@ -1,4 +1,4 @@
-package com.team23.mainPr.Service;
+package com.team23.mainPr.Login.Service;
 
 import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.Jwt.Service.JwtBuilder;

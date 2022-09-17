@@ -5,6 +5,7 @@ import com.team23.mainPr.CustomException.ErrorData;
 import com.team23.mainPr.DefaultTimeZone;
 import com.team23.mainPr.Dto.ChildCommonDto;
 import com.team23.mainPr.Member.Dto.CreateMemberDto;
+import com.team23.mainPr.Member.Dto.MemberResponseDto;
 import com.team23.mainPr.Member.Entity.Member;
 import com.team23.mainPr.Member.Mapper.MemberMapper;
 import com.team23.mainPr.Member.Repository.MemberRepository;
@@ -131,6 +132,22 @@ public class MemberService {
                 return new ChildCommonDto(TRUE.getMsg(), HttpStatus.OK, null);
 
             return new ChildCommonDto(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+        } catch (Exception e) {
+
+            return new ChildCommonDto(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
+
+    public ChildCommonDto<MemberResponseDto> getProfile(Integer memberId) {
+
+        try {
+            Member member = memberRepository.findById(memberId).orElse(null);
+
+            if (member != null)
+                return new ChildCommonDto(TRUE.getMsg(), HttpStatus.OK, memberMapper.MemberToMemberProfileDto(member));
+
+            return new ChildCommonDto(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+
         } catch (Exception e) {
 
             return new ChildCommonDto(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);

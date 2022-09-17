@@ -1,4 +1,4 @@
-package com.team23.mainPr;
+package com.team23.mainPr.Jwt.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
