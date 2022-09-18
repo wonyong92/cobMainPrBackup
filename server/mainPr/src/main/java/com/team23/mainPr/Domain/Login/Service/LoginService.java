@@ -100,7 +100,7 @@ public class LoginService {
             Login login = loginRepository.findByToken(token);
 
             if (login != null) {
-                if (Boolean.TRUE.equals(login.getLogouted())) {
+                if (Boolean.FALSE.equals(login.getLogouted())) {
                     String newToken = jwtBuilder.buildJwt(memberRepository.findById(login.getMemberId()).orElseThrow());
                     login.setToken(newToken);
                     loginRepository.flush();
