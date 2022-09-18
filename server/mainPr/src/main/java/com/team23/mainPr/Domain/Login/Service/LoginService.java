@@ -94,6 +94,5 @@ public class LoginService {
         loginRepository.flush();
 
         return new ChildCommonDto<>(newToken, HttpStatus.OK, loginMapper.doLoginMap(login));
-
     }
 }
