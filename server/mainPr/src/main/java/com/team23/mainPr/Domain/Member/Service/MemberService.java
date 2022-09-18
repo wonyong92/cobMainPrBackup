@@ -148,6 +148,8 @@ public class MemberService {
     public ChildCommonDto<MemberProfileDto> updateProfile(UpdateMemberDto dto, Integer memberId) {
         try {
             Member member = memberRepository.findById(memberId).orElse(null);
+            if(dto.getNickname()==null && dto.getProfileImageId().equals(member.getProfileImageId())&&dto.getNickname().equals(member.getNickname()))
+                return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
 
             if (member != null) {
                 if (dto.getNickname() != null)
