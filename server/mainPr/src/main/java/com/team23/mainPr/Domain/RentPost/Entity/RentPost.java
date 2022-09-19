@@ -18,7 +18,6 @@ import java.time.ZonedDateTime;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentPost {

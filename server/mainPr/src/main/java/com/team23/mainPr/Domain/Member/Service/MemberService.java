@@ -76,18 +76,11 @@ public class MemberService {
             if (memberRepository.findByLoginId(dto.getLoginId()) != null) {
                 return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.OK, null);
             }
-            Member member = new Member();
-            member.setLoginId(dto.getLoginId());
-            member.setPassword(dto.getPassword());
-            member.setNickname(dto.getNickname());
-            member.setEmail(dto.getEmail());
-            member.setProfileImageId(dto.getProfileImageId());
+
+            Member member = memberMapper.CreateMemberDtoToMember(dto);
             member.setCreatedAt(defaultTimeZone.getNow());
 
-            Member created = memberRepository.save(member);
-
-
-            return new ChildCommonDto<>(TRUE.getMsg(), HttpStatus.OK, memberMapper.MemberToMemberResponse(created));
+            return new ChildCommonDto<>(TRUE.getMsg(), HttpStatus.OK, memberMapper.MemberToMemberResponse(memberRepository.save(member)));
         } catch (Exception e) {
 
             return new ChildCommonDto<>(ERROR.getMsg(), HttpStatus.INTERNAL_SERVER_ERROR, null);
@@ -141,6 +134,7 @@ public class MemberService {
     public ChildCommonDto<MemberProfileDto> updateProfile(UpdateMemberDto dto, Integer memberId) {
 
         Member member = memberRepository.findById(memberId).orElse(null);
+
         if (dto.getNickname() == null && dto.getProfileImageId().equals(member.getProfileImageId()) && dto.getNickname().equals(member.getNickname()))
             return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
 

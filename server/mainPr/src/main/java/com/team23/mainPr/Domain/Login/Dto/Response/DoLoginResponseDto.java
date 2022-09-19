@@ -8,5 +8,5 @@ import java.time.ZonedDateTime;
 public class DoLoginResponseDto extends ParentCommonDto {
     Integer memberId;
     Integer loginId;
-    ZonedDateTime lastLoginDt;
+    ZonedDateTime lastLoginDate;
 }

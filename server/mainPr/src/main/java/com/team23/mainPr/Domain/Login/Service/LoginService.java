@@ -41,7 +41,7 @@ public class LoginService {
         String token = jwtService.buildJwt(member);
         Login existLogin = loginRepository.findByMemberId(member.getMemberId());
 
-        if (existLogin == null) {
+        if (existLogin==null) {
 
             Login login = new Login();
             login.setLastLoginDate(defaultTimeZone.getNow());
@@ -49,20 +49,22 @@ public class LoginService {
             login.setLogouted(false);
             login.setMemberId(member.getMemberId());
             login.setLogoutDate(null);
-            loginRepository.save(login);
+            Login created = loginRepository.save(login);
+            return new ChildCommonDto<>(token, HttpStatus.OK, loginMapper.LoginEntityToDoLoginResponseDto(created));
 
-        } else {
-
-            existLogin.setLogouted(false);
-            existLogin.setToken(token);
-            existLogin.setLogoutDate(null);
-            loginRepository.flush();
         }
 
-        return new ChildCommonDto<>(token, HttpStatus.OK, loginMapper.doLoginMap(existLogin));
+        existLogin.setLogouted(false);
+        existLogin.setToken(token);
+        existLogin.setLogoutDate(null);
+        loginRepository.flush();
+
+
+        return new ChildCommonDto<>(token, HttpStatus.OK, loginMapper.LoginEntityToDoLoginResponseDto(existLogin));
     }
 
-    public ChildCommonDto<ParentCommonDto> doLogout(String authorization) {
+    public ChildCommonDto<ParentCommonDto> doLogout(String token) {
+        Login login = loginRepository.findByToken(token);
 
         if (login == null)
             return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
@@ -91,6 +93,6 @@ public class LoginService {
         login.setToken(newToken);
         loginRepository.flush();
 
-        return new ChildCommonDto<>(newToken, HttpStatus.OK, loginMapper.doLoginMap(login));
+        return new ChildCommonDto<>(newToken, HttpStatus.OK, loginMapper.LoginEntityToDoLoginResponseDto(login));
     }
 }

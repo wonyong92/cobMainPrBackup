@@ -1,7 +1,9 @@
 package com.team23.mainPr.Domain.Member.Mapper;
 
-import com.team23.mainPr.Domain.Member.Dto.MemberProfileDto;
-import com.team23.mainPr.Domain.Member.Dto.MemberResponseDto;
+
+import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
+import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
+import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import org.mapstruct.Mapper;
 
@@ -17,4 +19,6 @@ public interface MemberMapper {
     MemberResponseDto MemberToMemberResponse(Member member);
 
     MemberProfileDto MemberToMemberProfileDto(Member member);
+
+    Member CreateMemberDtoToMember(CreateMemberDto dto);
 }

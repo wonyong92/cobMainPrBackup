@@ -10,7 +10,7 @@ public class CreateLoginEntityDto {
     private String password;
     private Integer memberId;
     private String token;
-    private ZonedDateTime lastLoginDt;
-    private ZonedDateTime logoutDt = null;
+    private ZonedDateTime lastLoginData;
+    private ZonedDateTime logoutData = null;
     private Boolean logouted = false;
 }

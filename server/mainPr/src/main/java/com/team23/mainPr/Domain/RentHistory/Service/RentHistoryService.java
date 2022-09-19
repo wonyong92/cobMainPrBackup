@@ -71,14 +71,16 @@ public class RentHistoryService {
         RentHistory created = rentHistoryRepository.save(rentHistory);
 
         RentHistory relatedRentHistory = rentHistoryMapper.RentHistoryToRelatedRentHistory(created);
+        relatedRentHistory.setRentHistoryId(null);
         relatedRentHistory.setRentDataType(true);
 
         rentHistoryRepository.save(relatedRentHistory);
 
+        relatedRentHistory.setRelateRentHistory(created.getRentHistoryId());
+        created.setRelateRentHistory(relatedRentHistory.getRentHistoryId());
         rentHistoryRepository.flush();
 
         return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, rentHistoryMapper.RentHistoryToRentHistoryResponseDto(created));
-
     }
 
     public ChildCommonDto<RentHistoryResponseDto> deleteRentHistory(Integer rentHistoryId) {
@@ -86,7 +88,7 @@ public class RentHistoryService {
         RentHistory rentHistory = rentHistoryRepository.findById(rentHistoryId).orElse(null);
 
         if (rentHistory != null) {
-            Integer relatedRentHistoryId = rentHistory.getRentHistoryId();
+            Integer relatedRentHistoryId = rentHistory.getRelateRentHistory();
 
             rentHistoryRepository.delete(rentHistory);
             rentHistoryRepository.deleteById(relatedRentHistoryId);
@@ -100,7 +102,7 @@ public class RentHistoryService {
     public ChildCommonDto<RentHistoryResponseDto> updateRentHistoryData(UpdateRentHistoryEntityDto dto) {
 
         RentHistory rentHistory = rentHistoryRepository.findById(dto.getRentHistoryId()).orElse(null);
-        RentHistory relatedRentHistory = rentHistoryRepository.findById(rentHistory.getRentHistoryId()).orElse(null);
+        RentHistory relatedRentHistory = rentHistoryRepository.findById(rentHistory.getRelateRentHistory()).orElse(null);
 
         if (dto.getRentHistoryId() == null && dto.getRentStartDate() == null
                 && dto.getRentEndDate() == null && dto.getMsg() == null
