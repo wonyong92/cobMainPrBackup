@@ -9,5 +9,6 @@ import org.mapstruct.Mapper;
 public interface LoginMapper {
 
     Login CreateLoginEntityDtoToLoginEntity(CreateLoginEntityDto createLoginEntityDto);
+
     DoLoginResponseDto LoginEntityToDoLoginResponseDto(Login loginEntity);
 }

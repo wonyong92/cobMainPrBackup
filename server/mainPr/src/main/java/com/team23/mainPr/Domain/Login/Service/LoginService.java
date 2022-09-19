@@ -41,7 +41,7 @@ public class LoginService {
         String token = jwtService.buildJwt(member);
         Login existLogin = loginRepository.findByMemberId(member.getMemberId());
 
-        if (existLogin==null) {
+        if (existLogin == null) {
 
             Login login = new Login();
             login.setLastLoginDate(defaultTimeZone.getNow());

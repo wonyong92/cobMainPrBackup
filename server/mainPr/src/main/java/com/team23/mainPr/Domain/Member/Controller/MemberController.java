@@ -104,7 +104,7 @@ public class MemberController {
     @Operation
     @PutMapping("profile/{memberId}")
     public ResponseEntity<ChildCommonDto<MemberProfileDto>> updateProfile(@RequestBody UpdateMemberDto updateMemberDto,
-                                                                           @PathVariable Integer memberId) {
+                                                                          @PathVariable Integer memberId) {
 
         ChildCommonDto<MemberProfileDto> response = memberService.updateProfile(updateMemberDto, memberId);
 

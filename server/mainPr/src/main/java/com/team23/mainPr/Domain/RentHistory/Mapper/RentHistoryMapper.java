@@ -11,8 +11,11 @@ import java.util.List;
 public interface RentHistoryMapper {
 
     List<RentHistoryResponseDto> RentHistorysToRentHistoryResponseDtos(List<RentHistory> rentHistorys);
+
     RentHistory CreateRentHistoryEntityDtoToRentHistory(CreateRentHistoryEntityDto dto);
+
     RentHistoryResponseDto RentHistoryToRentHistoryResponseDto(RentHistory created);
+
     RentHistory RentHistoryToRelatedRentHistory(RentHistory created);
 
 }
