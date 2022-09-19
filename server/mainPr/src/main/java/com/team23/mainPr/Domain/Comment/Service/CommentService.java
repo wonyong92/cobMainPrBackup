@@ -11,7 +11,8 @@ import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
+import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.FAIL;
+import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +23,15 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public ChildCommonDto<CommentEntityResponseDto> createCommentEntity(CreateCommentEntityDto createCommentEntityDto) {
-
+        if(createCommentEntityDto.getCommentContents()==null || createCommentEntityDto.getCommentContents().length()==0||createCommentEntityDto.getWriterId()==null||createCommentEntityDto.getTargetPostId()==null)
+            return new ChildCommonDto<>(FAIL.getMsg(), null, null);
         Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(createCommentEntityDto);
         newComment.setWriteDate(defaultTimeZone.getNow());
         newComment.setUpdateDate(defaultTimeZone.getNow());
 
         Comment result = commentRepository.save(newComment);
 
-        if (result != null) {
+        if (result.getCommentId() != null) {
             return new ChildCommonDto<>(SUCCESS.getMsg(), null, commentMapper.CommentEntityToCommentResponsDto(result));
         } else
             return new ChildCommonDto<>(FAIL.getMsg(), null, null);

@@ -12,7 +12,9 @@ import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
 
 /**
@@ -106,8 +108,7 @@ public class RentHistoryService {
 
         if (dto.getRentHistoryId() == null && dto.getRentStartDate() == null
                 && dto.getRentEndDate() == null && dto.getMsg() == null
-                && dto.getRentStatus().equals(rentHistory.getRentStatus()) && relatedRentHistory != null)
-        {
+                && dto.getRentStatus().equals(rentHistory.getRentStatus()) && relatedRentHistory != null) {
             return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
         }
 

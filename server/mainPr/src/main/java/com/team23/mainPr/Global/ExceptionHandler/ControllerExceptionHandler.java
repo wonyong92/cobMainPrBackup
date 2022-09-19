@@ -11,7 +11,7 @@ public class ControllerExceptionHandler {
     public Object handleControllerException(Exception e) {
 
         CustomException ex;
-        
+
         if (e instanceof CustomException) {
             ex = (CustomException) e;
             return ex.getErrordata();
