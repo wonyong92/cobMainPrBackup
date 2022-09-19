@@ -45,15 +45,6 @@ public class MemberController {
      * </pre>
      */
 
-    @Operation
-    @PostMapping("/post/checkInput")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkInput(@RequestBody CreateMemberDto createMemberDto) throws RuntimeException {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.loginValidation(createMemberDto);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
-    }
-
     /*
      * refactor : 비밀번호 같은 민감 정보를 전송해도 될까? - response Dto를 만들어서 암호화 할까?
      */
