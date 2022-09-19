@@ -64,8 +64,6 @@ public class LoginService {
 
     public ChildCommonDto<ParentCommonDto> doLogout(String authorization) {
 
-        Login login = loginRepository.findByToken(authorization);
-
         if (login == null)
             return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
 
@@ -76,7 +74,7 @@ public class LoginService {
         login.setLogoutDate(defaultTimeZone.getNow());
         loginRepository.flush();
 
-        return new ChildCommonDto<>(SUC.getMsg(), HttpStatus.OK, null);
+        return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, null);
     }
 
     public ChildCommonDto<ParentCommonDto> refreshToken(String token) {

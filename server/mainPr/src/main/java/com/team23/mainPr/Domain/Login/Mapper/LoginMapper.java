@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface LoginMapper {
-    Login createMap(CreateLoginEntityDto dto);
 
-    DoLoginResponseDto doLoginMap(Login login);
+    Login CreateLoginEntityDtoToLoginEntity(CreateLoginEntityDto createLoginEntityDto);
+    DoLoginResponseDto LoginEntityToDoLoginResponseDto(Login loginEntity);
 }
