@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.List;
-
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
 
 /**
@@ -40,6 +39,7 @@ public class RentHistoryService {
         if (rentHistorys.size() != 0) {
             List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(rentHistorys);
             return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, new RentHistoryResponseDtos(responses));
+
         }
 
         return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
@@ -64,16 +64,20 @@ public class RentHistoryService {
             return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
 
         RentHistory rentHistory = rentHistoryMapper.CreateRentHistoryEntityDtoToRentHistory(dto);
+
         rentHistory.setCreatedTime(defaultTimeZone.getNow());
         rentHistory.setUpdateTime(defaultTimeZone.getNow());
 
         RentHistory created = rentHistoryRepository.save(rentHistory);
 
         RentHistory relatedRentHistory = rentHistoryMapper.RentHistoryToRelatedRentHistory(created);
+        relatedRentHistory.setRentHistoryId(null);
         relatedRentHistory.setRentDataType(true);
 
         rentHistoryRepository.save(relatedRentHistory);
 
+        relatedRentHistory.setRelateRentHistory(created.getRentHistoryId());
+        created.setRelateRentHistory(relatedRentHistory.getRentHistoryId());
         rentHistoryRepository.flush();
 
         return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, rentHistoryMapper.RentHistoryToRentHistoryResponseDto(created));
@@ -84,12 +88,12 @@ public class RentHistoryService {
         RentHistory rentHistory = rentHistoryRepository.findById(rentHistoryId).orElse(null);
 
         if (rentHistory != null) {
-            Integer relatedRentHistoryId = rentHistory.getRentHistoryId();
+            Integer relatedRentHistoryId = rentHistory.getRelateRentHistory();
 
             rentHistoryRepository.delete(rentHistory);
             rentHistoryRepository.deleteById(relatedRentHistoryId);
 
-            new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, null);
+            return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, null);
         }
 
         return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
@@ -98,7 +102,7 @@ public class RentHistoryService {
     public ChildCommonDto<RentHistoryResponseDto> updateRentHistoryData(UpdateRentHistoryEntityDto dto) {
 
         RentHistory rentHistory = rentHistoryRepository.findById(dto.getRentHistoryId()).orElse(null);
-        RentHistory relatedRentHistory = rentHistoryRepository.findById(rentHistory.getRentHistoryId()).orElse(null);
+        RentHistory relatedRentHistory = rentHistoryRepository.findById(rentHistory.getRelateRentHistory()).orElse(null);
 
         if (dto.getRentHistoryId() == null && dto.getRentStartDate() == null
                 && dto.getRentEndDate() == null && dto.getMsg() == null

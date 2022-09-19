@@ -48,7 +48,7 @@ public class RentPostService {
 
         RentPost post = rentPostRepository.findById(postId).orElse(null);
 
-        if (dto.getRentPostContents() != null && dto.getRentPostName() != null && dto.getRentStatus().equals(post.getRentStatus()))
+        if (dto.getRentPostContents() == null && dto.getRentPostName() == null && dto.getRentStatus().equals(post.getRentStatus()))
             return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, rentPostMapper.RentPostToRentPostResponse(post));
 
         if (dto.getRentPostContents() != null)
