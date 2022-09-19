@@ -17,7 +17,7 @@ public class LogoutController {
 
     private final LoginService loginService;
 
-    @Operation
+
     @PostMapping("/logout")
     public ResponseEntity<ChildCommonDto<ParentCommonDto>> doLogout(@RequestParam String Authorization) {
 

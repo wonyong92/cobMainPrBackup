@@ -19,8 +19,8 @@ public class RentHistoryController {
 
     private final RentHistoryService rentHistoryService;
 
-    @Operation
-    @GetMapping("/getReceive")
+
+    @GetMapping("/receive")
     public ResponseEntity<ChildCommonDto<RentHistoryResponseDtos>> getReceiveRentHistoryData(@RequestParam Integer memberId) {
 
         ChildCommonDto<RentHistoryResponseDtos> response = rentHistoryService.getReceiveRentHistory(memberId);
@@ -28,8 +28,8 @@ public class RentHistoryController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
-    @GetMapping("/getSend")
+
+    @GetMapping("/send")
     public ResponseEntity<ChildCommonDto<RentHistoryResponseDtos>> getSendRentHistoryData(@RequestParam Integer memberId) {
 
         ChildCommonDto<RentHistoryResponseDtos> response = rentHistoryService.getSendRentHistory(memberId);
@@ -37,8 +37,8 @@ public class RentHistoryController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
-    @PostMapping
+
+    @PostMapping("/post")
     public ResponseEntity<ChildCommonDto<RentHistoryResponseDto>> addRentHistoryData(@RequestBody CreateRentHistoryEntityDto createRentHistoryEntityDto) {
 
         ChildCommonDto<RentHistoryResponseDto> response = rentHistoryService.createRentHistory(createRentHistoryEntityDto);
@@ -46,7 +46,7 @@ public class RentHistoryController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PutMapping
     public ResponseEntity<ChildCommonDto<RentHistoryResponseDto>> updateRentHistoryData(@RequestBody UpdateRentHistoryEntityDto updateRentHistoryDto) {
 
@@ -55,7 +55,7 @@ public class RentHistoryController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PostMapping("/delete/{rentHistoryId}")
     public ResponseEntity<ChildCommonDto<RentHistoryResponseDto>> delete(@PathVariable Integer rentHistoryId) {
 

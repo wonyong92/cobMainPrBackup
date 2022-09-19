@@ -6,6 +6,4 @@ import lombok.Data;
 public class UpdateMemberDto {
 
     private String nickname;
-    private String profileImageId;
-
 }

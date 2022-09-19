@@ -1,6 +1,7 @@
 package com.team23.mainPr.Domain.Member.Controller;
 
 
+import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
@@ -8,12 +9,20 @@ import com.team23.mainPr.Domain.Member.Dto.Request.UpdateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Service.MemberService;
+import com.team23.mainPr.Domain.Picture.Service.PictureService;
 import com.team23.mainPr.Global.Dto.ChildCommonDto;
+import com.team23.mainPr.Global.Dto.ParentCommonDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
 
 /**
  * <pre>
@@ -34,6 +43,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PictureService pictureService;
 
     /**
      * <pre>
@@ -44,15 +54,6 @@ public class MemberController {
      * refactor : 500 에러 핸들링을 위해서 throws ClassCastException 추가
      * </pre>
      */
-
-    @Operation
-    @PostMapping("/post/checkInput")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkInput(@RequestBody CreateMemberDto createMemberDto) throws RuntimeException {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.loginValidation(createMemberDto);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
-    }
 
     /*
      * refactor : 비밀번호 같은 민감 정보를 전송해도 될까? - response Dto를 만들어서 암호화 할까?
@@ -74,7 +75,7 @@ public class MemberController {
      * Todo : 서비스 레이어 응답을 어떻게 바꾸어야 계층간 느스한 결합, 재사용성이 좋게 구현할수 있을까 고민하기!
      */
 
-    @Operation
+
     @GetMapping("/{memberId}")
     public ResponseEntity<ChildCommonDto<MemberResponseDto>> getMember(@PathVariable Integer memberId) {
 
@@ -83,7 +84,7 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @GetMapping("profile/{memberId}")
     public ResponseEntity<ChildCommonDto<MemberProfileDto>> getProfile(@PathVariable Integer memberId) {
 
@@ -92,7 +93,7 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @DeleteMapping("/delete")
     public ResponseEntity<ChildCommonDto<MemberResponseDto>> deleteMember(@RequestParam Integer memberId) {
 
@@ -101,7 +102,7 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PutMapping("profile/{memberId}")
     public ResponseEntity<ChildCommonDto<MemberProfileDto>> updateProfile(@RequestBody UpdateMemberDto updateMemberDto,
                                                                           @PathVariable Integer memberId) {
@@ -111,7 +112,7 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PostMapping("/post/checkExistEmail")
     public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkExistEmail(@RequestParam String email) {
 
@@ -120,7 +121,7 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PostMapping("/post/checkExistId")
     public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkExistId(@RequestParam String id) {
 
@@ -129,7 +130,7 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PostMapping("/post/findId")
     public ResponseEntity<ChildCommonDto<MemberResponseDto>> findId(@RequestBody FindIdDto findIdDto) {
 
@@ -138,12 +139,34 @@ public class MemberController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @PostMapping("/post/findPassword")
     public ResponseEntity<ChildCommonDto<MemberResponseDto>> findId(@RequestBody FindPasswordDto findPasswordDto) {
 
         ChildCommonDto<MemberResponseDto> response = memberService.findPassword(findPasswordDto);
 
         return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
+    @PostMapping("/profileImage/post")
+// 업로드하는 파일들을 MultipartFile 형태의 파라미터로 전달된다.
+    //여러개 업로드
+    public ResponseEntity<ChildCommonDto<ParentCommonDto>> upload(@RequestParam MultipartFile file,
+                                                                  @RequestParam Integer memberId) throws IOException {
+
+        ChildCommonDto<ParentCommonDto> response = memberService.setProfilePicture(memberId,file);
+
+        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/profileImage/get")
+    public ResponseEntity getDefaultProfileImage(@RequestParam Integer memberId
+    ) throws IOException {
+
+        return memberService.getProfilePicture(memberId);
     }
 }

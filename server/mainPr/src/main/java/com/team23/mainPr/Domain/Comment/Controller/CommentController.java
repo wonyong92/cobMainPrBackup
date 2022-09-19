@@ -3,16 +3,16 @@ package com.team23.mainPr.Domain.Comment.Controller;
 import com.team23.mainPr.Domain.Comment.Dto.Request.CreateCommentEntityDto;
 import com.team23.mainPr.Domain.Comment.Dto.Request.UpdateCommentEntityDto;
 import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDto;
+import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDtos;
 import com.team23.mainPr.Domain.Comment.Service.CommentService;
-import com.team23.mainPr.Global.Dto.ChildCommonDto;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 @Controller
 @RequestMapping("/comment")
@@ -21,56 +21,49 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @Operation
+
     @PostMapping("/post")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> postComment(@RequestBody CreateCommentEntityDto createCommentEntityDto) {
+    public  ResponseEntity<CommentEntityResponseDto>  postComment(@RequestBody  @Valid  CreateCommentEntityDto dto) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.createCommentEntity(createCommentEntityDto);
+         CommentEntityResponseDto response = commentService.createCommentEntity(dto);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return  new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @GetMapping("/{commentId}")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> getComment(@PathVariable Integer commentId) {
+    public  ResponseEntity<CommentEntityResponseDto>  getComment(@PathVariable  @Min(value = 1, message = "commentId must be above 1")  Integer commentId) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.getComment(commentId);
+         CommentEntityResponseDto response = commentService.getComment(commentId);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return  new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @PostMapping("/update")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> updateComment(@RequestBody UpdateCommentEntityDto updateCommentEntityDto) {
+    public ResponseEntity<CommentEntityResponseDto> updateComment(@RequestBody  @Valid  UpdateCommentEntityDto dto) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.updateCommentEntity(updateCommentEntityDto);
+         CommentEntityResponseDto response = commentService.updateCommentEntity(dto);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @PostMapping("/delete")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> deleteCommentEntity(@RequestParam Integer commentId) {
+    public  ResponseEntity<String>  deleteCommentEntity(@RequestParam  @Min(value = 1, message = "commentId must be above 1")  Integer commentId) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.deleteCommentEntity(commentId);
+         String response = commentService.deleteCommentEntity(commentId);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getComments/{postId}")
+    public  ResponseEntity<CommentEntityResponseDtos>  getComments(@PathVariable  @Valid @Min(value = 1, message = "postId must be above 1")  Integer postId) {
+
+         CommentEntityResponseDtos response = commentService.getComments(postId);
+
+         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

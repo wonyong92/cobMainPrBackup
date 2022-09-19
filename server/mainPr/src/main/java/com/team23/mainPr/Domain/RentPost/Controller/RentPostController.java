@@ -25,7 +25,7 @@ public class RentPostController {
      * </pre>
      */
 
-    @Operation
+
     @PostMapping("/post")
     public ResponseEntity<ChildCommonDto<RentPostResponseDto>> createRentPost(@RequestBody @Parameter(name = "CreateRentPostDto", description = "입력한 렌트 게시글 데이터.", required = true) CreateRentPostEntityDto dto) {
 
@@ -40,7 +40,7 @@ public class RentPostController {
      * </pre>
      */
 
-    @Operation
+
     @PutMapping("/update")
     public ResponseEntity<ChildCommonDto<RentPostResponseDto>> updateRentPost(@RequestBody @Parameter(name = "CreateRentPostDto", description = "입력한 게시글 데이터.", required = true) UpdateRentPostDto updateRentPostDto,
                                                                               @RequestParam @Parameter(name = "postId", description = "게시글 식별 번호.", required = true) Integer postId) {
@@ -49,7 +49,7 @@ public class RentPostController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @Operation
+
     @DeleteMapping("/delete")
     public ResponseEntity<ChildCommonDto<RentPostResponseDto>> updateRentPost(@RequestParam @Parameter(name = "postId", description = "게시글 식별 번호.", required = true) Integer postId) {
         ChildCommonDto<RentPostResponseDto> response = RentPostService.deleteRentPost(postId);
@@ -63,7 +63,7 @@ public class RentPostController {
      * </pre>
      */
 
-    @Operation
+
     @GetMapping("/{postId}")
     public ResponseEntity<ChildCommonDto<RentPostResponseDto>> getRentPost(@PathVariable @Parameter(name = "postId", description = "게시글 식별 번호.", required = true) Integer postId) {
         ChildCommonDto<RentPostResponseDto> response = RentPostService.getRentPost(postId);

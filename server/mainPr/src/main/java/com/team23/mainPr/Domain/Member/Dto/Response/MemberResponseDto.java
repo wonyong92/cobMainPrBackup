@@ -13,7 +13,7 @@ public class MemberResponseDto extends ParentCommonDto {
     private String nickname;
     private String email;
     private ZonedDateTime createdAt;
-    private String profileImageId;
+    private Integer profileImageId;
     private String name;
 
 }
