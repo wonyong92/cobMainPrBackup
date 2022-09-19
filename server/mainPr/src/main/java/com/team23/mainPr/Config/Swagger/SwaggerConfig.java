@@ -32,7 +32,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(regex("/(member|rentPost|login|rentHistory|logout).*"))//스웨거에 여러 path 추가하기
+                .paths(regex("/(member|rentPost|login|rentHistory|logout|comment).*"))//스웨거에 여러 path 추가하기
                 .apis(RequestHandlerSelectors.withClassAnnotation(Controller.class))
                 .build();
     }
