@@ -20,7 +20,7 @@ public class CreateMemberDto extends ParentCommonDto {
     private String password;
     private String nickname;
     private String email;
-    private String profileImageId = "default.png";
+    private Integer profileImageId = 1;
     private String name;
 
 }

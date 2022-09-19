@@ -38,4 +38,9 @@ public class ChildCommonDto<T extends ParentCommonDto> {
     public HttpStatus getHttpStatus() {
         return this.httpStatus;
     }
+
+    public ChildCommonDto(HttpStatus statusCode, T dto){
+        this.httpStatus = statusCode;
+        this.t = dto;
+    }
 }

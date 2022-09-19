@@ -9,14 +9,30 @@ import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import com.team23.mainPr.Domain.Member.Mapper.MemberMapper;
 import com.team23.mainPr.Domain.Member.Repository.MemberRepository;
+import com.team23.mainPr.Domain.Picture.Dto.FileDto;
+import com.team23.mainPr.Domain.Picture.Entity.Picture;
+import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.CustomException.ErrorData;
 import com.team23.mainPr.Global.DefaultTimeZone;
 import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
@@ -28,6 +44,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
     private final DefaultTimeZone defaultTimeZone;
+    private final PictureRepository pictureRepository;
 
     /**
      * <pre>
@@ -135,14 +152,12 @@ public class MemberService {
 
         Member member = memberRepository.findById(memberId).orElse(null);
 
-        if (dto.getNickname() == null && dto.getProfileImageId().equals(member.getProfileImageId()) && dto.getNickname().equals(member.getNickname()))
+        if (dto.getNickname() == null && dto.getNickname().equals(member.getNickname()))
             return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
 
         if (member != null) {
             if (dto.getNickname() != null)
                 member.setNickname(dto.getNickname());
-            if (dto.getProfileImageId() != null)
-                member.setProfileImageId(dto.getNickname());
             memberRepository.flush();
             return new ChildCommonDto<>(TRUE.getMsg(), HttpStatus.OK, memberMapper.MemberToMemberProfileDto(member));
         }
@@ -197,5 +212,52 @@ public class MemberService {
             return new ChildCommonDto<>(member.getPassword(), HttpStatus.OK, null);
 
         return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+    }
+
+    public ChildCommonDto setProfilePicture(Integer memberId, MultipartFile file) throws IOException {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        String path = System.getProperty("user.home")+"/Desktop/mainProject";
+        File Folder = new File(path);
+
+        if (!Folder.exists()) {
+            System.out.println("no dir\n");
+            Folder.mkdir();
+        }
+
+        if (!file.isEmpty()) {
+            FileDto dto = new FileDto(UUID.randomUUID().toString(), file.getOriginalFilename(), file.getContentType());
+            File newFileName = new File(path+"/"+dto.getUuid() + "_" + dto.getFileName()+".png");
+            file.transferTo(newFileName);
+
+            Picture picture = new Picture();
+            picture.setFileName(dto.getUuid() + "_" + dto.getFileName()+".png");
+
+            Picture created = pictureRepository.save(picture);
+            member.setProfileImageId(created.getImageId());
+            memberRepository.flush();
+
+            return new ChildCommonDto<>(TRUE.getMsg(), null, null);
+
+        }
+        return new ChildCommonDto<>(FALSE.getMsg(), null, null);
+    }
+
+    public ResponseEntity<Resource> getProfilePicture(Integer memberId) throws IOException {
+        String filename = pictureRepository.getReferenceById(memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
+
+        Path path = Paths.get(System.getProperty("user.home")+"/Desktop/mainProject" + "/" + filename);
+
+        String contentType = Files.probeContentType(path);
+        // header를 통해서 다운로드 되는 파일의 정보를 설정한다.
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.builder("attachment")
+                .filename(filename, StandardCharsets.UTF_8)
+                .build());
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+
+        Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }

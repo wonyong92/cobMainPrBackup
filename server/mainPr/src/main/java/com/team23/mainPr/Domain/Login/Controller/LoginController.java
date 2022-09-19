@@ -21,7 +21,7 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @Operation
+
     @PostMapping
     public ResponseEntity<ChildCommonDto<DoLoginResponseDto>> doLogin(@RequestBody DoLoginDto doLoginDto) {
 
@@ -31,7 +31,7 @@ public class LoginController {
 
     }
 
-    @Operation
+
     @PostMapping("/refeshToken")
     public ResponseEntity<ChildCommonDto<ParentCommonDto>> refeshToken(@RequestParam String token) {
 
