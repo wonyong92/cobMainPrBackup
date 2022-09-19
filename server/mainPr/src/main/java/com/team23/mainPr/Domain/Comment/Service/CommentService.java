@@ -7,9 +7,12 @@ import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDtos;
 import com.team23.mainPr.Domain.Comment.Entity.Comment;
 import com.team23.mainPr.Domain.Comment.Mapper.CommentMapper;
 import com.team23.mainPr.Domain.Comment.Repository.CommentRepository;
+import com.team23.mainPr.Global.CustomException.CustomException;
+import com.team23.mainPr.Global.CustomException.ErrorData;
 import com.team23.mainPr.Global.DefaultTimeZone;
 import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,58 +29,51 @@ public class CommentService {
     private final DefaultTimeZone defaultTimeZone;
     private final CommentRepository commentRepository;
 
-    public ChildCommonDto<CommentEntityResponseDto> createCommentEntity(CreateCommentEntityDto createCommentEntityDto) {
-        if(createCommentEntityDto.getCommentContents()==null || createCommentEntityDto.getCommentContents().length()==0||createCommentEntityDto.getWriterId()==null||createCommentEntityDto.getTargetPostId()==null)
-            return new ChildCommonDto<>(FAIL.getMsg(), null, null);
+    public CommentEntityResponseDto createCommentEntity(CreateCommentEntityDto createCommentEntityDto) {
+
         Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(createCommentEntityDto);
         newComment.setWriteDate(defaultTimeZone.getNow());
         newComment.setUpdateDate(defaultTimeZone.getNow());
 
-        Comment result = commentRepository.save(newComment);
+        Comment result = commentRepository.getReferenceById(commentRepository.save(newComment).getCommentId());
 
-        if (result.getCommentId() != null) {
-            return new ChildCommonDto<>(SUCCESS.getMsg(), null, commentMapper.CommentEntityToCommentResponsDto(result));
-        } else
-            return new ChildCommonDto<>(FAIL.getMsg(), null, null);
+        return commentMapper.CommentEntityToCommentResponsDto(result);
     }
 
-    public ChildCommonDto<CommentEntityResponseDto> getComment(Integer commentId) {
+    public CommentEntityResponseDto getComment(Integer commentId) {
+
         Comment findComment = commentRepository.getReferenceById(commentId);
 
-        return new ChildCommonDto<>(SUCCESS.getMsg(), null, commentMapper.CommentEntityToCommentResponsDto(findComment));
+        return commentMapper.CommentEntityToCommentResponsDto(findComment);
     }
 
-    public ChildCommonDto<CommentEntityResponseDto> updateCommentEntity(UpdateCommentEntityDto updateCommentEntityDto) {
-
-        if (updateCommentEntityDto.getCommentContents().equals("") || updateCommentEntityDto.getCommentId() == null)
-            return new ChildCommonDto<>(FAIL.getMsg(), null, null);
+    public CommentEntityResponseDto updateCommentEntity(UpdateCommentEntityDto updateCommentEntityDto) {
 
         Comment findComment = commentRepository.getReferenceById(updateCommentEntityDto.getCommentId());
         findComment.setCommentContents(updateCommentEntityDto.getCommentContents());
         commentRepository.flush();
 
-        return new ChildCommonDto<>(SUCCESS.getMsg(), null, commentMapper.CommentEntityToCommentResponsDto(findComment));
+        return commentMapper.CommentEntityToCommentResponsDto(findComment);
     }
 
-    public ChildCommonDto<CommentEntityResponseDto> deleteCommentEntity(Integer commentId) {
+    public String deleteCommentEntity(Integer commentId) {
 
         Comment findComment = commentRepository.getReferenceById(commentId);
 
         commentRepository.delete(findComment);
 
-        return new ChildCommonDto<>(SUCCESS.getMsg(), null, null);
+        return SUCCESS.getMsg();
     }
 
-    public ChildCommonDto<CommentEntityResponseDtos> getComments(Integer targetPostId) {
+    public CommentEntityResponseDtos getComments(Integer targetPostId) {
         List<Comment> comments = commentRepository.findAllByTargetPostId(targetPostId);
 
-        if(comments.size() == 0 )
-            return new ChildCommonDto<>(FAIL.getMsg(), null, null);
         List<CommentEntityResponseDto> commentResponses = new ArrayList<>();
         comments.stream().forEach(comment -> commentResponses.add(commentMapper.CommentEntityToCommentResponsDto(comment)));
+
         CommentEntityResponseDtos result = new CommentEntityResponseDtos();
         result.setComments(commentResponses);
 
-        return new ChildCommonDto<>(SUCCESS.getMsg(),null,result);
+        return result;
     }
 }

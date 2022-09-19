@@ -2,6 +2,7 @@ package com.team23.mainPr.Global.CustomException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 /**
  * <pre>
@@ -20,12 +21,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ErrorData {
 
-    INVALID_REGISTER_MEMBER_ID("1001", "잘못된 로그인 ID 형식"),
-    INVALID_REGISTER_MEMBER_PASSWORD("1002", "잘못된 로그인 비밀번호 형식"),
-    INVALID_REGISTER_MEMBER_NICKNAME("1001", "잘못된 로그인 ID 형식"),
-    CLASS_CASTING_EXCEPTION("1501", "잘못된 BODY 입력"),
+    INVALID_REGISTER_MEMBER_ID(HttpStatus.BAD_REQUEST, "잘못된 로그인 ID 형식"),
+    INVALID_REGISTER_MEMBER_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 로그인 비밀번호 형식"),
+    INVALID_REGISTER_MEMBER_NICKNAME(HttpStatus.BAD_REQUEST, "잘못된 로그인 ID 형식"),
+    CLASS_CASTING_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 BODY 입력"),
+    MISSING_REQUIRED_DATA(HttpStatus.BAD_REQUEST,"요청에 필요한 데이터가 누락")
     ;
 
-    private final String code;
+    private final HttpStatus code;
     private final String reason;
 }

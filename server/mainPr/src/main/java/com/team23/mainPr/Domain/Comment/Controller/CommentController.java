@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
 
 @Controller
@@ -22,69 +25,49 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @Operation
+
     @PostMapping("/post")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> postComment(@RequestBody CreateCommentEntityDto createCommentEntityDto) {
+    public ResponseEntity<CommentEntityResponseDto> postComment(@RequestBody @Valid CreateCommentEntityDto dto) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.createCommentEntity(createCommentEntityDto);
+        CommentEntityResponseDto response = commentService.createCommentEntity(dto);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @GetMapping("/{commentId}")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> getComment(@PathVariable Integer commentId) {
+    public ResponseEntity<CommentEntityResponseDto> getComment(@PathVariable @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.getComment(commentId);
+        CommentEntityResponseDto response = commentService.getComment(commentId);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @PostMapping("/update")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> updateComment(@RequestBody UpdateCommentEntityDto updateCommentEntityDto) {
+    public ResponseEntity<CommentEntityResponseDto> updateComment(@RequestBody @Valid UpdateCommentEntityDto dto) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.updateCommentEntity(updateCommentEntityDto);
+        CommentEntityResponseDto response = commentService.updateCommentEntity(dto);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @PostMapping("/delete")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> deleteCommentEntity(@RequestParam Integer commentId) {
+    public ResponseEntity<String> deleteCommentEntity(@RequestParam @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
 
-        ChildCommonDto<CommentEntityResponseDto> response = commentService.deleteCommentEntity(commentId);
+        String response = commentService.deleteCommentEntity(commentId);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation
+
     @GetMapping("/getComments/{postId}")
-    public ResponseEntity<ChildCommonDto<CommentEntityResponseDtos>> getComments(@PathVariable Integer postId) {
+    public ResponseEntity<CommentEntityResponseDtos> getComments(@PathVariable @Valid @Min(value = 1, message = "postId must be above 1") Integer postId) {
 
-        ChildCommonDto<CommentEntityResponseDtos> response = commentService.getComments(postId);
+        CommentEntityResponseDtos response = commentService.getComments(postId);
 
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
