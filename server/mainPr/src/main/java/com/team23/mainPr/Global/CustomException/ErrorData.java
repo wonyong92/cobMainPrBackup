@@ -21,11 +21,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorData {
 
-    INVALID_REGISTER_MEMBER_ID(HttpStatus.BAD_REQUEST, "잘못된 로그인 ID 형식"),
-    INVALID_REGISTER_MEMBER_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 로그인 비밀번호 형식"),
-    INVALID_REGISTER_MEMBER_NICKNAME(HttpStatus.BAD_REQUEST, "잘못된 로그인 ID 형식"),
-    CLASS_CASTING_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 BODY 입력"),
-    MISSING_REQUIRED_DATA(HttpStatus.BAD_REQUEST,"요청에 필요한 데이터가 누락")
+     INVALID_REGISTER_MEMBER_ID(HttpStatus.BAD_REQUEST, "잘못된 로그인 ID 형식"), 
+     //잘못된 요청이 발생한 이유를 메세지로 구별을 하기 위한 에러 데이터 생성
+     INVALID_REGISTER_MEMBER_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 로그인 비밀번호 형식"),
+     INVALID_REGISTER_MEMBER_NICKNAME(HttpStatus.BAD_REQUEST, "잘못된 로그인 ID 형식"),
+     CLASS_CASTING_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 BODY 입력"),
+     MISSING_REQUIRED_DATA(HttpStatus.BAD_REQUEST,"요청에 필요한 데이터가 누락")
     ;
 
     private final HttpStatus code;

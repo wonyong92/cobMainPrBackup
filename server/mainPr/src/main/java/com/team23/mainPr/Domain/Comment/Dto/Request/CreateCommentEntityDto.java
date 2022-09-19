@@ -6,11 +6,11 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class CreateCommentEntityDto {
-    @NotNull(message = "commentContents must not be null")
-    @NotEmpty(message = "commentContents must not be empty")
+     @NotNull(message = "commentContents must not be null")
+     @NotEmpty(message = "commentContents must not be empty")
     String commentContents;
-    @NotNull(message = "writerId must not be null")
+     @NotNull(message = "writerId must not be null")
     Integer writerId;
-    @NotNull(message = "writerId must not be null")
+     @NotNull(message = "writerId must not be null")
     Integer targetPostId;
 }
