@@ -3,6 +3,7 @@ package com.team23.mainPr.Domain.Comment.Controller;
 import com.team23.mainPr.Domain.Comment.Dto.Request.CreateCommentEntityDto;
 import com.team23.mainPr.Domain.Comment.Dto.Request.UpdateCommentEntityDto;
 import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDto;
+import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDtos;
 import com.team23.mainPr.Domain.Comment.Service.CommentService;
 import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,6 +66,19 @@ public class CommentController {
     public ResponseEntity<ChildCommonDto<CommentEntityResponseDto>> deleteCommentEntity(@RequestParam Integer commentId) {
 
         ChildCommonDto<CommentEntityResponseDto> response = commentService.deleteCommentEntity(commentId);
+
+        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Operation
+    @GetMapping("/getComments/{postId}")
+    public ResponseEntity<ChildCommonDto<CommentEntityResponseDtos>> getComments(@PathVariable Integer postId) {
+
+        ChildCommonDto<CommentEntityResponseDtos> response = commentService.getComments(postId);
 
         if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
             return new ResponseEntity<>(response, HttpStatus.OK);
