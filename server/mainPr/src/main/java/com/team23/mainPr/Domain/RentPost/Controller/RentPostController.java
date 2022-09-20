@@ -57,19 +57,5 @@ public class RentPostController {
         return RentPostService.getRentPost(postId);
     }
 
-    @PostMapping("/images")
-    public String postImages(@RequestParam(value="image") List<MultipartFile> files, @RequestParam Integer postId) throws IOException {
-        return RentPostService.postImages(files, postId);
-    }
-
-    @GetMapping("/images/get")
-    public List<Integer> getImages(@RequestParam Integer postId) {
-        return RentPostService.getPostImages(postId);
-    }
-
-    @GetMapping(value = "/image/get", produces = "image/png")
-    public Resource getImage(@RequestParam Integer imageId) throws IOException {
-        return RentPostService.getImage(imageId);
-    }
 
 }
