@@ -26,7 +26,6 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 public class RentPost {
 
-    Boolean rented = false;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rentPostId;
@@ -39,5 +38,6 @@ public class RentPost {
     private Integer writerId;
     private Integer viewCount = 0;
     private Boolean rentStatus = false;
+    private String category;
 
 }

@@ -1,9 +1,13 @@
 package com.team23.mainPr.Domain.RentPost.Mapper;
 
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface RentPostMapper {
@@ -12,4 +16,8 @@ public interface RentPostMapper {
 
     RentPost CreateRentPostEntityDtoToRentPost(CreateRentPostEntityDto dto);
 
+    default PagedRentPostResponseDtos PagedRentPostToRentPostPagedResponseDto(List<RentPostResponseDto> rentPostResponseDtos, Pageable pageinfo){
+        PagedRentPostResponseDtos dto = new PagedRentPostResponseDtos(rentPostResponseDtos, pageinfo);
+        return dto;
+    }
 }

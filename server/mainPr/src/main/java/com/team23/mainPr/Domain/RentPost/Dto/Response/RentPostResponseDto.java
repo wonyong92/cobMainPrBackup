@@ -7,7 +7,6 @@ import java.time.ZonedDateTime;
 @Data
 public class RentPostResponseDto {
 
-    Boolean rented;
     private Integer rentPostId;
     private String rentPostContents;
     private String rentPostName;
@@ -15,5 +14,6 @@ public class RentPostResponseDto {
     private ZonedDateTime updateDate;
     private Integer writerId;
     private Integer viewCount;
+    private String category;
 
 }

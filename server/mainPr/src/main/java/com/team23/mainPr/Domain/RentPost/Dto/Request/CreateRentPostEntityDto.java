@@ -15,5 +15,6 @@ public class CreateRentPostEntityDto {
     private String rentPostName;
     @NotNull(message = "writerId must not be null")
     private Integer writerId;
+    private String category="empty";
 
 }

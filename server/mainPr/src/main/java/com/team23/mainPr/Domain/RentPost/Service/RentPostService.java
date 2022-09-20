@@ -1,10 +1,10 @@
 package com.team23.mainPr.Domain.RentPost.Service;
 
-import com.team23.mainPr.Domain.Member.Entity.Member;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
 import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,13 +89,12 @@ public class RentPostService {
     public String postImages(List<MultipartFile> files, Integer postId) throws IOException {
 
         if (!files.isEmpty()) {
-            for(MultipartFile file : files)
-            {
+            for (MultipartFile file : files) {
                 String uuid = UUID.randomUUID().toString();
                 File newFileName = new File(System.getProperty("user.home") + uploadPath + "/" + uuid + "_" + file.getOriginalFilename());
                 file.transferTo(newFileName);
 
-                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(),postId)).getImageId();
+                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getImageId();
             }
         }
 
@@ -104,10 +105,13 @@ public class RentPostService {
 
         List<Integer> result = new ArrayList<>();
 
-        pictureRepository.findByPostId(postId).stream().forEach(picture -> { result.add(picture.getImageId());});
+        pictureRepository.findByPostId(postId).stream().forEach(picture -> {
+            result.add(picture.getImageId());
+        });
 
         return result;
     }
+
     public Resource getImage(Integer imageId) throws IOException {
 
         Path path = Paths.get(System.getProperty("user.home") + uploadPath + "/" + pictureRepository.getReferenceById(imageId).getFileName());
@@ -116,4 +120,17 @@ public class RentPostService {
     }
 
 
+    public PagedRentPostResponseDtos getRentPosts(Pageable pageable, Boolean rentStatus, String category) {
+
+        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategory(pageable, rentStatus, category);
+
+        List<RentPostResponseDto> mappedResult = new ArrayList<>();
+        result.stream().forEach(rentPost -> {
+            mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost));
+        });
+
+        PagedRentPostResponseDtos response = rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
+
+        return response;
+    }
 }
