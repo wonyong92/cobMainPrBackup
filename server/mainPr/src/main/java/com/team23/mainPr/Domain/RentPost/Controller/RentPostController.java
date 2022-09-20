@@ -84,7 +84,7 @@ public class RentPostController {
     @GetMapping("/posts")
     public PagedRentPostResponseDtos getRentPosts(@PageableDefault(page = 0, size = 20, sort = "writeDate", direction = Sort.Direction.DESC) Pageable pageable,
                                                   @RequestParam(defaultValue = "false") Boolean rentStatus,
-                                                  @RequestParam(defaultValue = "empty")  String category){
+                                                  @RequestParam(defaultValue = "category")  String category){
         return rentPostService.getRentPosts(pageable, rentStatus, category);
     }
 }

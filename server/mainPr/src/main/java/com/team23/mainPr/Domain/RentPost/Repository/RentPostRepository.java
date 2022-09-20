@@ -13,4 +13,6 @@ public interface RentPostRepository extends JpaRepository<RentPost, Integer> {
     Page<RentPost> findAllByCategory(Pageable pageable, String category);
 
     Page<RentPost> findAllByRentStatusAndCategory(Pageable pageable, Boolean rentstatus, String category);
+
+    Page<RentPost> findAllByRentStatusAndCategoryContaining(Pageable pageable, Boolean rentStatus, String category);
 }

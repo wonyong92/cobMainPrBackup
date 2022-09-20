@@ -122,7 +122,7 @@ public class RentPostService {
 
     public PagedRentPostResponseDtos getRentPosts(Pageable pageable, Boolean rentStatus, String category) {
 
-        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategory(pageable, rentStatus, category);
+        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContaining(pageable, rentStatus, category);
 
         List<RentPostResponseDto> mappedResult = new ArrayList<>();
         result.stream().forEach(rentPost -> {
