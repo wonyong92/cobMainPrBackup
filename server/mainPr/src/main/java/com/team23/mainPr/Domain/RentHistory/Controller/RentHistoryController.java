@@ -36,11 +36,8 @@ public class RentHistoryController {
     }
 
     @PutMapping
-    public ResponseEntity<ChildCommonDto<RentHistoryResponseDto>> updateRentHistoryData(@RequestBody @Valid UpdateRentHistoryEntityDto updateRentHistoryDto) {
-
-        ChildCommonDto<RentHistoryResponseDto> response = rentHistoryService.updateRentHistoryData(updateRentHistoryDto);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public RentHistoryResponseDto updateRentHistoryData(@RequestBody @Valid UpdateRentHistoryEntityDto updateRentHistoryDto) {
+        return rentHistoryService.updateRentHistoryData(updateRentHistoryDto);
     }
 
     @PostMapping("/delete/{rentHistoryId}")

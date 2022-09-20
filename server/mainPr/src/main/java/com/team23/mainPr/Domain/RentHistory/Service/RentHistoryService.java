@@ -78,7 +78,7 @@ public class RentHistoryService {
         return SUCCESS.getMsg();
     }
 
-    public ChildCommonDto<RentHistoryResponseDto> updateRentHistoryData(UpdateRentHistoryEntityDto dto) {
+    public RentHistoryResponseDto updateRentHistoryData(UpdateRentHistoryEntityDto dto) {
 
         RentHistory rentHistory = rentHistoryRepository.getReferenceById(dto.getRentHistoryId());
         RentHistory relatedRentHistory = rentHistoryRepository.getReferenceById(rentHistory.getRelateRentHistory());
@@ -94,6 +94,6 @@ public class RentHistoryService {
 
         rentHistoryRepository.flush();
 
-        return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, rentHistoryMapper.RentHistoryToRentHistoryResponseDto(rentHistory));
+        return rentHistoryMapper.RentHistoryToRentHistoryResponseDto(rentHistory);
     }
 }
