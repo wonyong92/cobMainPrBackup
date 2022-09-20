@@ -2,7 +2,6 @@ package com.team23.mainPr.Global.CustomException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 /**
  * <pre>
@@ -30,7 +29,6 @@ public enum ErrorData {
     NOT_MATCHED_ID(2402,"로그인 : 잘못된 아이디"),
     DB_ERROR_OCCURED(5403,"공통 에러 : 데이버베이스 자료에 접근 동안 에러 발생"),
     BAD_REQUEST(5405,"공통 에러 : 잘못된 요청 값 입니다.")
-
     ;
 
     private final int code;

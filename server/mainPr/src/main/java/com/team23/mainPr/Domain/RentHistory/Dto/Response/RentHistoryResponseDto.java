@@ -1,11 +1,11 @@
 package com.team23.mainPr.Domain.RentHistory.Dto.Response;
 
-import com.team23.mainPr.Global.Dto.ParentCommonDto;
 import lombok.Data;
+
 import java.time.ZonedDateTime;
 
 @Data
-public class RentHistoryResponseDto extends ParentCommonDto {
+public class RentHistoryResponseDto {
 
     Integer rentHistoryId;
     Integer targetMemberId;

@@ -9,14 +9,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ChildCommonDto<T extends ParentCommonDto> {
+public class ChildCommonDto<T> {
 
     String msg = "";
-
     @JsonIgnore
     HttpStatus httpStatus;
-
-
     T t;
 
     public void SetDto(T dto) {

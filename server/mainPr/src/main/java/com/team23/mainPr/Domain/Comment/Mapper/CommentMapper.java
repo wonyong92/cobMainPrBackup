@@ -11,4 +11,5 @@ public interface CommentMapper {
     Comment CreateCommentEntityToCommentEntity(CreateCommentEntityDto createCommentEntityDto);
 
     CommentEntityResponseDto CommentEntityToCommentResponsDto(Comment comment);
+
 }

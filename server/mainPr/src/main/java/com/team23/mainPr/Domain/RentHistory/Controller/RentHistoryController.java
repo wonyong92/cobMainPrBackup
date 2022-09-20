@@ -9,6 +9,7 @@ import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
@@ -44,7 +45,6 @@ public class RentHistoryController {
 
     @PostMapping("/delete/{rentHistoryId}")
     public String delete(@PathVariable Integer rentHistoryId) {
-
         return rentHistoryService.deleteRentHistory(rentHistoryId);
     }
 }

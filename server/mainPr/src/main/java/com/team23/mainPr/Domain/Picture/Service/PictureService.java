@@ -11,9 +11,10 @@ public class PictureService {
 
     private final PictureRepository pictureRepository;
 
-    public void setDefaultImage()  {
+    public void setDefaultImage() {
         Picture defaultImage = new Picture();
         defaultImage.setFileName("defaultProfileImage.png");
         pictureRepository.save(defaultImage);
     }
+
 }

@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 @Setter
 @Getter
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer commentId;
@@ -21,4 +22,5 @@ public class Comment {
     ZonedDateTime updateDate;
     Integer writerId;
     Integer targetPostId;
+
 }
