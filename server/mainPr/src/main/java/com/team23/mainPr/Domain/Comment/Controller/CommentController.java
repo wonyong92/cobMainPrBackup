@@ -7,63 +7,40 @@ import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDtos;
 import com.team23.mainPr.Domain.Comment.Service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
-@Controller
+@RestController
 @RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
-    public  ResponseEntity<CommentEntityResponseDto>  postComment(@RequestBody  @Valid  CreateCommentEntityDto dto) {
-
-         CommentEntityResponseDto response = commentService.createCommentEntity(dto);
-
-        return  new ResponseEntity<>(response, HttpStatus.OK);
+    public CommentEntityResponseDto postComment(@RequestBody @Valid CreateCommentEntityDto dto) {
+        return commentService.createCommentEntity(dto);
     }
-
 
     @GetMapping("/{commentId}")
-    public  ResponseEntity<CommentEntityResponseDto>  getComment(@PathVariable  @Min(value = 1, message = "commentId must be above 1")  Integer commentId) {
-
-         CommentEntityResponseDto response = commentService.getComment(commentId);
-
-        return  new ResponseEntity<>(response, HttpStatus.OK);
+    public CommentEntityResponseDto getComment(@PathVariable @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
+        return commentService.getComment(commentId);
     }
-
 
     @PostMapping("/update")
-    public ResponseEntity<CommentEntityResponseDto> updateComment(@RequestBody  @Valid  UpdateCommentEntityDto dto) {
-
-         CommentEntityResponseDto response = commentService.updateCommentEntity(dto);
-
-         return new ResponseEntity<>(response, HttpStatus.OK);
+    public CommentEntityResponseDto updateComment(@RequestBody @Valid UpdateCommentEntityDto dto) {
+        return commentService.updateCommentEntity(dto);
     }
-
 
     @PostMapping("/delete")
-    public  ResponseEntity<String>  deleteCommentEntity(@RequestParam  @Min(value = 1, message = "commentId must be above 1")  Integer commentId) {
-
-         String response = commentService.deleteCommentEntity(commentId);
-
-         return new ResponseEntity<>(response, HttpStatus.OK);
+    public String deleteCommentEntity(@RequestParam @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
+        return commentService.deleteCommentEntity(commentId);
     }
-
 
     @GetMapping("/getComments/{postId}")
-    public  ResponseEntity<CommentEntityResponseDtos>  getComments(@PathVariable  @Valid @Min(value = 1, message = "postId must be above 1")  Integer postId) {
-
-         CommentEntityResponseDtos response = commentService.getComments(postId);
-
-         return new ResponseEntity<>(response, HttpStatus.OK);
+    public CommentEntityResponseDtos getComments(@PathVariable @Valid @Min(value = 1, message = "postId must be above 1") Integer postId) {
+        return commentService.getComments(postId);
     }
-
 }

@@ -20,10 +20,7 @@ public class controller {
     private final PictureService pictureService;
 
     @GetMapping
-    public ResponseEntity download(@RequestParam Integer memberId) throws IOException {
-
+    public void download() throws IOException {
         pictureService.setDefaultImage();
-
-        return new ResponseEntity("added",HttpStatus.OK);
     }
 }

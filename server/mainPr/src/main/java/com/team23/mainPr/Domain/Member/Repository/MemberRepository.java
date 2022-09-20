@@ -3,8 +3,10 @@ package com.team23.mainPr.Domain.Member.Repository;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberRepository extends JpaRepository<Member, Integer> {
-    Member findByLoginId(String loginId);
+import java.util.Optional;
 
-    Member findByEmail(String email);
+public interface MemberRepository extends JpaRepository<Member, Integer> {
+    Optional<Member> findByLoginId(String loginId);
+
+    Optional<Member> findByEmail(String email);
 }

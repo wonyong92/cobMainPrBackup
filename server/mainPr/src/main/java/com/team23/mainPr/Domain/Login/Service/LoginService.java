@@ -1,21 +1,19 @@
 package com.team23.mainPr.Domain.Login.Service;
 
 import com.team23.mainPr.Domain.Login.Dto.Request.DoLoginDto;
-import com.team23.mainPr.Domain.Login.Dto.Response.DoLoginResponseDto;
 import com.team23.mainPr.Domain.Login.Entity.Login;
-import com.team23.mainPr.Domain.Login.Mapper.LoginMapper;
 import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
-import com.team23.mainPr.Domain.Member.Entity.Member;
 import com.team23.mainPr.Domain.Member.Repository.MemberRepository;
+import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.DefaultTimeZone;
-import com.team23.mainPr.Global.Dto.ChildCommonDto;
-import com.team23.mainPr.Global.Dto.ParentCommonDto;
 import com.team23.mainPr.Global.Jwt.Service.JwtBuilder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
+import static com.team23.mainPr.Global.CustomException.ErrorData.NOT_MATCHED_ID;
+import static com.team23.mainPr.Global.CustomException.ErrorData.NOT_MATCHED_PASSWORD;
+import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.FAIL;
+import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -24,75 +22,80 @@ public class LoginService {
     private final JwtBuilder jwtService;
     private final MemberRepository memberRepository;
     private final LoginRepository loginRepository;
-    private final LoginMapper loginMapper;
     private final DefaultTimeZone defaultTimeZone;
     private final JwtBuilder jwtBuilder;
 
-    public ChildCommonDto<DoLoginResponseDto> doLogin(DoLoginDto dto) {
+    public String doLogin(DoLoginDto dto) {
 
-        Member member = memberRepository.findByLoginId(dto.getLoginId());
+        final String[] token = new String[1];
 
-        if (member == null)
-            return new ChildCommonDto<>(NOT_MATCH_ID.getMsg(), HttpStatus.BAD_REQUEST, null);
+        memberRepository.findByLoginId(dto.getLoginId()).ifPresentOrElse(
+                member -> {
 
-        if (!member.getPassword().equals(dto.getPassword()))
-            return new ChildCommonDto<>(NOT_MATCH_PASSWORD.getMsg(), HttpStatus.BAD_REQUEST, null);
+                    if (!member.getPassword().equals(dto.getPassword()))
+                        throw new CustomException(NOT_MATCHED_PASSWORD);
 
-        String token = jwtService.buildJwt(member);
-        Login existLogin = loginRepository.findByMemberId(member.getMemberId());
+                    token[0] = jwtService.buildJwt(member);
 
-        if (existLogin == null) {
+                    loginRepository.findByMemberId(member.getMemberId()).ifPresentOrElse(
+                            existLogin -> {
+                                existLogin.setLogouted(false);
+                                existLogin.setToken(token[0]);
+                                existLogin.setLogoutDate(null);
+                                existLogin.setLastLoginDate(defaultTimeZone.getNow());
+                                loginRepository.flush();
+                            },
+                            () -> {
+                                Login login = new Login();
+                                login.setLastLoginDate(defaultTimeZone.getNow());
+                                login.setToken(token[0]);
+                                login.setLogouted(false);
+                                login.setMemberId(member.getMemberId());
+                                login.setLogoutDate(null);
+                                loginRepository.save(login);
+                            }
+                    );
+                },
+                () -> {
+                    throw new CustomException(NOT_MATCHED_ID);
+                }
+        );
 
-            Login login = new Login();
-            login.setLastLoginDate(defaultTimeZone.getNow());
-            login.setToken(token);
-            login.setLogouted(false);
-            login.setMemberId(member.getMemberId());
-            login.setLogoutDate(null);
-            Login created = loginRepository.save(login);
-            return new ChildCommonDto<>(token, HttpStatus.OK, loginMapper.LoginEntityToDoLoginResponseDto(created));
-
-        }
-
-        existLogin.setLogouted(false);
-        existLogin.setToken(token);
-        existLogin.setLogoutDate(null);
-        loginRepository.flush();
-
-
-        return new ChildCommonDto<>(token, HttpStatus.OK, loginMapper.LoginEntityToDoLoginResponseDto(existLogin));
+        return token[0];
     }
 
-    public ChildCommonDto<ParentCommonDto> doLogout(String token) {
-        Login login = loginRepository.findByToken(token);
+    public String doLogout(String token) {
 
-        if (login == null)
-            return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+        final String[] result = new String[1];
 
-        if (login.getLogouted())
-            return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
+        loginRepository.findByToken(token).ifPresentOrElse(
+                login -> {
+                    login.setLogouted(Boolean.TRUE);
+                    login.setLogoutDate(defaultTimeZone.getNow());
+                    loginRepository.flush();
+                    result[0] = SUCCESS.getMsg();
+                },
+                () -> {
+                    result[0] = FAIL.getMsg();
+                }
+        );
 
-        login.setLogouted(Boolean.TRUE);
-        login.setLogoutDate(defaultTimeZone.getNow());
-        loginRepository.flush();
-
-        return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, null);
+        return result[0];
     }
 
-    public ChildCommonDto<ParentCommonDto> refreshToken(String token) {
+    public String refreshToken(String token) {
 
-        Login login = loginRepository.findByToken(token);
+        final String[] newToken = new String[1];
 
-        if (login == null)
-            return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+        loginRepository.findByToken(token).ifPresent(
+                login -> {
+                    String createdToken = jwtBuilder.buildJwt(memberRepository.findById(login.getMemberId()).orElseThrow());
+                    login.setToken(createdToken);
+                    loginRepository.flush();
+                    newToken[0] = createdToken;
+                }
+        );
 
-        if (Boolean.FALSE.equals(login.getLogouted()))
-            return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
-
-        String newToken = jwtBuilder.buildJwt(memberRepository.findById(login.getMemberId()).orElseThrow());
-        login.setToken(newToken);
-        loginRepository.flush();
-
-        return new ChildCommonDto<>(newToken, HttpStatus.OK, loginMapper.LoginEntityToDoLoginResponseDto(login));
+        return newToken[0];
     }
 }

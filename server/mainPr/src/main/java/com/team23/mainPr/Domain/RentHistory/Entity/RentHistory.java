@@ -3,7 +3,8 @@ package com.team23.mainPr.Domain.RentHistory.Entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ import java.time.ZonedDateTime;
 @Setter
 @RequiredArgsConstructor
 public class RentHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer rentHistoryId;
@@ -26,7 +28,9 @@ public class RentHistory {
     Integer requesterId;//ref member
     String msg = "nothing";
     Integer targetPosId;//ref rentPost
+    @CreationTimestamp
     ZonedDateTime createdTime;
+    @UpdateTimestamp
     ZonedDateTime updateTime;
     Integer relateRentHistory;
 

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface RentPostMapper {
-    RentPostResponseDto RentPostToRentPostResponse(RentPost rentPost);
+    RentPostResponseDto RentPostToRentPostResponseDto(RentPost rentPost);
 
     RentPost CreateRentPostEntityDtoToRentPost(CreateRentPostEntityDto dto);
 }

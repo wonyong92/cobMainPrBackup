@@ -1,7 +1,6 @@
 package com.team23.mainPr.Domain.Member.Controller;
 
 
-import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
@@ -14,12 +13,14 @@ import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import com.team23.mainPr.Global.Dto.ParentCommonDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.io.IOException;
 
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
@@ -37,13 +38,12 @@ import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
  * </pre>
  */
 
-@Controller
+@RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-    private final PictureService pictureService;
 
     /**
      * <pre>
@@ -58,14 +58,11 @@ public class MemberController {
     /*
      * refactor : 비밀번호 같은 민감 정보를 전송해도 될까? - response Dto를 만들어서 암호화 할까?
      */
-
     @Operation(summary = "회원 가입.", description = "데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답한다.")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> createMember(@RequestBody CreateMemberDto dto) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.createMember(dto);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public MemberResponseDto createMember(@RequestBody @Valid CreateMemberDto dto) {
+        return memberService.createMember(dto);
     }
 
     /*
@@ -75,97 +72,60 @@ public class MemberController {
      * Todo : 서비스 레이어 응답을 어떻게 바꾸어야 계층간 느스한 결합, 재사용성이 좋게 구현할수 있을까 고민하기!
      */
 
-
     @GetMapping("/{memberId}")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> getMember(@PathVariable Integer memberId) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.getMember(memberId);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public MemberResponseDto getMember(@PathVariable @Valid @Min(value = 1) Integer memberId) {
+        return memberService.getMember(memberId);
     }
-
 
     @GetMapping("profile/{memberId}")
-    public ResponseEntity<ChildCommonDto<MemberProfileDto>> getProfile(@PathVariable Integer memberId) {
-
-        ChildCommonDto<MemberProfileDto> response = memberService.getProfile(memberId);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public MemberProfileDto getProfile(@PathVariable @Valid @Min(value = 1) Integer memberId) {
+        return memberService.getProfile(memberId);
     }
 
-
     @DeleteMapping("/delete")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> deleteMember(@RequestParam Integer memberId) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.deleteMember(memberId);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public String deleteMember(@RequestParam @Valid @Min(value = 1) Integer memberId) {
+        return memberService.deleteMember(memberId);
     }
 
 
     @PutMapping("profile/{memberId}")
-    public ResponseEntity<ChildCommonDto<MemberProfileDto>> updateProfile(@RequestBody UpdateMemberDto updateMemberDto,
-                                                                          @PathVariable Integer memberId) {
-
-        ChildCommonDto<MemberProfileDto> response = memberService.updateProfile(updateMemberDto, memberId);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public MemberProfileDto updateProfile(@RequestBody @Valid UpdateMemberDto updateMemberDto,
+                                          @PathVariable @Valid @Min(value = 1) Integer memberId) {
+        return memberService.updateProfile(updateMemberDto, memberId);
     }
 
-
     @PostMapping("/post/checkExistEmail")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkExistEmail(@RequestParam String email) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.checkExistEmail(email);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public String checkExistEmail(@RequestParam String email) {
+        return memberService.checkExistEmail(email);
     }
 
 
     @PostMapping("/post/checkExistId")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> checkExistId(@RequestParam String id) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.checkExistEmail(id);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public String checkExistId(@RequestParam String id) {
+        return memberService.checkExistId(id);
     }
 
 
     @PostMapping("/post/findId")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> findId(@RequestBody FindIdDto findIdDto) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.findId(findIdDto);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public String findId(@RequestBody @Valid FindIdDto findIdDto) {
+        return memberService.findId(findIdDto);
     }
 
 
     @PostMapping("/post/findPassword")
-    public ResponseEntity<ChildCommonDto<MemberResponseDto>> findId(@RequestBody FindPasswordDto findPasswordDto) {
-
-        ChildCommonDto<MemberResponseDto> response = memberService.findPassword(findPasswordDto);
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+    public String findId(@RequestBody @Valid FindPasswordDto findPasswordDto) {
+        return memberService.findPassword(findPasswordDto);
     }
 
     @PostMapping("/profileImage/post")
-// 업로드하는 파일들을 MultipartFile 형태의 파라미터로 전달된다.
-    //여러개 업로드
-    public ResponseEntity<ChildCommonDto<ParentCommonDto>> upload(@RequestParam MultipartFile file,
-                                                                  @RequestParam Integer memberId) throws IOException {
+    public String upload(@RequestParam MultipartFile file,
+                           @RequestParam Integer memberId) throws IOException {
 
-        ChildCommonDto<ParentCommonDto> response = memberService.setProfilePicture(memberId,file);
-
-        if (response.getMsg().equals(TRUE.getMsg()) || response.getMsg().equals(SUCCESS.getMsg()) || response.getMsg().equals(CREATED.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        else if (response.getMsg().equals(FAIL.getMsg()) || response.getMsg().equals(FALSE.getMsg()))
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+      return memberService.setProfilePicture(memberId, file);
     }
 
-    @GetMapping("/profileImage/get")
-    public ResponseEntity getDefaultProfileImage(@RequestParam Integer memberId
-    ) throws IOException {
+    @GetMapping(value = "/profileImage/get",produces = "image/png" )
+    public Resource getDefaultProfileImage(@RequestParam Integer memberId) throws IOException {
 
         return memberService.getProfilePicture(memberId);
     }

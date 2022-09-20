@@ -7,15 +7,16 @@ import com.team23.mainPr.Domain.RentHistory.Dto.Response.RentHistoryResponseDtos
 import com.team23.mainPr.Domain.RentHistory.Entity.RentHistory;
 import com.team23.mainPr.Domain.RentHistory.Mapper.RentHistoryMapper;
 import com.team23.mainPr.Domain.RentHistory.Repository.RentHistoryRepository;
+import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.DefaultTimeZone;
 import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
+import static com.team23.mainPr.Global.CustomException.ErrorData.BAD_REQUEST;
+import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.SUCCESS;
 
 /**
  * <pre>
@@ -34,107 +35,61 @@ public class RentHistoryService {
     private final RentHistoryMapper rentHistoryMapper;
     private final DefaultTimeZone defaultTimeZone;
 
-    public ChildCommonDto<RentHistoryResponseDtos> getReceiveRentHistory(Integer memberId) {
+    public RentHistoryResponseDtos getReceiveRentHistory(Integer memberId) {
 
-        List<RentHistory> rentHistorys = rentHistoryRepository.findByTargetMemberIdAndRentDataTypeTrue(memberId);
+        List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(
+                rentHistoryRepository.findByTargetMemberIdAndRentDataTypeTrue(memberId).orElseThrow());
 
-        if (rentHistorys.size() != 0) {
-            List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(rentHistorys);
-            return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, new RentHistoryResponseDtos(responses));
-
-        }
-
-        return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
+        return new RentHistoryResponseDtos(responses);
     }
 
-    public ChildCommonDto<RentHistoryResponseDtos> getSendRentHistory(Integer memberId) {
+    public RentHistoryResponseDtos getSendRentHistory(Integer memberId) {
 
-        List<RentHistory> rentHistorys = rentHistoryRepository.findByRequesterIdAndRentDataTypeFalse(memberId);
+        List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(
+                rentHistoryRepository.findByRequesterIdAndRentDataTypeFalse(memberId).orElseThrow());
 
-        if (rentHistorys.size() != 0) {
-            List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(rentHistorys);
-
-            return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, new RentHistoryResponseDtos(responses));
-        }
-
-        return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
+        return new RentHistoryResponseDtos(responses);
     }
 
-    public ChildCommonDto<RentHistoryResponseDto> createRentHistory(CreateRentHistoryEntityDto dto) {
+    public RentHistoryResponseDto createRentHistory(CreateRentHistoryEntityDto dto) {
 
+        //유스케이스1 : 요청 요구자와 요청 수신자가 같으면 안된다.
         if (dto.getTargetMemberId().equals(dto.getRequesterId()))
-            return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+            throw new CustomException(BAD_REQUEST);
 
         RentHistory rentHistory = rentHistoryMapper.CreateRentHistoryEntityDtoToRentHistory(dto);
-
-        rentHistory.setCreatedTime(defaultTimeZone.getNow());
-        rentHistory.setUpdateTime(defaultTimeZone.getNow());
-
         RentHistory created = rentHistoryRepository.save(rentHistory);
 
         RentHistory relatedRentHistory = rentHistoryMapper.RentHistoryToRelatedRentHistory(created);
-        relatedRentHistory.setRentHistoryId(null);
-        relatedRentHistory.setRentDataType(true);
-
         rentHistoryRepository.save(relatedRentHistory);
 
         relatedRentHistory.setRelateRentHistory(created.getRentHistoryId());
         created.setRelateRentHistory(relatedRentHistory.getRentHistoryId());
         rentHistoryRepository.flush();
 
-        return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, rentHistoryMapper.RentHistoryToRentHistoryResponseDto(created));
+        return rentHistoryMapper.RentHistoryToRentHistoryResponseDto(created);
     }
 
-    public ChildCommonDto<RentHistoryResponseDto> deleteRentHistory(Integer rentHistoryId) {
+    public String deleteRentHistory(Integer rentHistoryId) {
 
-        RentHistory rentHistory = rentHistoryRepository.findById(rentHistoryId).orElse(null);
+        rentHistoryRepository.delete(rentHistoryRepository.getReferenceById(rentHistoryId));
 
-        if (rentHistory != null) {
-            Integer relatedRentHistoryId = rentHistory.getRelateRentHistory();
-
-            rentHistoryRepository.delete(rentHistory);
-            rentHistoryRepository.deleteById(relatedRentHistoryId);
-
-            return new ChildCommonDto<>(SUCCESS.getMsg(), HttpStatus.OK, null);
-        }
-
-        return new ChildCommonDto<>(FALSE.getMsg(), HttpStatus.BAD_REQUEST, null);
+        return SUCCESS.getMsg();
     }
 
     public ChildCommonDto<RentHistoryResponseDto> updateRentHistoryData(UpdateRentHistoryEntityDto dto) {
 
-        RentHistory rentHistory = rentHistoryRepository.findById(dto.getRentHistoryId()).orElse(null);
-        RentHistory relatedRentHistory = rentHistoryRepository.findById(rentHistory.getRelateRentHistory()).orElse(null);
+        RentHistory rentHistory = rentHistoryRepository.getReferenceById(dto.getRentHistoryId());
+        RentHistory relatedRentHistory = rentHistoryRepository.getReferenceById(rentHistory.getRelateRentHistory());
 
-        if (dto.getRentHistoryId() == null && dto.getRentStartDate() == null
-                && dto.getRentEndDate() == null && dto.getMsg() == null
-                && dto.getRentStatus().equals(rentHistory.getRentStatus()) && relatedRentHistory != null) {
-            return new ChildCommonDto<>(FAIL.getMsg(), HttpStatus.BAD_REQUEST, null);
+        RentHistory updatedRentHistory = dto.updateData(rentHistory, dto);
+        RentHistory updatedRelatedRentHistory = dto.updateData(relatedRentHistory, dto);
+
+        //렌트 수락/거절 기능 : 렌트 요청 타입이 Receive(RentDataType = TRUE) 일때만 수락, 거절 선택 가능
+        if (updatedRentHistory.getRentDataType().equals(Boolean.TRUE) && updatedRentHistory.getRentStatus().equals("not selected")) {
+            updatedRentHistory.setRentStatus(dto.getRentStatus());
+            updatedRelatedRentHistory.setRentStatus(dto.getRentStatus());//연결된 요청 데이터도 수락/거절 상태 변경
         }
-
-        if (dto.getRentHistoryId() != null)
-            rentHistory.setRentStatus(dto.getRentStatus());
-        if (dto.getRentStartDate() != null)
-            rentHistory.setRentStartDate(dto.getRentStartDate());
-        if (dto.getRentEndDate() != null)
-            rentHistory.setRentEndDate(dto.getRentEndDate());
-        if (dto.getMsg() != null)
-            rentHistory.setMsg(dto.getMsg());
-        if (!rentHistory.getRentDataType() && dto.getRentStatus().equals(rentHistory.getRentStatus())) //렌트 요청 타입이 Receive 일때만 수락, 거절 선택 가능
-            rentHistory.setRentStatus(dto.getRentStatus());
-
-        rentHistory.setUpdateTime(defaultTimeZone.getNow());
-
-        if (dto.getRentHistoryId() != null)
-            relatedRentHistory.setRentStatus(dto.getRentStatus());
-        if (dto.getRentStartDate() != null)
-            relatedRentHistory.setRentStartDate(dto.getRentStartDate());
-        if (dto.getRentEndDate() != null)
-            relatedRentHistory.setRentEndDate(dto.getRentEndDate());
-        if (dto.getMsg() != null)
-            relatedRentHistory.setMsg(dto.getMsg());
-
-        relatedRentHistory.setUpdateTime(defaultTimeZone.getNow());
 
         rentHistoryRepository.flush();
 
