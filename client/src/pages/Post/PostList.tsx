@@ -1,6 +1,17 @@
+// eslint-disable-next-line import/no-unresolved
+import PostItem from '../../components/PostItem';
 const PostList = () => {
   return (
-    <div>PostList</div>
-  )
-}
+    <>
+      <PostItem />
+      <PostItem />
+      <PostItem />
+      <PostItem />
+      <PostItem />
+      <PostItem />
+      <PostItem />
+    </>
+  );
+};
+
 export default PostList;
