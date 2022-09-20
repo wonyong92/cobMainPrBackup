@@ -84,5 +84,36 @@ public class RentPostService {
         return rentPostMapper.RentPostToRentPostResponseDto(result);
     }
 
+    public String postImages(List<MultipartFile> files, Integer postId) throws IOException {
+
+        if (!files.isEmpty()) {
+            for(MultipartFile file : files)
+            {
+                String uuid = UUID.randomUUID().toString();
+                File newFileName = new File(System.getProperty("user.home") + uploadPath + "/" + uuid + "_" + file.getOriginalFilename());
+                file.transferTo(newFileName);
+
+                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(),postId)).getImageId();
+            }
+        }
+
+        return SUCCESS.getMsg();
+    }
+
+    public List<Integer> getPostImages(Integer postId) {
+
+        List<Integer> result = new ArrayList<>();
+
+        pictureRepository.findByPostId(postId).stream().forEach(picture -> { result.add(picture.getImageId());});
+
+        return result;
+    }
+    public Resource getImage(Integer imageId) throws IOException {
+
+        Path path = Paths.get(System.getProperty("user.home") + uploadPath + "/" + pictureRepository.getReferenceById(imageId).getFileName());
+
+        return new InputStreamResource(Files.newInputStream(path));
+    }
+
 
 }
