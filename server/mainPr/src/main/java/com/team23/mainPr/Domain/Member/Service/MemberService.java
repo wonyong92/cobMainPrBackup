@@ -70,8 +70,9 @@ public class MemberService {
      */
 
     public String deleteMember(Integer memberId) {
+        //@CreationTimestamp 어노테이션을 활용하여 자동으로 값을 할당하게 수정하였다.
         memberRepository.deleteById(memberId);
-
+        
         return SUCCESS.getMsg();
     }
 
