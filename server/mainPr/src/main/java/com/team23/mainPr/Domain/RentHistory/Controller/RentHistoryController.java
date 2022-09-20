@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-//메소드 단위로 개별 응답을 사용하면서 RestController 로 통일
+//공통DTO를 더이상 사용하지 않고, 메소드별 다른 응답 객체을 사용하면서 RestController 로 통일
 @RestController
 @RequestMapping("/rentHistory")
 @RequiredArgsConstructor
