@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +33,9 @@ public class RentPost {
     private Integer rentPostId;
     private String rentPostContents;
     private String rentPostName;
+    @CreationTimestamp
     private ZonedDateTime writeDate;
+    @UpdateTimestamp
     private ZonedDateTime updateDate;
     private Integer writerId;
     private Integer viewCount = 0;

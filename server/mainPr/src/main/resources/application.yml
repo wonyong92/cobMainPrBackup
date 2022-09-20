@@ -27,3 +27,7 @@ timeZone:
   location:
     asia_seoul: "Asia/Seoul"
 
+multipart:
+  upload:
+    path: "/upload"
+

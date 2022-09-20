@@ -3,6 +3,7 @@ package com.team23.mainPr.Config.Swagger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -31,9 +32,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.any())
                 .paths(regex("/(member|rentPost|login|rentHistory|logout|comment).*"))//스웨거에 여러 path 추가하기
-                .apis(RequestHandlerSelectors.withClassAnnotation(Controller.class))
+                .apis(RequestHandlerSelectors.basePackage("com.team23.mainPr"))
                 .build();
     }
 
