@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 
 @Data
 public class CreateRentHistoryEntityDto {
-
+    //Bean Validation 을 이용하여 컨트롤러에서 바로 잘못된 요청을 검출 할 수 있도록 구성하였다.
     @NotNull(message = "targetMemberId must not be null")
     Integer targetMemberId;
     @NotNull(message = "rentStartDate must not be null")
