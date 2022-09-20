@@ -60,7 +60,7 @@ public class LoginService {
                     throw new CustomException(NOT_MATCHED_ID);
                 }
         );
-
+        //단순히 토큰만 응답하도록 변경 - 이전에는 유저 정보까지 보냈는데 그게 아니라 토큰을 해석하는 api를 호출 하면 유저 정보를 확인 가능하므로 프론트에서 요청을 다시 보내는 방식으로 서비스가 구현되어야 한다.
         return token[0];
     }
 
@@ -76,6 +76,7 @@ public class LoginService {
                     result[0] = SUCCESS.getMsg();
                 },
                 () -> {
+                    //불필요하게 너무 많은 유스케이스를 생각하지 말고, 응답은 최대한 간결하게 구성하도록 하였다. api 에서 작동이 실패하였을 때 메세지가 자세하면 좋지만 너무 자세하게 처리하는 것은 비효율적이다.
                     result[0] = FAIL.getMsg();
                 }
         );
@@ -95,7 +96,7 @@ public class LoginService {
                     newToken[0] = createdToken;
                 }
         );
-
+        // 이전 코드 : 로그인 정보를 찾지 못한다 -> if 문으로 감지하고, 에러 메세지 만들어 응답 ==> 수정 코드 : 그냥 없으면 비워서 보낸다. 정상작동은 했으니까 200이 맞다.
         return newToken[0];
     }
 }

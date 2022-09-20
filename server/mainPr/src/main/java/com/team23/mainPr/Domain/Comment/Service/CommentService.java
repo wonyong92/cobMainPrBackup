@@ -27,8 +27,6 @@ public class CommentService {
     public CommentEntityResponseDto createCommentEntity(CreateCommentEntityDto createCommentEntityDto) {
 
         Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(createCommentEntityDto);
-        newComment.setWriteDate(defaultTimeZone.getNow());
-        newComment.setUpdateDate(defaultTimeZone.getNow());
 
         Comment result = commentRepository.getReferenceById(commentRepository.save(newComment).getCommentId());
 
@@ -69,7 +67,7 @@ public class CommentService {
 
         CommentEntityResponseDtos result = new CommentEntityResponseDtos();
         result.setComments(commentResponses);
-
+        // 이전 코드 : 응답하는 리스트의 크키가 0인지 if 문으로 확인해서 , 에러메세지 만들어서 응답 ==> 수정 코드 : 리스트에 없으면 그냥 보낸다. 동작에 문제 없었으므르 200 맞음. 나머지는 프론트에서 처리해야함.
         return result;
     }
 }

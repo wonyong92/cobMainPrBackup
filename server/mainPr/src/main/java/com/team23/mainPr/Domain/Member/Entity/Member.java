@@ -1,6 +1,7 @@
 package com.team23.mainPr.Domain.Member.Entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,8 @@ public class Member {
     private String password;
     private String nickname;
     private String email;
+    //어노테이션을 활용하여 자동으로 값을 할당하게 수정하였다.
+    @CreationTimestamp
     private ZonedDateTime createdAt;
     private Integer profileImageId;
     private String name;

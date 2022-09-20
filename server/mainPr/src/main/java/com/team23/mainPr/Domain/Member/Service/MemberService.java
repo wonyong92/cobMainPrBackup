@@ -52,7 +52,6 @@ public class MemberService {
 
     public MemberResponseDto createMember(CreateMemberDto dto) {
         Member member = memberMapper.CreateMemberDtoToMember(dto);
-        member.setCreatedAt(defaultTimeZone.getNow());
 
         return memberMapper.MemberToMemberResponse(memberRepository.save(member));
     }//createMember
@@ -94,7 +93,9 @@ public class MemberService {
      * 사용 가능하면 TRUE, 불가능(중복 존재)하면 FALSE
      */
     public String checkExistEmail(String email) {
+
         final String[] result = new String[1];
+        //optional 의 메소드를 활용하여 불필요한 if 문을 제거, null 에 대한 처리를 한번에 할 수 있었다.
         memberRepository.findByEmail(email).ifPresentOrElse(
                 member -> {
                     result[0] = "exist";
