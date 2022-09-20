@@ -14,11 +14,14 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 public class Picture {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer imageId;
     String fileName;
-    public Picture(String fileName){
+
+    public Picture(String fileName) {
         this.fileName = fileName;
     }
+
 }

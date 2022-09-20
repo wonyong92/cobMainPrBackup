@@ -1,6 +1,5 @@
 package com.team23.mainPr.Domain.Member.Dto.Request;
 
-import com.team23.mainPr.Global.Dto.ParentCommonDto;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +15,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Data
 @ApiModel(value = "CreateMemberDto", description = "입력 받은 회원 가입 정보를 dto로 맵핑")
-public class CreateMemberDto extends ParentCommonDto {
+public class CreateMemberDto {
+
     @NotNull(message = "loginId must not be null")
     private String loginId;
     @NotNull(message = "password must not be null")

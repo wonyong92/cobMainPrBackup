@@ -12,6 +12,7 @@ import lombok.Getter;
 
 @Getter
 public enum ChildCommonDtoMsgList {
+
     TRUE("true"),
     SUCCESS("success"),
     FAIL("fail"),

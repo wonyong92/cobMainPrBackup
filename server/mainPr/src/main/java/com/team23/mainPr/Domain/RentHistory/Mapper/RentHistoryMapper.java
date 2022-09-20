@@ -4,6 +4,7 @@ import com.team23.mainPr.Domain.RentHistory.Dto.Request.CreateRentHistoryEntityD
 import com.team23.mainPr.Domain.RentHistory.Dto.Response.RentHistoryResponseDto;
 import com.team23.mainPr.Domain.RentHistory.Entity.RentHistory;
 import org.mapstruct.Mapper;
+
 import java.util.List;
 
 @Mapper(componentModel = "spring")

@@ -1,6 +1,5 @@
 package com.team23.mainPr.Domain.Member.Mapper;
 
-
 import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
@@ -16,9 +15,11 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
+
     MemberResponseDto MemberToMemberResponse(Member member);
 
     MemberProfileDto MemberToMemberProfileDto(Member member);
 
     Member CreateMemberDtoToMember(CreateMemberDto dto);
+
 }

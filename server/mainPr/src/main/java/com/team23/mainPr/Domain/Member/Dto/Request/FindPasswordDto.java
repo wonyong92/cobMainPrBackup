@@ -6,10 +6,12 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class FindPasswordDto {
-    @NotNull(message="email must not be null")
+
+    @NotNull(message = "email must not be null")
     String email;
-    @NotNull(message="name must not be null")
+    @NotNull(message = "name must not be null")
     String name;
-    @NotNull(message="loginId must not be null")
+    @NotNull(message = "loginId must not be null")
     String loginId;
+
 }

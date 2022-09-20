@@ -32,4 +32,5 @@ public class UpdateRentHistoryEntityDto {
 
         return rentHistory;
     }
+
 }

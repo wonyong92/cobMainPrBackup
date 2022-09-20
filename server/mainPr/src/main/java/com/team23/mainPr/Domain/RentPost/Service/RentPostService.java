@@ -7,12 +7,9 @@ import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
 import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
 import com.team23.mainPr.Global.DefaultTimeZone;
-import com.team23.mainPr.Global.Dto.ChildCommonDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.FALSE;
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.TRUE;
 
 /**
@@ -42,7 +39,7 @@ public class RentPostService {
 
         RentPost post = rentPostRepository.getReferenceById(postId);
 
-        RentPost updatedPost = dto.updateData(post,dto);
+        RentPost updatedPost = dto.updateData(post, dto);
 
         rentPostRepository.flush();
 

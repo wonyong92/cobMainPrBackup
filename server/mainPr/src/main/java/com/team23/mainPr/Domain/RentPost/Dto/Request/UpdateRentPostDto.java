@@ -1,7 +1,5 @@
 package com.team23.mainPr.Domain.RentPost.Dto.Request;
 
-import com.team23.mainPr.Domain.RentHistory.Dto.Request.UpdateRentHistoryEntityDto;
-import com.team23.mainPr.Domain.RentHistory.Entity.RentHistory;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;

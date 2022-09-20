@@ -46,7 +46,6 @@ public class RentPostController {
 
     @PostMapping("/{postId}")
     public RentPostResponseDto getRentPost(@PathVariable @Parameter(name = "postId", description = "게시글 식별 번호.", required = true) Integer postId) {
-
         return RentPostService.getRentPost(postId);
     }
 }

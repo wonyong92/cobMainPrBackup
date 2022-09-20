@@ -9,7 +9,6 @@ import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import com.team23.mainPr.Domain.Member.Mapper.MemberMapper;
 import com.team23.mainPr.Domain.Member.Repository.MemberRepository;
-import com.team23.mainPr.Domain.Picture.Dto.FileDto;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
 import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Global.DefaultTimeZone;
@@ -64,7 +63,6 @@ public class MemberService {
         return memberMapper.MemberToMemberResponse(member);
     }
 
-
     /**
      * <pre>
      * Todo : 연관될 리소스 - 게시글, 댓글, 프로필, 좋아요 도 함꼐 삭제되도록 구성하여야 한다 - cascade 사용 예정
@@ -74,6 +72,7 @@ public class MemberService {
 
     public String deleteMember(Integer memberId) {
         memberRepository.deleteById(memberId);
+
         return SUCCESS.getMsg();
     }
 
@@ -89,7 +88,6 @@ public class MemberService {
         memberRepository.flush();
 
         return memberMapper.MemberToMemberProfileDto(member);
-
     }
 
     /**

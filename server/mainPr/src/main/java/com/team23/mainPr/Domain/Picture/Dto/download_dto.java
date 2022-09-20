@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class download_dto {
 
-    private String fileName;	// 실제 파일 이름
+    private String fileName;    // 실제 파일 이름
     private String contentType;
+
 }
