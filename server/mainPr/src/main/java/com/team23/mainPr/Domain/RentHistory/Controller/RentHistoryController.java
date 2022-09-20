@@ -20,7 +20,7 @@ import javax.validation.constraints.Min;
 public class RentHistoryController {
 
     private final RentHistoryService rentHistoryService;
-    //응답 데이터 클래스를 구현해 놓은 DTO 클래스를 이용하도록 구성
+    //응답 데이터 클래스를 공통 DTO가 아니라 구현해 놓은 DTO 클래스를 이용하도록 구성 - 응답에 대한 불필요한 처리, 데이터 삭제
     //Bean Validation 을 이용하여 컨트롤러에서 바로 요청 데이터를 검증, 서비스 레이어에서 요청의 입력 값을 검증하는 if 문을 모두 삭제 할 수 있었다.
     @GetMapping("/receive")
     public RentHistoryResponseDtos getReceiveRentHistoryData(@RequestParam @Valid @Min(value = 1) Integer memberId) {
