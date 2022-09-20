@@ -3,13 +3,18 @@ package com.team23.mainPr.Domain.RentPost.Controller;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
+import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
 import com.team23.mainPr.Domain.RentPost.Service.RentPostService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 //개별 DTO를 body 에 할당하고 공통적인 상태코드(200)으로 응답하므로 RestController 로 변경
 @RestController
@@ -51,4 +56,20 @@ public class RentPostController {
     public RentPostResponseDto getRentPost(@PathVariable Integer postId) {
         return RentPostService.getRentPost(postId);
     }
+
+    @PostMapping("/images")
+    public String postImages(@RequestParam(value="image") List<MultipartFile> files, @RequestParam Integer postId) throws IOException {
+        return RentPostService.postImages(files, postId);
+    }
+
+    @GetMapping("/images/get")
+    public List<Integer> getImages(@RequestParam Integer postId) {
+        return RentPostService.getPostImages(postId);
+    }
+
+    @GetMapping(value = "/image/get", produces = "image/png")
+    public Resource getImage(@RequestParam Integer imageId) throws IOException {
+        return RentPostService.getImage(imageId);
+    }
+
 }

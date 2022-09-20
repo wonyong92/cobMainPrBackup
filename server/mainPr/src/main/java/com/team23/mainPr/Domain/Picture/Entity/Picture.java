@@ -19,9 +19,15 @@ public class Picture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer imageId;
     String fileName;
+    Integer postId;
 
     public Picture(String fileName) {
         this.fileName = fileName;
+    }
+    public Picture(String fileName,Integer postId) {
+
+        this.fileName = fileName;
+        this.postId = postId;
     }
 
 }
