@@ -1,6 +1,6 @@
 import './App.css';
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -11,11 +11,14 @@ import PostEdit from './pages/Post/PostEdit';
 import PostList from './pages/Post/PostList';
 import PostWrite from './pages/Post/PostWrite';
 import Signup from './pages/Sign/Signup';
+import Login from './pages/Sign/Login';
 
 const App = () => {
+    const location = useLocation();
+
     return (
         <div className="App">
-            <Header />
+            {location.pathname === '/login' ? undefined : <Header />}
             <Routes>
                 <Route path="/" element={<Main />} />
                 <Route path="/postlist" element={<PostList />} />
@@ -24,8 +27,9 @@ const App = () => {
                 <Route path="/postwrite" element={<PostWrite />} />
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
-            <Footer />
+            {location.pathname === '/login' ? undefined : <Footer />}
         </div>
     );
 };
