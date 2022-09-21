@@ -1,4 +1,4 @@
 const PostEdit = () => {
-  return <div>PostEdit</div>;
+    return <div>PostEdit</div>;
 };
 export default PostEdit;
