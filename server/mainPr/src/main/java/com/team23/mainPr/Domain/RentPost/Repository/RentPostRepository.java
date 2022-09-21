@@ -23,5 +23,8 @@ public interface RentPostRepository extends JpaRepository<RentPost, Integer> {
             "FROM RENT_POST as p\n" +
             "WHERE p.rent_post_name REGEXP ?1 ;", nativeQuery = true)
 //native query only use order parameter
-    List<Object> search(String phrase);
+    List<Integer> search(String phrase);
+
+    @Query(value = " SELECT T.* FROM FT_SEARCH_DATA( ?1 , 0, 0) FT, RENT_POST T where T.RENT_POST_ID=FT.KEYS[1] ", nativeQuery = true)
+    List<RentPost> ftSearch(String phrase);
 }

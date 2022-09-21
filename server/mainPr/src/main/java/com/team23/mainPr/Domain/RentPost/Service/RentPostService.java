@@ -139,7 +139,17 @@ public class RentPostService {
         rentPostRepository.search("" + phrase.replace(" ", "|").trim() + "")
                 .stream().forEach(
                         rentPostId ->{
-                            result.add(rentPostMapper.RentPostToRentPostResponseDto(rentPostRepository.getReferenceById((Integer) rentPostId)));
+                            result.add(rentPostMapper.RentPostToRentPostResponseDto(rentPostRepository.getReferenceById(rentPostId)));
+                        });
+        return result;
+    }
+
+    public List<RentPostResponseDto> ftSearchAll(String phrase) {
+        List<RentPostResponseDto> result = new ArrayList<>();
+        rentPostRepository.ftSearch(""+phrase+"")
+                .stream().forEach(
+                        rentPost ->{
+                            result.add(rentPostMapper.RentPostToRentPostResponseDto((RentPost) rentPost));
                         });
         return result;
     }
