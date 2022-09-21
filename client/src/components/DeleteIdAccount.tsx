@@ -28,7 +28,7 @@ const Container = styled.div`
     margin-bottom: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+
     .title {
         font-size: 16px;
         font-weight: 600;
@@ -48,6 +48,8 @@ const Info = styled.div`
 `;
 const CheckBox = styled.div`
     display: flex;
+    margin-top: 15px;
+    margin-bottom: 18px;
     p {
         margin-left: 5px;
     }
