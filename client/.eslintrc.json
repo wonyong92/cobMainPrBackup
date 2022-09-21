@@ -16,7 +16,7 @@
             "jsx": true
         },
         "ecmaVersion": 2022,
-        // "tsconfigRootDir": "__dirname",
+        "tsconfigRootDir": __dirname,
         "sourceType": "module"
     },
 
