@@ -17,6 +17,6 @@ public class CreateRentPostEntityDto {
     @NotNull(message = "writerId must not be null")
     private Integer writerId;
     @Pattern(regexp = "^(category).*")
-    private String category="category";
+    private String category = "category";
 
 }
