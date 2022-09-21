@@ -1,4 +1,4 @@
-// /* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-unresolved */
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import PostItem from '../../components/PostItem';

@@ -1,4 +1,4 @@
-// // eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved
 import PostItem from '../../components/PostItem';
 const PostList = () => {
     return (
