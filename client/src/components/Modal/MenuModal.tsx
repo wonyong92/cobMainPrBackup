@@ -83,7 +83,11 @@ const Container = styled.div`
         flex-direction: column;
         align-items: center;
         width: 340px;
-        height: 390px;
+        min-height: 420px;
+        position: relative;
+        top: 10px;
+        left: 0.01px;
+        opacity: 1;
         background-color: white;
         box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
     }
