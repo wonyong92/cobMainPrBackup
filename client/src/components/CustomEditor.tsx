@@ -55,6 +55,7 @@ const CustomEditor = ({
   isError,
   editorRef,
   onChange,
+  
 }: Prop) => {
   const [isEditorFocus, setIsEditorFocus] = useState(false);
   return (
