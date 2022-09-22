@@ -105,7 +105,7 @@ public class RentPostController {
 
 	@PostMapping("/search")
 	public List<RentPostResponseDto> search(@RequestParam String phrase) {
-		return rentPostService.searchAll(phrase);
+		return rentPostService.searchAll(phrase.replace(" ", "|").trim());
 	}
 
 	@Operation(

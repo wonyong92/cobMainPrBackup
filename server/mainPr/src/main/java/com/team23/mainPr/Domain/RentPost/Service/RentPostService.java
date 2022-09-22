@@ -99,7 +99,6 @@ public class RentPostService {
 					new File(
 						System.getProperty("user.home")
 							+ uploadPath
-							+ "/"
 							+ uuid
 							+ "_"
 							+ file.getOriginalFilename());
@@ -120,9 +119,7 @@ public class RentPostService {
 
 		pictureRepository.findByPostId(postId).stream()
 			.forEach(
-				picture -> {
-					result.add(picture.getImageId());
-				});
+				picture -> result.add(picture.getImageId()));
 
 		return result;
 	}
@@ -133,7 +130,6 @@ public class RentPostService {
 			Paths.get(
 				System.getProperty("user.home")
 					+ uploadPath
-					+ "/"
 					+ pictureRepository.getReferenceById(imageId).getFileName());
 
 		return new InputStreamResource(Files.newInputStream(path));
@@ -148,19 +144,14 @@ public class RentPostService {
 		List<RentPostResponseDto> mappedResult = new ArrayList<>();
 		result.stream()
 			.forEach(
-				rentPost -> {
-					mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost));
-				});
+				rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
 
-		PagedRentPostResponseDtos response =
-			rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
-
-		return response;
+		return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
 	}
 
 	public List<RentPostResponseDto> searchAll(String phrase) {
 
-		return rentPostRepository.search("" + phrase.replace(" ", "|").trim() + "").stream()
+		return rentPostRepository.search(phrase).stream()
 			.map(
 				rentPostId ->
 					rentPostMapper.RentPostToRentPostResponseDto(
@@ -171,7 +162,7 @@ public class RentPostService {
 	public List<RentPostResponseDto> ftSearchAll(String phrase) {
 
 		return rentPostRepository.ftSearch(phrase).stream()
-			.map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost))
+			.map(rentPostMapper::RentPostToRentPostResponseDto)
 			.collect(Collectors.toList());
 	}
 }

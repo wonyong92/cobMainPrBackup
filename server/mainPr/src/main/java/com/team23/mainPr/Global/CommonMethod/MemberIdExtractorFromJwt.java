@@ -1,7 +1,9 @@
 package com.team23.mainPr.Global.CommonMethod;
+
+import org.springframework.stereotype.Component;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.stereotype.Component;
 
 /**
  * <pre>
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberIdExtractorFromJwt {
 
-    public Integer getMemberId(String jwt) {
-        return JWT.require(Algorithm.HMAC512("cos_jwt_token")).build().verify(jwt).getClaim("memberId").asInt();
-    }
+	public Integer getMemberId(String jwt) {
+		return JWT.require(Algorithm.HMAC512("cos_jwt_token")).build().verify(jwt).getClaim("memberId").asInt();
+	}
 }

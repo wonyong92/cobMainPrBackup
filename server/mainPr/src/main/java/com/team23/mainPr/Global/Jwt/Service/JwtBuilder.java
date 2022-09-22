@@ -1,9 +1,12 @@
 package com.team23.mainPr.Global.Jwt.Service;
+
+import java.util.Date;
+
+import org.springframework.stereotype.Component;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.team23.mainPr.Domain.Member.Entity.Member;
-import org.springframework.stereotype.Component;
-import java.util.Date;
 
 /**
  * <pre>
@@ -16,12 +19,12 @@ import java.util.Date;
 @Component
 public class JwtBuilder {
 
-    public String buildJwt(Member member) {
+	public String buildJwt(Member member) {
 
-        return JWT.create()
-                .withSubject("cos jwt token")
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000)))
-                .withClaim("memberId", member.getMemberId())
-                .sign(Algorithm.HMAC512("cos_jwt_token"));
-    }
+		return JWT.create()
+			.withSubject("cos jwt token")
+			.withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000)))
+			.withClaim("memberId", member.getMemberId())
+			.sign(Algorithm.HMAC512("cos_jwt_token"));
+	}
 }

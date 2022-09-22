@@ -13,19 +13,19 @@ import lombok.Getter;
 @Getter
 public enum ChildCommonDtoMsgList {
 
-    TRUE("true"),
-    SUCCESS("success"),
-    FAIL("fail"),
-    FALSE("false"),
-    CREATED("created"),
-    NOT_MATCH_PASSWORD("not matched password"),
-    NOT_MATCH_ID("not matched loginId"),
-    ERROR("error");
+	TRUE("true"),
+	SUCCESS("success"),
+	FAIL("fail"),
+	FALSE("false"),
+	CREATED("created"),
+	NOT_MATCH_PASSWORD("not matched password"),
+	NOT_MATCH_ID("not matched loginId"),
+	ERROR("error");
 
-    private final String msg;
+	private final String msg;
 
-    // public 시 컴파일 에러 발생
-    ChildCommonDtoMsgList(String msg) {
-        this.msg = msg;
-    }
+	// public 시 컴파일 에러 발생
+	ChildCommonDtoMsgList(String msg) {
+		this.msg = msg;
+	}
 }

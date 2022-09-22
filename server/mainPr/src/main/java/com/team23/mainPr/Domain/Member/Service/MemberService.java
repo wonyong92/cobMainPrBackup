@@ -101,12 +101,8 @@ public class MemberService {
 		memberRepository
 			.findByEmail(email)
 			.ifPresentOrElse(
-				member -> {
-					result[0] = "exist";
-				},
-				() -> {
-					result[0] = "not exist";
-				});
+				member -> result[0] = "exist",
+				() -> result[0] = "not exist");
 
 		return result[0];
 	}
@@ -116,12 +112,8 @@ public class MemberService {
 		memberRepository
 			.findByLoginId(id)
 			.ifPresentOrElse(
-				member -> {
-					result[0] = "exist";
-				},
-				() -> {
-					result[0] = "not exist";
-				});
+				member -> result[0] = "exist",
+				() -> result[0] = "not exist");
 
 		return result[0];
 	}
@@ -146,7 +138,7 @@ public class MemberService {
 			.ifPresent(
 				member -> {
 					if (member.getName().equals(dto.getName())
-						&& member.getLoginId().equals(member.getLoginId()))
+						&& member.getLoginId().equals(dto.getLoginId()))
 						result[0] = member.getPassword();
 				});
 
@@ -163,7 +155,6 @@ public class MemberService {
 				new File(
 					System.getProperty("user.home")
 						+ uploadPath
-						+ "/"
 						+ uuid
 						+ "_"
 						+ file.getOriginalFilename());
@@ -185,7 +176,7 @@ public class MemberService {
 			pictureRepository
 				.getReferenceById(memberRepository.getReferenceById(memberId).getProfileImageId())
 				.getFileName();
-		Path path = Paths.get(System.getProperty("user.home") + uploadPath + "/" + filename);
+		Path path = Paths.get(System.getProperty("user.home") + uploadPath + filename);
 
 		return new InputStreamResource(Files.newInputStream(path));
 	}

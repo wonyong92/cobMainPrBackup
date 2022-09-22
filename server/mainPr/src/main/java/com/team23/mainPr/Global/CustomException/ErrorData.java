@@ -20,17 +20,16 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ErrorData {
 
-     INVALID_REGISTER_MEMBER_ID(1401, "회원 가입 : 잘못된 로그인 ID 형식"),
-     INVALID_REGISTER_MEMBER_PASSWORD(1402, "회원 가입 : 잘못된 로그인 비밀번호 형식"),
-     INVALID_REGISTER_MEMBER_NICKNAME(1403, "회원 가입 : 잘못된 로그인 ID 형식"),
-     CLASS_CASTING_EXCEPTION(5401, "잘못된 BODY 입력"),
-     MISSING_REQUIRED_DATA(5402,"요청에 필요한 데이터가 누락"),
-     NOT_MATCHED_PASSWORD(2401,"로그인 : 잘못된 비밀번호"),
-    NOT_MATCHED_ID(2402,"로그인 : 잘못된 아이디"),
-    DB_ERROR_OCCURED(5403,"공통 에러 : 데이버베이스 자료에 접근 동안 에러 발생"),
-    BAD_REQUEST(5405,"공통 에러 : 잘못된 요청 값 입니다.")
-    ;
+	INVALID_REGISTER_MEMBER_ID(1401, "회원 가입 : 잘못된 로그인 ID 형식"),
+	INVALID_REGISTER_MEMBER_PASSWORD(1402, "회원 가입 : 잘못된 로그인 비밀번호 형식"),
+	INVALID_REGISTER_MEMBER_NICKNAME(1403, "회원 가입 : 잘못된 로그인 ID 형식"),
+	CLASS_CASTING_EXCEPTION(5401, "잘못된 BODY 입력"),
+	MISSING_REQUIRED_DATA(5402, "요청에 필요한 데이터가 누락"),
+	NOT_MATCHED_PASSWORD(2401, "로그인 : 잘못된 비밀번호"),
+	NOT_MATCHED_ID(2402, "로그인 : 잘못된 아이디"),
+	DB_ERROR_OCCURED(5403, "공통 에러 : 데이버베이스 자료에 접근 동안 에러 발생"),
+	BAD_REQUEST(5405, "공통 에러 : 잘못된 요청 값 입니다.");
 
-    private final int code;
-    private final String reason;
+	private final int code;
+	private final String reason;
 }
