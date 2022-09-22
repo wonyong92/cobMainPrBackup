@@ -1,14 +1,13 @@
 package com.team23.mainPr.Domain.Login.Dto.Response;
 
-import lombok.Data;
-
 import java.time.ZonedDateTime;
+
+import lombok.Data;
 
 @Data
 public class DoLoginResponseDto {
 
-    Integer memberId;
-    Integer loginId;
-    ZonedDateTime lastLoginDate;
-
+	Integer memberId;
+	Integer loginId;
+	ZonedDateTime lastLoginDate;
 }

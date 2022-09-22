@@ -1,6 +1,7 @@
 package com.team23.mainPr.Domain.RentPost.Dto.Request;
 
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
+
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -8,17 +9,16 @@ import lombok.Data;
 @Data
 public class UpdateRentPostDto {
 
-    private String rentPostContents;
-    private String rentPostName;
-    private Boolean rentStatus = false;
+	private String rentPostContents;
+	private String rentPostName;
+	private Boolean rentStatus = false;
 
-    public RentPost updateData(RentPost rentPost, UpdateRentPostDto dto) {
+	public RentPost updateData(RentPost rentPost, UpdateRentPostDto dto) {
 
-        rentPost.setRentPostName(dto.getRentPostName());
-        rentPost.setRentPostContents(dto.getRentPostContents());
-        rentPost.setRentStatus(dto.getRentStatus());
+		rentPost.setRentPostName(dto.getRentPostName());
+		rentPost.setRentPostContents(dto.getRentPostContents());
+		rentPost.setRentStatus(dto.getRentStatus());
 
-        return rentPost;
-    }
+		return rentPost;
+	}
 }
-

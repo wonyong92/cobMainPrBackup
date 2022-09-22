@@ -1,23 +1,24 @@
 package com.team23.mainPr.Domain.RentPost.Mapper;
 
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.springframework.data.domain.Pageable;
+
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
-import org.mapstruct.Mapper;
-import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface RentPostMapper {
 
-    RentPostResponseDto RentPostToRentPostResponseDto(RentPost rentPost);
+	RentPostResponseDto RentPostToRentPostResponseDto(RentPost rentPost);
 
-    RentPost CreateRentPostEntityDtoToRentPost(CreateRentPostEntityDto dto);
+	RentPost CreateRentPostEntityDtoToRentPost(CreateRentPostEntityDto dto);
 
-    default PagedRentPostResponseDtos PagedRentPostToRentPostPagedResponseDto(List<RentPostResponseDto> rentPostResponseDtos, Pageable pageinfo){
-        PagedRentPostResponseDtos dto = new PagedRentPostResponseDtos(rentPostResponseDtos, pageinfo);
-        return dto;
-    }
+	default PagedRentPostResponseDtos PagedRentPostToRentPostPagedResponseDto(
+		List<RentPostResponseDto> rentPostResponseDtos, Pageable pageinfo) {
+		return new PagedRentPostResponseDtos(rentPostResponseDtos, pageinfo);
+	}
 }
