@@ -21,7 +21,7 @@ const BtnWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
     .text {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         color: #aba8a8;
     }

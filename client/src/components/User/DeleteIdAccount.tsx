@@ -44,7 +44,8 @@ const Container = styled.div`
 const Info = styled.div`
     border: 1px solid #aba8a8;
     border-radius: 3px;
-    padding: 5px 10px;
+    padding: 10px;
+    width: 90%;
 `;
 const CheckBox = styled.div`
     display: flex;
