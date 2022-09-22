@@ -3,14 +3,23 @@ import styled from 'styled-components';
 interface Prop {
     text: string;
     type: string;
-    // size: string;
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    width: string;
+    radius: string;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-function Button({ text, type, onClick }: Prop) {
+function Button({ text, type, width, radius, onClick }: Prop) {
     const btnType: string = ['red', 'beige'].includes(type) ? type : 'default';
-    // const btnSize: string = ['half'].includes(size) ? size : 'long';
+    const btnWidth: string = ['middle', 'short'].includes(width)
+        ? width
+        : 'default';
+    const btnRadius: string = ['deep'].includes(radius) ? radius : 'default';
     return (
-        <Btn btnType={btnType} onClick={onClick}>
+        <Btn
+            btnType={btnType}
+            onClick={onClick}
+            btnWidth={btnWidth}
+            btnRadius={btnRadius}
+        >
             {text}
         </Btn>
     );
@@ -18,19 +27,27 @@ function Button({ text, type, onClick }: Prop) {
 export default Button;
 Button.defaultProps = {
     type: 'default',
+    width: 'default',
+    radius: 'default',
 };
-const Btn = styled.button<{ btnType: string }>`
-    width: 310px;
-    .half {
-        width: 140px;
-    }
-    height: 35px;
+const Btn = styled.button<{
+    btnType: string;
+    btnWidth: string;
+    btnRadius: string;
+}>`
+    width: ${(props) =>
+        props.btnWidth === 'middle'
+            ? '140px'
+            : props.btnWidth === 'short'
+            ? '70px'
+            : '290px'};
+    height: 33px;
     cursor: pointer;
     border: none;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     color: white;
-    border-radius: 3px;
+    border-radius: ${(props) => (props.btnRadius === 'deep' ? '20px' : '3px')};
     background-color: ${(props) =>
         props.btnType === 'red'
             ? '#FF7F7F'
