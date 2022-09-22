@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from './Button';
+import Button from '../../UI/button/Button';
 const DeleteIdAccount = () => {
     return (
         <Container>

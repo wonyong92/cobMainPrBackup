@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import Button from '../../components/Button';
-import PageDescript from '../../components/PageDescript';
-import ButtonSocial from '../../components/ButtonSocial';
-import TextButton from '../../components/TextButton';
-import InputDescript from '../../components/InputDescript';
+import Button from '../../UI/button/Button';
+import PageDescript from '../../components/Descript/PageDescript';
+import ButtonSocial from '../../UI/button/ButtonSocial';
+import TextButton from '../../UI/button/TextButton';
+import InputDescript from '../../components/Descript/InputDescript';
 import { useNavigate } from 'react-router-dom';
-import DefaultInput from '../../components/DefaultInput';
+import DefaultInput from '../../UI/input/DefaultInput';
 
 const Login = () => {
     const navigate = useNavigate();
