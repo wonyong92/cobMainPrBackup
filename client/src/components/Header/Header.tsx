@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '../asessts/img/logo.svg';
+import { ReactComponent as Logo } from '../../asessts/img/logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBars,
@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import MenuModal from './MenuModal';
+import MenuModal from '../Modal/MenuModal';
 
 const Header = () => {
     const navigate = useNavigate();

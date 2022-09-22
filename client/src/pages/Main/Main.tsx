@@ -2,7 +2,7 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import PostItem from '../../components/PostItem';
-import TextInput from '../../components/TextInput';
+import TextInput from '../../UI/input/TextInput';
 
 const Main = () => {
     return (

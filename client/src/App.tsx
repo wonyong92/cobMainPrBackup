@@ -2,8 +2,8 @@ import './App.css';
 
 import { Route, Routes, useLocation } from 'react-router-dom';
 
-import Footer from './components/Footer';
-import Header from './components/Header';
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
 import Main from './pages/Main/Main';
 import Mypage from './pages/MyPage/Mypage';
 import PostDetail from './pages/Post/PostDetail';

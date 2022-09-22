@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '../asessts/img/biglogo.svg';
+import { ReactComponent as Logo } from '../../asessts/img/biglogo.svg';
 interface Prop {
     title: string;
     descript?: string;

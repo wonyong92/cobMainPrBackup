@@ -3,11 +3,12 @@ import styled from 'styled-components';
 interface Prop {
     text: string;
     type: string;
+    // size: string;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-function Button(props: Prop) {
-    const { text, type, onClick } = props;
+function Button({ text, type, onClick }: Prop) {
     const btnType: string = ['red', 'beige'].includes(type) ? type : 'default';
+    // const btnSize: string = ['half'].includes(size) ? size : 'long';
     return (
         <Btn btnType={btnType} onClick={onClick}>
             {text}
@@ -19,7 +20,10 @@ Button.defaultProps = {
     type: 'default',
 };
 const Btn = styled.button<{ btnType: string }>`
-    width: 320px;
+    width: 310px;
+    .half {
+        width: 140px;
+    }
     height: 35px;
     cursor: pointer;
     border: none;
