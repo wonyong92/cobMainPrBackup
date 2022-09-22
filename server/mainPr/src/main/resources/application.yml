@@ -12,6 +12,7 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
   jpa:
+    #defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
@@ -23,11 +24,16 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+
+  sql:
+    init:
+      mode: always
+
 timeZone:
   location:
     asia_seoul: "Asia/Seoul"
 
 multipart:
   upload:
-    path: "/upload"
+    path: "/upload/"
 
