@@ -7,6 +7,7 @@ import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
 import com.team23.mainPr.Domain.RentPost.Service.RentPostService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -93,6 +94,7 @@ public class RentPostController {
         return rentPostService.searchAll(phrase);
     }
 
+    @Operation(description = "H2의 FULL TEXT SEARCH 기능을 사용한 메소드 입니다. 속도 확인 후 기존의 search 메소드를 대체할수 있다고 판단되면 통합하도록 하겠습니다.")
     @PostMapping("/ftSearch")
     public List<RentPostResponseDto> ftSearch(@RequestParam  String phrase){
         return rentPostService.ftSearchAll(phrase);

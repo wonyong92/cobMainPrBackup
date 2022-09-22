@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.SUCCESS;
 import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.TRUE;
@@ -145,12 +146,11 @@ public class RentPostService {
     }
 
     public List<RentPostResponseDto> ftSearchAll(String phrase) {
-        List<RentPostResponseDto> result = new ArrayList<>();
-        rentPostRepository.ftSearch(""+phrase+"")
-                .stream().forEach(
-                        rentPost ->{
-                            result.add(rentPostMapper.RentPostToRentPostResponseDto((RentPost) rentPost));
-                        });
-        return result;
+
+        return rentPostRepository.ftSearch(phrase)
+                .stream().map(
+                        rentPost ->
+                                rentPostMapper.RentPostToRentPostResponseDto(rentPost)
+                ).collect(Collectors.toList());
     }
 }
