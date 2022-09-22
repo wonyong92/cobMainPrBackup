@@ -2,21 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 interface Prop {
     text: string;
-    type: string;
-    width: string;
-    radius: string;
+    type: 'red' | 'beige' | 'white' | 'default';
+    width: 'middle' | 'short' | 'default';
+    radius: 'deep' | 'default';
 
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 function Button({ text, type, width, radius, onClick }: Prop) {
-    const btnType: string = ['red', 'beige', 'white'].includes(type)
-        ? type
-        : 'default';
-    const btnWidth: string = ['middle', 'short'].includes(width)
-        ? width
-        : 'default';
-    const btnRadius: string = ['deep'].includes(radius) ? radius : 'default';
-
+    const btnType: string = type;
+    const btnWidth: string = width;
+    const btnRadius: string = radius;
     return (
         <Btn
             btnType={btnType}
