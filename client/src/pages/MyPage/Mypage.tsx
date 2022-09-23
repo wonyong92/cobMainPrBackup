@@ -35,17 +35,30 @@ export default Mypage;
 
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
-    width: 90%;
+    flex-direction: row;
+    width: 55%;
+    margin-top: 15px;
+    @media screen and (max-width: 500px) {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+    }
 `;
 const Top = styled.div`
-    width: 95%;
+    width: 190px;
+    min-height: 500px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #efefef;
+    border-right: 1px solid #efefef;
     .title {
         color: #171715;
         font-size: 16px;
         font-weight: 600;
+    }
+    @media screen and (max-width: 500px) {
+        width: 95%;
+        border-bottom: 1px solid #efefef;
+        border-right: none;
+        min-height: 100px;
     }
 `;
 const Btns = styled.div`
@@ -82,7 +95,9 @@ const BtnWrapper = styled.div`
     }
 `;
 const Bottom = styled.div`
-    padding-top: 15px;
-    display: flex;
-    flex-direction: column;
+    padding-top: 20px;
+    padding-left: 20px;
+    @media screen and (max-width: 500px) {
+        padding-top: 15px;
+    }
 `;

@@ -15,11 +15,13 @@ const DeleteIdAccount = () => {
                     계정 삭제에 관한 정책을 읽고 이에 동의합니다.
                 </p>
             </CheckBox>
-            <Button
-                type="red"
-                text="회원탈퇴"
-                onClick={() => console.log('삭제')}
-            ></Button>
+            <BtnWrapper>
+                <Button
+                    type="red"
+                    text="회원탈퇴"
+                    onClick={() => console.log('삭제')}
+                ></Button>
+            </BtnWrapper>
         </Container>
     );
 };
@@ -44,14 +46,38 @@ const Container = styled.div`
 const Info = styled.div`
     border: 1px solid #aba8a8;
     border-radius: 3px;
-    padding: 10px;
-    width: 90%;
+    padding: 15px;
+    flex-grow: 1;
+    @media screen and (max-width: 500px) {
+        width: 290px;
+        padding: 10px;
+    }
 `;
 const CheckBox = styled.div`
     display: flex;
+    justify-content: flex-end;
     margin-top: 15px;
     margin-bottom: 18px;
     p {
         margin-left: 5px;
+    }
+    @media screen and (max-width: 500px) {
+        display: flex;
+        justify-content: space-between;
+        width: 290px;
+    }
+`;
+const BtnWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    button {
+        width: 80px;
+    }
+    @media screen and (max-width: 500px) {
+        display: flex;
+        justify-content: center;
+        button {
+            width: 290px;
+        }
     }
 `;
