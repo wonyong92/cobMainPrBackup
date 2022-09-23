@@ -37,6 +37,7 @@ const HeadRow = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
+  border-bottom: 1px solid #dee2e6;
 `;
 
 const DescriptionWrapper = styled.div`
@@ -45,6 +46,7 @@ const DescriptionWrapper = styled.div`
 `;
 
 const Image = styled.img`
+//
   width: 100px;
   height: 100px;
   background-image: url('https://pbs.twimg.com/profile_images/449975524350103554/zBK8lr4U.jpeg');

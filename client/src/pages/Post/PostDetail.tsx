@@ -1,42 +1,20 @@
-
-import React from 'react';
-import styled from 'styled-components';
+// import CommentList from '../../components/CommentList';
+import CommentPost from '../../components/CommentPost';
 import PostItem from '../../components/PostItem';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 
-
-const PostList = () => {
-    const [posts, setPosts] = useState([]);
-    useEffect(() => {
-        axios.get('http://localhost:4000/posts')
-            .then((res) => {
-                setPosts(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+const PostDetail = () => {
+  
+    
     return (
         <>
-            {posts.map((post) => (
-                <PostItem
-                    // key={post.id}
-                    // id={post.id}
-                    // title={post.title}
-                    // content={post.content}
-                    // price={post.price}
-                    // category={post.category}
-                    // location={post.location}
-                    // createdAt={post.createdAt}
-                    // updatedAt={post.updatedAt}
-                    // userId={post.userId}
-                    // userName={post.userName}
-                    // userImg={post.userImg}
-                />
-            ))}
+        <PostItem/>
+        <div>안녕하세요 작년에 구매한 캠핑용품입니다.<br></br>레전드 브랜드 캠핑용품이구요,<br></br>하루에 5만원 총 15만원입니다. 제품구입하시면 300만원입니다. 자주 사용하시는게 아니시라면 구매비용을 절약하실수있습니다.<br></br>감사합니다.</div>
+        <span>댓글2</span>
+      
+        <CommentPost/>
+        {/* <CommentList/> */}
         </>
     );
-};
+    }
 
-export default PostList;
+    export default PostDetail;

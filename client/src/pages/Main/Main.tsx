@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import PostItem from '../../components/PostItem';
@@ -29,11 +29,10 @@ const Main = () => {
             <TextInput
                 type={'text'}
                 value={''}
-                input={''}
+                placeholder={''}   
                 onChange={function (e: ChangeEvent<HTMLInputElement>): void {
                     throw new Error('Function not implemented.');
-                }}
-            />
+                } }            />
             <PostItem />
             <PostItem />
             <PostItem />

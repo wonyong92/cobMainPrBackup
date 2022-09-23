@@ -45,7 +45,6 @@ interface Prop {
   height?: string;
   value: string;
   isError: boolean;
-  editorRef: React.RefObject<Editor>;
   onChange: () => void;
 }
 
@@ -53,7 +52,6 @@ const CustomEditor = ({
   height = '500px',
   value,
   isError,
-  editorRef,
   onChange,
   
 }: Prop) => {
@@ -74,7 +72,6 @@ const CustomEditor = ({
             ['table', 'image', 'link'],
           ]}
           autofocus={false}
-          ref={editorRef}
           onChange={onChange}
           onFocus={() => setIsEditorFocus(true)}
           onBlur={() => setIsEditorFocus(false)}

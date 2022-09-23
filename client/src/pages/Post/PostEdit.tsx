@@ -5,6 +5,8 @@ import CustomEditor from '../../components/CustomEditor';
 import TextInput from '../../components/TextInput';
 
 const PostEdit = () => {
+
+  
     return (
         <>
             <h4>빌려주기 작성가이드</h4>
@@ -22,29 +24,30 @@ const PostEdit = () => {
             <WriteWrapper>
             <h4>필수 정보 입력</h4>
             <span>글제목</span>
-            <TextInput type={'text'} value={''} input={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+            <TextInput type={'text'} value={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
             throw new Error('Function not implemented.');
-          } }/>
+          } } placeholder={''}/>
             <span>지역</span>
-            <TextInput type={'text'} value={''} input={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+            <TextInput type={'text'} value={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
             throw new Error('Function not implemented.');
-          } }/>
+          } } placeholder={''}/>
             <span>카테고리</span>
-            <TextInput type={'text'} value={''} input={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+            <TextInput type={'text'} value={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
             throw new Error('Function not implemented.');
-          } }/>
+          } } placeholder={''}/>
             <span>가격</span>
-            <TextInput type={'text'} value={''} input={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+            <TextInput type={'text'} value={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
             throw new Error('Function not implemented.');
-          } }/>
+          } } placeholder={''}/>
           <span></span>
             <Button text={''} onClick={function (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
                     throw new Error('Function not implemented.');
                 } }/>
             </WriteWrapper>
             <h4>제품설명</h4>
-            <CustomEditor value={''} isError={false}  editorRef={undefined} onChange={function (): void {
-                throw new Error('Function not implemented.')} }  /> 
+            <CustomEditor value={''} isError={false} onChange={function (): void {
+          throw new Error('Function not implemented.');
+        } }  /> 
           </>
     );
 };

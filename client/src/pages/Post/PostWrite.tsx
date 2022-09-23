@@ -1,7 +1,5 @@
-/* eslint-disable no-console */
-// /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-alert */
-import { ChangeEvent } from 'react';
+
+import { ChangeEvent, MouseEvent } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import CustomEditor from '../../components/CustomEditor';
@@ -16,9 +14,7 @@ const PostWrite = () => {
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
-  const [userId, setUserId] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userImg, setUserImg] = useState('');
+  
 
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -40,18 +36,7 @@ const PostWrite = () => {
     setLocation(e.target.value);
   };
 
-  const onChangeUserId = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserId(e.target.value);
-  };
-
-  const onChangeUserName = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
-  };
-
-  const onChangeUserImg = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserImg(e.target.value);
-  };
-
+  
   const onSubmit = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     axios.post('http://localhost:4000/posts', {
@@ -60,9 +45,7 @@ const PostWrite = () => {
       price: price,
       category: category,
       location: location,
-      userId: userId,
-      userName: userName,
-      userImg: userImg,
+      
     })
       .then((res) => {
         console.log(res);
@@ -76,7 +59,9 @@ const PostWrite = () => {
     return (
         <>
             <h4>빌려주기 작성가이드</h4>
-            <Button text='글저장' width='short' onsubmit={onSubmit} />
+            <Button text={'글저장'} onClick={function (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void {
+          throw new Error('Function not implemented.');
+        } } />
             <GuideWrapper>
               <li>사진을 올려주세요</li>
               <li>거래지역을 명시해주세요</li>
@@ -87,21 +72,22 @@ const PostWrite = () => {
             <WriteWrapper>
             <h4>필수 정보 입력</h4>
             <span>글제목</span>
-            <TextInput placeholder={'글제목을 입력해주세요'} onChange={onChangeTitle} type={'text'} value={''} input={''} />
+            <TextInput placeholder={'글제목을 입력해주세요'} onChange={onChangeTitle} type={'text'} value={''}  />
             <span>지역</span>
-            <TextInput placeholder={'지역을 입력해주세요'} onChange={onChangeLocation} type={'text'} value={''} input={''} />
+            <TextInput placeholder={'지역을 입력해주세요'} onChange={onChangeLocation} type={'text'} value={''}  />
             <span>카테고리</span>
-            <TextInput placeholder={'카테고리를 입력해주세요'} onChange={onChangeCategory} type={'text'} value={''} input={''} />
+            <TextInput placeholder={'카테고리를 입력해주세요'} onChange={onChangeCategory} type={'text'} value={''}  />
             <span>가격</span>
-            <TextInput placeholder={'가격을 입력해주세요'} onChange={onChangePrice} type={'text'} value={''} input={''} />
+            <TextInput placeholder={'가격을 입력해주세요'} onChange={onChangePrice} type={'text'} value={''} />
             </WriteWrapper>
             <h4>제품설명</h4>
-            <CustomEditor value={''} isError={false} editorRef={undefined} onChange={function (): void {
+            <CustomEditor value={''} isError={false}  onChange={function (): void {
           throw new Error('Function not implemented.');
         } } />
         </>
-    );
-};
+     
+    )
+}
 
 const GuideWrapper = styled.ul`
   list-style:none;
@@ -113,4 +99,5 @@ const WriteWrapper = styled.div`
 display: flex;
 flex-direction:column;
 `;
+
 export default PostWrite;

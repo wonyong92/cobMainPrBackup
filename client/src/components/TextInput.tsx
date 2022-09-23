@@ -4,21 +4,18 @@ import styled from 'styled-components';
 interface Prop {
   type: 'text';
   value: string;
-  input: string;
   placeholder: string;
-  
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TextInput = ({ type, value, input, placeholder, onChange }: Prop) => {
+const TextInput = ({ type, value, placeholder, onChange }: Prop) => {
   return (
     <div>
       <TextBox
         type={type}
         value={value}
-        input={input}
         placeholder={placeholder}
-        onChange={(e) => console.log('잘찍힘')}
+        onChange={onChange}
       />
     </div>
   );
