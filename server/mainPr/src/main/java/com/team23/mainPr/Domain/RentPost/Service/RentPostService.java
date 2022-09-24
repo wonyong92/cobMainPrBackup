@@ -57,9 +57,9 @@ public class RentPostService {
     String uploadPath;
 
     public RentPostResponseDto createRentPost(CreateRentPostEntityDto dto, String token) {
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
         RentPost result = rentPostRepository.save(rentPostMapper.CreateRentPostEntityDtoToRentPost(dto));
 
         return rentPostMapper.RentPostToRentPostResponseDto(result);
@@ -69,9 +69,9 @@ public class RentPostService {
 
         RentPost post = rentPostRepository.getReferenceById(dto.getPostId());
 
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(post.getWriterId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(post.getWriterId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
 
         RentPost updatedPost = dto.updateData(post, dto);
 
@@ -86,9 +86,9 @@ public class RentPostService {
      * </p>
      */
     public void deleteRentPost(Integer postId, String token) {
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
         for (Picture picture : pictureRepository.findByPostId(postId)) {
             if (new File(System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
                 throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
@@ -110,10 +110,9 @@ public class RentPostService {
     }
 
     public void postImages(List<MultipartFile> files, Integer postId, String token) throws IOException {
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
-
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
         if (!files.isEmpty()) {
             for (MultipartFile file : files) {
                 String uuid = UUID.randomUUID().toString();
@@ -126,24 +125,19 @@ public class RentPostService {
     }
 
     public List<Integer> getPostImages(Integer postId) {
-
         return pictureRepository.findByPostId(postId).stream().map(picture -> picture.getImageId()).collect(Collectors.toList());
     }
 
     public Resource getImage(Integer imageId) throws IOException {
-
         Path path = Paths.get(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(imageId).getFileName());
-
         return new InputStreamResource(Files.newInputStream(path));
     }
 
-    public PagedRentPostResponseDtos getRentPosts(Pageable pageable, Boolean rentStatus, String category) {
+    public PagedRentPostResponseDtos getRentPosts(Integer page, Integer size, String sort, Boolean rentStatus, String category) {
 
-        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContaining(pageable, rentStatus, category);
-
+        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContaining(PageRequest.of(page,size,Sort.Direction.DESC,sort), rentStatus, category);
         List<RentPostResponseDto> mappedResult = new ArrayList<>();
         result.stream().forEach(rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
-
         return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
     }
 
@@ -153,7 +147,6 @@ public class RentPostService {
     }
 
     public List<RentPostResponseDto> ftSearchAll(String phrase) {
-
         return rentPostRepository.ftSearch(phrase).stream().map(rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
     }
 }

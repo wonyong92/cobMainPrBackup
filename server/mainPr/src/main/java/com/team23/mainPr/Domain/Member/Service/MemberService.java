@@ -72,17 +72,17 @@ public class MemberService {
 
     public MemberResponseDto getMember(Integer memberId, String token) {
         Member member = memberRepository.getReferenceById(memberId);
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
         return memberMapper.MemberToMemberResponse(member);
     }
 
     //PR
     public void deleteMember(Integer memberId, String token) {
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(memberId)) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(memberId)) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
         loginRepository.findByMemberId(memberId).ifPresentOrElse(login -> {
             if (!login.getLogouted()) {
                 loginRepository.delete(login);
@@ -108,9 +108,9 @@ public class MemberService {
     public MemberProfileDto updateProfile(UpdateMemberDto dto, String token) {
 
         Member member = memberRepository.getReferenceById(dto.getMemberId());
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
         member.setNickname(dto.getNickname());
         memberRepository.flush();
         return memberMapper.MemberToMemberProfileDto(member);
@@ -157,9 +157,9 @@ public class MemberService {
     public void setProfilePicture(Integer memberId, MultipartFile file, String token) throws IOException {
 
         Member member = memberRepository.getReferenceById(memberId);
-        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        }
+//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+//        }
 
         if (!file.isEmpty()) {
             String uuid = UUID.randomUUID().toString();

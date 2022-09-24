@@ -5,6 +5,7 @@ import com.team23.mainPr.Domain.Comment.Dto.Request.UpdateCommentEntityDto;
 import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDto;
 import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDtos;
 import com.team23.mainPr.Domain.Comment.Service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -25,41 +26,44 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @Operation(description = "댓글 생성, 토큰으로 작성자와 요청값의 작성자 확인")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
     public CommentEntityResponseDto postComment(
         @RequestBody
         @Valid CreateCommentEntityDto dto,
-        @RequestHeader(value = "Authorization")
+        @RequestHeader(value = "Authorization",required = false)
         String token) {
         return commentService.createCommentEntity(dto, token);
     }
 
+    @Operation(description = "단일 댓글 내용 조회")
     @GetMapping
     public CommentEntityResponseDto getComment(
         @RequestParam
         @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
         return commentService.getComment(commentId);
     }
-
+    @Operation(description = "댓글 수정, 토큰으로 작성자와 요청값의 작성자 확인")
     @PostMapping("/update")
     public CommentEntityResponseDto updateComment(
         @RequestBody
         @Valid UpdateCommentEntityDto dto,
-        @RequestHeader(value = "Authorization")
+        @RequestHeader(value = "Authorization",required = false)
         String token) {
         return commentService.updateCommentEntity(dto, token);
     }
-
+    @Operation(description = "댓글 삭제, 토큰으로 작성자와 요청값의 작성자 확인")
     @PostMapping("/delete")
     public String deleteCommentEntity(
         @RequestParam
         @Min(value = 1, message = "commentId must be above 1") Integer commentId,
-        @RequestHeader(value = "Authorization")
+        @RequestHeader(value = "Authorization",required = false)
         String token) {
         return commentService.deleteCommentEntity(commentId, token);
     }
 
+    @Operation(description = "게시글에 달린 전체 댓글 조회 - 작성 시간 오름차순 정렬")
     @GetMapping("/getComments")
     public CommentEntityResponseDtos getComments(
         @RequestParam

@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 public class PagedRentPostResponseDtos {
 
     List<RentPostResponseDto> rentPosts;
-    Pageable pageInfo;
+    Integer pageNumber;
 
     public PagedRentPostResponseDtos(List<RentPostResponseDto> rentPosts, Pageable pageinfo) {
         this.rentPosts = rentPosts;
-        this.pageInfo = pageinfo;
+        this.pageNumber = pageinfo.getPageNumber();
     }
 }

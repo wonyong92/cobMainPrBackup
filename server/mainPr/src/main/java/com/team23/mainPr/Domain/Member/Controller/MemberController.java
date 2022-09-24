@@ -48,116 +48,88 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "회원 가입.", description = "데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답한다.")
+    @Operation(description = "회원 가입, 데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답.")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
-    public MemberResponseDto createMember(
-        @RequestBody
-        @Valid CreateMemberDto dto) {
+    public MemberResponseDto createMember(@RequestBody @Valid CreateMemberDto dto) {
         return memberService.createMember(dto);
     }
 
+    @Operation(description = "회원 정보 확인, 토큰을 이용하여 본인 확인.")
     @GetMapping
-    public MemberResponseDto getMember(
-        @RequestParam
-        @Valid @Min(value = 1) Integer memberId,
-        @RequestHeader(value = "Authorization")
-        String token) {
+    public MemberResponseDto getMember(@RequestParam @Valid @Min(value = 1) Integer memberId, @RequestHeader(value = "Authorization", required = false) String token) {
         return memberService.getMember(memberId, token);
     }
 
+    @Operation(description = "프로필 정보 확인.")
     @GetMapping("profile")
-    public MemberProfileDto getProfile(
-        @RequestParam
-        @Valid @Min(value = 1) Integer memberId) {
+    public MemberProfileDto getProfile(@RequestParam @Valid @Min(value = 1) Integer memberId) {
         return memberService.getProfile(memberId);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteMember(
-        @RequestParam
-        @Valid @Min(value = 1) Integer memberId,
-        @RequestHeader(value = "Authorization")
-        String token) {
-        memberService.deleteMember(memberId, token);
-    }
-
+    @Operation(description = "프로필 정보 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
     @PutMapping("profile")
-    public MemberProfileDto updateProfile(
-        @RequestBody
-        @Valid UpdateMemberDto updateMemberDto,
-        @RequestHeader(value = "Authorization")
-        String token) {
+    public MemberProfileDto updateProfile(@RequestBody @Valid UpdateMemberDto updateMemberDto, @RequestHeader(value = "Authorization", required = false) String token) {
         return memberService.updateProfile(updateMemberDto, token);
     }
 
+    @Operation(description = "회원 탈퇴, 토큰을 이용하여 본인 정보인지 확인.")
+    @DeleteMapping("/delete")
+    public void deleteMember(@RequestParam @Valid @Min(value = 1) Integer memberId, @RequestHeader(value = "Authorization", required = false) String token) {
+        memberService.deleteMember(memberId, token);
+    }
+
+    @Operation(description = "이메일 중복확인.")
     @GetMapping("/checkExistEmail")
-    public String checkExistEmail(
-        @RequestParam
-        String email) {
+    public String checkExistEmail(@RequestParam String email) {
         return memberService.checkExistEmail(email);
     }
 
+    @Operation(description = "아이디 중복확인.")
     @GetMapping("/checkExistId")
-    public String checkExistId(
-        @RequestParam
-        String id) {
+    public String checkExistId(@RequestParam String id) {
         return memberService.checkExistId(id);
     }
 
+    @Operation(description = "닉네임 중복확인.")
     @GetMapping("/checkExistNickname")
-    public String checkNicknameId(
-        @RequestParam
-        String nickname) {
+    public String checkNicknameId(@RequestParam String nickname) {
         return memberService.checkNickname(nickname);
     }
 
+    @Operation(description = "아이디 찾기, 이름과 이메일을 확인하여 매칭되는 아이디 응답.")
     @GetMapping("/findId")
-    public String findId(
-        @RequestBody
-        @Valid FindIdDto findIdDto) {
+    public String findId(@RequestBody @Valid FindIdDto findIdDto) {
         return memberService.findId(findIdDto);
     }
 
+    @Operation(description = "비밀번호 찾기, 이름과 이메일, 아이디를 확인하여 매칭되는 비밀번호 응답.")
     @GetMapping("/findPassword")
-    public String findId(
-        @RequestBody
-        @Valid FindPasswordDto findPasswordDto) {
+    public String findPassword(@RequestBody @Valid FindPasswordDto findPasswordDto) {
         return memberService.findPassword(findPasswordDto);
     }
 
+    @Operation(description = "프로필 이미지 변경, 토큰을 이용하여 본인인지 확인.")
     @PostMapping("/profileImage/post")
-    public void upload(
-        @RequestParam
-        MultipartFile file,
-        @RequestParam
-        Integer memberId,
-        @RequestHeader(value = "Authorization")
-        String token) throws IOException {
+    public void upload(@RequestParam MultipartFile file, @RequestParam Integer memberId, @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         memberService.setProfilePicture(memberId, file, token);
     }
-
+    @Operation(description = "프로필 이미지 조회.")
     @GetMapping(value = "/profileImage/get", produces = "image/png")
-    public Resource getDefaultProfileImage(
-        @RequestParam
-        Integer memberId) throws IOException {
+    public Resource getDefaultProfileImage(@RequestParam Integer memberId) throws IOException {
         return memberService.getProfilePicture(memberId);
     }
 
     @Operation(description = "유저가 작성한 게시글 목록 확인")
     @GetMapping("/rentPosts")
-    public List<RentPostResponseDto> getRentPosts(
-        @RequestParam
-        Integer memberId) {
+    public List<RentPostResponseDto> getRentPosts(@RequestParam Integer memberId) {
         return memberService.getRentPostMember(memberId);
     }
 
-    @Operation(description = "인터셉터 테스트")
-    @GetMapping("/inter")
-    @Login
-    public Boolean checkInter(
-        @RequestParam
-        Integer memberId) {
-        return memberService.checkInter(memberId);
-    }
+//    @Operation(description = "인터셉터 테스트")
+//    @GetMapping("/inter")
+//    @Login
+//    public Boolean checkInter(@RequestParam Integer memberId) {
+//        return memberService.checkInter(memberId);
+//    }
 }
