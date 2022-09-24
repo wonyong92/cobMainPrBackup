@@ -29,9 +29,10 @@ public enum ChildCommonDtoMsgList {
     private final String msg;
 
     // public 시 컴파일 에러 발생
-    ChildCommonDtoMsgList(String msg){
+    ChildCommonDtoMsgList(String msg) {
         this.msg = msg;
     }
+
     public String getMsg() {
         return this.msg;
     }

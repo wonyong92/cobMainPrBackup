@@ -12,14 +12,12 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> methodArgumentValidException(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>(
-            e.getMessage().split(";")[5].replace("default message [", "").replace("]] ", ""),
-            HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage().split(";")[5].replace("default message [", "").replace("]] ", ""), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity handleControllerException(CustomException e) {
-        return new ResponseEntity(e.getErrordata().getReason(), e.getErrordata().getCode());
+    public ResponseEntity<String> handleControllerException(CustomException e) {
+        return new ResponseEntity<>(e.getErrordata().getReason(), e.getErrordata().getCode());
     }
 
     @ExceptionHandler(Exception.class)

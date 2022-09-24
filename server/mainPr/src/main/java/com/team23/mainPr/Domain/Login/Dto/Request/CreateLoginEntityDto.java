@@ -1,7 +1,5 @@
 package com.team23.mainPr.Domain.Login.Dto.Request;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.NULL_LOGINID;
-
 import java.time.ZonedDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.Data;

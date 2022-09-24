@@ -9,8 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface RentHistoryMapper {
 
-    List<RentHistoryResponseDto> RentHistorysToRentHistoryResponseDtos(
-        List<RentHistory> rentHistorys);
+    List<RentHistoryResponseDto> RentHistorysToRentHistoryResponseDtos(List<RentHistory> rentHistorys);
 
     RentHistory CreateRentHistoryEntityDtoToRentHistory(CreateRentHistoryEntityDto dto);
 

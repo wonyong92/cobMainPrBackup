@@ -21,13 +21,17 @@ public class LoginController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void doLogin(@RequestBody DoLoginDto doLoginDto, HttpServletResponse response) {
+    public void doLogin(
+        @RequestBody
+        DoLoginDto doLoginDto, HttpServletResponse response) {
         response.setHeader("Authorization", loginService.doLogin(doLoginDto));
     }
 
     @PostMapping("/refeshToken")
     @ResponseStatus(HttpStatus.CREATED)
-    public String refeshToken(@RequestHeader(value = "Authorization") String token) {
+    public String refeshToken(
+        @RequestHeader(value = "Authorization")
+        String token) {
         return loginService.refreshToken(token);
     }
 }

@@ -15,8 +15,7 @@ public class MainPrApplication {
 
     @Bean
     public CommandLineRunner test(RentPostRepository rentPostRepository) {
-        return args -> {
-            rentPostRepository.ftInit();
-        };
+        return rentPostRepository::ftInit;
+
     }
 }

@@ -16,7 +16,9 @@ public class LogoutController {
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.CREATED)
-    public void doLogout(@RequestHeader(value = "Authorization") String token) {
+    public void doLogout(
+        @RequestHeader(value = "Authorization")
+        String token) {
         loginService.doLogout(token);
     }
 }

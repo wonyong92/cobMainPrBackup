@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class MemberIdExtractorFromJwt {
 
     public Integer getMemberId(String jwt) {
-        return JWT.require(Algorithm.HMAC512("cos_jwt_token")).build().verify(jwt)
-            .getClaim("memberId").asInt();
+        return JWT.require(Algorithm.HMAC512("cos_jwt_token")).build().verify(jwt).getClaim("memberId").asInt();
     }
 }

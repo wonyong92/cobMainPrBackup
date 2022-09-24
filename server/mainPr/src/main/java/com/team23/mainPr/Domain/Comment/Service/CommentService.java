@@ -29,19 +29,15 @@ public class CommentService {
     private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
     private final LoginRepository loginRepository;
 
-    public CommentEntityResponseDto createCommentEntity(
-        CreateCommentEntityDto dto, String token) {
-        if (!memberIdExtractorFromJwt.getMemberId(token)
-            .equals(dto.getWriterId())) {
+    public CommentEntityResponseDto createCommentEntity(CreateCommentEntityDto dto, String token) {
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
             throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
         }
 
-        Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(
-            dto);
+        Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(dto);
         newComment.setWriterId(memberIdExtractorFromJwt.getMemberId(token));
 
-        Comment result = commentRepository.getReferenceById(
-            commentRepository.save(newComment).getCommentId());
+        Comment result = commentRepository.getReferenceById(commentRepository.save(newComment).getCommentId());
 
         return commentMapper.CommentEntityToCommentResponsDto(result);
     }
@@ -53,17 +49,13 @@ public class CommentService {
         return commentMapper.CommentEntityToCommentResponsDto(findComment);
     }
 
-    public CommentEntityResponseDto updateCommentEntity(
-        UpdateCommentEntityDto dto, String token) {
-        
-        if (!memberIdExtractorFromJwt.getMemberId(token)
-            .equals(dto.getWriterId())) {
+    public CommentEntityResponseDto updateCommentEntity(UpdateCommentEntityDto dto, String token) {
+
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
             throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
         }
 
-
-        Comment findComment = commentRepository.getReferenceById(
-            dto.getCommentId());
+        Comment findComment = commentRepository.getReferenceById(dto.getCommentId());
 
         if (!findComment.getWriterId().equals(memberIdExtractorFromJwt.getMemberId(token))) {
             throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
@@ -93,8 +85,7 @@ public class CommentService {
         List<Comment> comments = commentRepository.findAllByTargetPostId(targetPostId);
 
         List<CommentEntityResponseDto> commentResponses = new ArrayList<>();
-        comments.stream().forEach(comment -> commentResponses.add(
-            commentMapper.CommentEntityToCommentResponsDto(comment)));
+        comments.forEach(comment -> commentResponses.add(commentMapper.CommentEntityToCommentResponsDto(comment)));
 
         CommentEntityResponseDtos result = new CommentEntityResponseDtos();
         result.setComments(commentResponses);

@@ -17,11 +17,9 @@ public interface RentPostRepository extends JpaRepository<RentPost, Integer> {
 
     Page<RentPost> findAllByCategory(Pageable pageable, String category);
 
-    Page<RentPost> findAllByRentStatusAndCategory(Pageable pageable, Boolean rentstatus,
-        String category);
+    Page<RentPost> findAllByRentStatusAndCategory(Pageable pageable, Boolean rentstatus, String category);
 
-    Page<RentPost> findAllByRentStatusAndCategoryContaining(Pageable pageable, Boolean rentStatus,
-        String category);
+    Page<RentPost> findAllByRentStatusAndCategoryContaining(Pageable pageable, Boolean rentStatus, String category);
 
     @Query(value = " SELECT p.RENT_POST_ID FROM RENT_POST as p WHERE p.RENT_POST_NAME REGEXP ?1 and p.CATEGORY REGEXP ?2 and p.RENT_STATUS = ?3 ", nativeQuery = true)
         // native query only use order parameter
@@ -30,14 +28,12 @@ public interface RentPostRepository extends JpaRepository<RentPost, Integer> {
     @Query(value = " SELECT T.* FROM FT_SEARCH_DATA( ?1 , 0, 0) FT, RENT_POST T where T.RENT_POST_ID=FT.KEYS[1] ", nativeQuery = true)
     List<RentPost> ftSearch(String phrase);
 
-    @Modifying
-    @Transactional
-    @Query(value = " CREATE ALIAS IF NOT EXISTS FT_INIT FOR \"org.h2.fulltext.FullText.init\";"
-        + "CALL FT_INIT();\n" + "CALL FT_DROP_INDEX('PUBLIC', 'RENT_POST');\n"
-        + "CALL FT_CREATE_INDEX('PUBLIC', 'RENT_POST', 'RENT_POST_NAME'); ", nativeQuery = true)
-    void ftInit();
-
     List<RentPost> findByWriterId(Integer memberId);
 
     List<RentPost> findByWriterIdOrderByRentPostIdDesc(Integer memberId);
+
+    @Modifying
+    @Transactional
+    @Query(value = " CREATE ALIAS IF NOT EXISTS FT_INIT FOR \"org.h2.fulltext.FullText.init\";" + "CALL FT_INIT();\n" + "CALL FT_DROP_INDEX('PUBLIC', 'RENT_POST');\n" + "CALL FT_CREATE_INDEX('PUBLIC', 'RENT_POST', 'RENT_POST_NAME'); ", nativeQuery = true)
+    void ftInit(String... strings);
 }
