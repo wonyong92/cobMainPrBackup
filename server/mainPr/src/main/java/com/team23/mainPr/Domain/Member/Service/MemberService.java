@@ -1,20 +1,7 @@
 package com.team23.mainPr.Domain.Member.Service;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.team23.mainPr.Domain.Comment.Repository.CommentRepository;
+import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
 import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
@@ -26,158 +13,201 @@ import com.team23.mainPr.Domain.Member.Mapper.MemberMapper;
 import com.team23.mainPr.Domain.Member.Repository.MemberRepository;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
 import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
+import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
+import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
+import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
+import com.team23.mainPr.Global.CustomException.CustomException;
+import com.team23.mainPr.Global.CustomException.ErrorData;
 import com.team23.mainPr.Global.DefaultTimeZone;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
-	private final MemberRepository memberRepository;
-	private final MemberMapper memberMapper;
-	private final DefaultTimeZone defaultTimeZone;
-	private final PictureRepository pictureRepository;
+    private final MemberRepository memberRepository;
+    private final MemberMapper memberMapper;
+    private final DefaultTimeZone defaultTimeZone;
+    private final PictureRepository pictureRepository;
+    private final RentPostRepository rentPostRepository;
+    private final RentPostMapper rentPostMapper;
+    private final CommentRepository commentRepository;
+    private final LoginRepository loginRepository;
+    private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
 
-	@Value("${multipart.upload.path}")
-	String uploadPath;
+    @Value("${multipart.upload.path}")
+    String uploadPath;
+    String homePath = System.getProperty("user.home");
 
-	/**
-	 * <pre>
-	 * 트랜젝션 적용 필요
-	 * 생성 후 확인 과정에서 어떤 필드 하나라도 null 이면 실패 및 롤백 필요
-	 * 캐시, 샤딩 적용하면 저장하는 방법이 복잡해질듯 - 캐싱 전략은 추후에 공부하여 적용
-	 * rdbms 쓸때 처럼 auto increment 적용 안되나?(제대로 유니크 하지도 않고 불필요한 DB 엑세스, 데이터 양이 많아지면 느려진다)
-	 * 생성후 find 하면 DB가 아니라 1차 캐쉬에서 가져오는 것 아닌가? entityManager 에서 detach 시켜야 제대로 테스트가 될것 같다.
-	 * ->JpaRepository 이용시 내부에서 엔티티 매니저?를 생성해서 트랜잭션을 설정 및 수행 -> 완료후 1차 캐시 파기
-	 * -> detach 필요 없이 새로운 트랜잭션으로 find 실행 되므로 문제없이 실행결과 확인 할 수 있다.
-	 */
-	public MemberResponseDto createMember(CreateMemberDto dto) {
-		// @CreationTimestamp 어노테이션을 활용하여 자동으로 값을 할당하게 수정하였다.
-		Member member = memberMapper.CreateMemberDtoToMember(dto);
+    /**
+     * <pre>
+     * 트랜젝션 적용 필요
+     * 생성 후 확인 과정에서 어떤 필드 하나라도 null 이면 실패 및 롤백 필요
+     * 캐시, 샤딩 적용하면 저장하는 방법이 복잡해질듯 - 캐싱 전략은 추후에 공부하여 적용
+     * rdbms 쓸때 처럼 auto increment 적용 안되나?(제대로 유니크 하지도 않고 불필요한 DB 엑세스, 데이터 양이 많아지면 느려진다)
+     * 생성후 find 하면 DB가 아니라 1차 캐쉬에서 가져오는 것 아닌가? entityManager 에서 detach 시켜야 제대로 테스트가 될것 같다.
+     * ->JpaRepository 이용시 내부에서 엔티티 매니저?를 생성해서 트랜잭션을 설정 및 수행 -> 완료후 1차 캐시 파기
+     * -> detach 필요 없이 새로운 트랜잭션으로 find 실행 되므로 문제없이 실행결과 확인 할 수 있다.
+     */
+    public MemberResponseDto createMember(CreateMemberDto dto) {
 
-		return memberMapper.MemberToMemberResponse(memberRepository.save(member));
-	} // createMember
+        Member member = memberMapper.CreateMemberDtoToMember(dto);
 
-	public MemberResponseDto getMember(Integer memberId) {
+        return memberMapper.MemberToMemberResponse(memberRepository.save(member));
+    }
 
-		Member member = memberRepository.getReferenceById(memberId);
-		return memberMapper.MemberToMemberResponse(member);
-	}
+    public MemberResponseDto getMember(Integer memberId, String token) {
+        Member member = memberRepository.getReferenceById(memberId);
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
+        return memberMapper.MemberToMemberResponse(member);
+    }
 
-	/**
-	 *
-	 *
-	 * <pre>
-	 * Todo : 연관될 리소스 - 게시글, 댓글, 프로필, 좋아요 도 함꼐 삭제되도록 구성하여야 한다 - cascade 사용 예정
-	 * delete 수행시 영속성 컨텍스트의 1차 캐시에서도 삭제(detach)된다. - entityManager.detach(member) 로 테스트 완료
-	 * </pre>
-	 */
-	public String deleteMember(Integer memberId) {
-		memberRepository.deleteById(memberId);
+    //PR
+    public void deleteMember(Integer memberId, String token) {
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(memberId)) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
+        loginRepository.findByMemberId(memberId).ifPresentOrElse(login -> {
+            if (!login.getLogouted()) {
+                loginRepository.delete(login);
+            }
+        }, () -> {
+            throw new CustomException(ErrorData.NOT_EXIST_LOGIN_INFORMATION);
+        });
+        String fileName = pictureRepository.getReferenceById(
+            memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
+        if (!fileName.equals("defaultProfileImage.png")) {
+            if (new File(homePath + uploadPath + fileName).delete()) {
+                throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
+            }
+        }
+        rentPostRepository.findByWriterId(memberId).stream().forEach(rentPostRepository::delete);
+        commentRepository.findByWriterId(memberId).stream().forEach(commentRepository::delete);
+        memberRepository.deleteById(memberId);
+    }
 
-		return SUCCESS.getMsg();
-	}
+    public MemberProfileDto getProfile(Integer memberId) {
+        return memberMapper.MemberToMemberProfileDto(memberRepository.getReferenceById(memberId));
+    }
 
-	public MemberProfileDto getProfile(Integer memberId) {
-		return memberMapper.MemberToMemberProfileDto(memberRepository.getReferenceById(memberId));
-	}
+    public MemberProfileDto updateProfile(UpdateMemberDto dto, String token) {
 
-	public MemberProfileDto updateProfile(UpdateMemberDto dto, Integer memberId) {
+        Member member = memberRepository.getReferenceById(dto.getMemberId());
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
+        member.setNickname(dto.getNickname());
+        memberRepository.flush();
+        return memberMapper.MemberToMemberProfileDto(member);
+    }
 
-		Member member = memberRepository.getReferenceById(memberId);
-		member.setNickname(dto.getNickname());
+    /**
+     * 사용 가능하면 TRUE, 불가능(중복 존재)하면 FALSE
+     */
+    public String checkExistEmail(String email) {
+        final String[] result = new String[1];
+        // optional 의 메소드를 활용하여 불필요한 if 문을 제거, null 에 대한 처리를 한번에 할 수 있었다.
+        memberRepository.findByEmail(email)
+            .ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
+        return result[0];
+    }
 
-		memberRepository.flush();
+    public String checkExistId(String id) {
+        final String[] result = new String[1];
+        memberRepository.findByLoginId(id)
+            .ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
+        return result[0];
+    }
 
-		return memberMapper.MemberToMemberProfileDto(member);
-	}
+    public String findId(FindIdDto dto) {
+        final String[] result = new String[1];
+        memberRepository.findByEmail(dto.getEmail()).ifPresent(member -> {
+            if (member.getName().equals(dto.getName())) {
+                result[0] = member.getLoginId();
+            }
+        });
 
-	/** 사용 가능하면 TRUE, 불가능(중복 존재)하면 FALSE */
-	public String checkExistEmail(String email) {
+        return result[0];
+    }
 
-		final String[] result = new String[1];
-		// optional 의 메소드를 활용하여 불필요한 if 문을 제거, null 에 대한 처리를 한번에 할 수 있었다.
-		memberRepository
-			.findByEmail(email)
-			.ifPresentOrElse(
-				member -> result[0] = "exist",
-				() -> result[0] = "not exist");
+    public String findPassword(FindPasswordDto dto) {
+        final String[] result = new String[1];
+        memberRepository.findByEmail(dto.getEmail()).ifPresent(member -> {
+            if (member.getName().equals(dto.getName()) && member.getLoginId()
+                .equals(dto.getLoginId())) {
+                result[0] = member.getPassword();
+            }
+        });
 
-		return result[0];
-	}
+        return result[0];
+    }
 
-	public String checkExistId(String id) {
-		final String[] result = new String[1];
-		memberRepository
-			.findByLoginId(id)
-			.ifPresentOrElse(
-				member -> result[0] = "exist",
-				() -> result[0] = "not exist");
+    public void setProfilePicture(Integer memberId, MultipartFile file, String token)
+        throws IOException {
 
-		return result[0];
-	}
+        Member member = memberRepository.getReferenceById(memberId);
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
 
-	public String findId(FindIdDto dto) {
-		final String[] result = new String[1];
-		memberRepository
-			.findByEmail(dto.getEmail())
-			.ifPresent(
-				member -> {
-					if (member.getName().equals(dto.getName()))
-						result[0] = member.getLoginId();
-				});
+        if (!file.isEmpty()) {
+            String uuid = UUID.randomUUID().toString();
+            File newFileName = new File(
+                homePath + uploadPath + uuid + "_" + file.getOriginalFilename());
+            file.transferTo(newFileName);
 
-		return result[0];
-	}
+            member.setProfileImageId(
+                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename()))
+                    .getImageId());
+            memberRepository.flush();
+        }
+    }
 
-	public String findPassword(FindPasswordDto dto) {
-		final String[] result = new String[1];
-		memberRepository
-			.findByEmail(dto.getEmail())
-			.ifPresent(
-				member -> {
-					if (member.getName().equals(dto.getName())
-						&& member.getLoginId().equals(dto.getLoginId()))
-						result[0] = member.getPassword();
-				});
+    public Resource getProfilePicture(Integer memberId) throws IOException {
 
-		return result[0];
-	}
+        String filename = pictureRepository.getReferenceById(
+            memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
+        Path path = Paths.get(homePath + uploadPath + filename);
 
-	public String setProfilePicture(Integer memberId, MultipartFile file) throws IOException {
+        return new InputStreamResource(Files.newInputStream(path));
+    }
+    //PR
 
-		Member member = memberRepository.getReferenceById(memberId);
+    /**
+     * <p>
+     * 프론트 기능 구현 진행 후 토큰만 헤더에서 입력 받아 자동으로 memberId를 추출하여 수행하도록 구현 예정
+     * </p>
+     */
+    public List<RentPostResponseDto> getRentPostMember(Integer memberId) {
+        return rentPostRepository.findByWriterIdOrderByRentPostIdDesc(memberId).stream()
+            .map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost))
+            .collect(Collectors.toList());
+    }
 
-		if (!file.isEmpty()) {
-			String uuid = UUID.randomUUID().toString();
-			File newFileName =
-				new File(
-					System.getProperty("user.home")
-						+ uploadPath
-						+ uuid
-						+ "_"
-						+ file.getOriginalFilename());
-			file.transferTo(newFileName);
+    public Boolean checkInter(Integer memberId) {
+        return Boolean.TRUE;
+    }
 
-			member.setProfileImageId(
-				pictureRepository
-					.save(new Picture(uuid + "_" + file.getOriginalFilename()))
-					.getImageId());
-			memberRepository.flush();
-		}
-
-		return SUCCESS.getMsg();
-	}
-
-	public Resource getProfilePicture(Integer memberId) throws IOException {
-
-		String filename =
-			pictureRepository
-				.getReferenceById(memberRepository.getReferenceById(memberId).getProfileImageId())
-				.getFileName();
-		Path path = Paths.get(System.getProperty("user.home") + uploadPath + filename);
-
-		return new InputStreamResource(Files.newInputStream(path));
-	}
+    public String checkNickname(String nickname) {
+        final String[] result = new String[1];
+        memberRepository.findByNickname(nickname)
+            .ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
+        return result[0];
+    }
 }

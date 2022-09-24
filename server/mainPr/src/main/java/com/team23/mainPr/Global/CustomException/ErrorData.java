@@ -2,6 +2,7 @@ package com.team23.mainPr.Global.CustomException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 /**
  * <pre>
@@ -20,16 +21,21 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ErrorData {
 
-	INVALID_REGISTER_MEMBER_ID(1401, "회원 가입 : 잘못된 로그인 ID 형식"),
-	INVALID_REGISTER_MEMBER_PASSWORD(1402, "회원 가입 : 잘못된 로그인 비밀번호 형식"),
-	INVALID_REGISTER_MEMBER_NICKNAME(1403, "회원 가입 : 잘못된 로그인 ID 형식"),
-	CLASS_CASTING_EXCEPTION(5401, "잘못된 BODY 입력"),
-	MISSING_REQUIRED_DATA(5402, "요청에 필요한 데이터가 누락"),
-	NOT_MATCHED_PASSWORD(2401, "로그인 : 잘못된 비밀번호"),
-	NOT_MATCHED_ID(2402, "로그인 : 잘못된 아이디"),
-	DB_ERROR_OCCURED(5403, "공통 에러 : 데이버베이스 자료에 접근 동안 에러 발생"),
-	BAD_REQUEST(5405, "공통 에러 : 잘못된 요청 값 입니다.");
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "공통 에러 : 잘못된 요청 값 입니다."),
+    CLASS_CASTING_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 BODY 입력"),
+    DB_ERROR_OCCURED(HttpStatus.INTERNAL_SERVER_ERROR, "공통 에러 : 데이버베이스 자료에 접근 동안 에러 발생"),
+    INVALID_REGISTER_MEMBER_ID(HttpStatus.BAD_REQUEST, "회원 가입 : 잘못된 로그인 ID 형식"),
+    INVALID_REGISTER_MEMBER_NICKNAME(HttpStatus.BAD_REQUEST, "회원 가입 : 잘못된 로그인 ID 형식"),
+    INVALID_REGISTER_MEMBER_PASSWORD(HttpStatus.BAD_REQUEST, "회원 가입 : 잘못된 로그인 비밀번호 형식"),
+    MISSING_REQUIRED_DATA(HttpStatus.BAD_REQUEST, "요청에 필요한 데이터가 누락"),
+    NOT_EXIST_LOGIN_INFORMATION(HttpStatus.FORBIDDEN, "로그인 정보가 누락되었습니다.() 재 로그인하거나 브라우저의 쿠키 사용여부 설정을 확인하세요."),
+    NOT_MATCHED_ID(HttpStatus.BAD_REQUEST, "로그인 : 잘못된 아이디"),
+    NOT_ALLOWED_ACCESS_RESOURCE(HttpStatus.FORBIDDEN, "요청한 데이터 소유자가 아닙니다."),
+    NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "로그인 : 잘못된 비밀번호"),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터 처리과정에서 에러가 발생하였습니다.");
 
-	private final int code;
-	private final String reason;
+
+    private final HttpStatus code;
+    private final String reason;
+
 }

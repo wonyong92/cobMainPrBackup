@@ -1,25 +1,6 @@
 package com.team23.mainPr.Domain.RentPost.Service;
 
-import static com.team23.mainPr.Global.Enum.ChildCommonDtoMsgList.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
 import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
@@ -29,13 +10,32 @@ import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
 import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
+import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
+import com.team23.mainPr.Global.CustomException.CustomException;
+import com.team23.mainPr.Global.CustomException.ErrorData;
 import com.team23.mainPr.Global.DefaultTimeZone;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
- *
  * <pre>
  * 어떤 작성자 정보를 넣을까.
  * 외래키 연관 관계 생성을 통해 데이터 무결성을 지킬것인가? 아니면 분리하여 서비스의 분리도를 높일 것인가?
@@ -46,123 +46,114 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RentPostService {
 
-	private final RentPostRepository rentPostRepository;
-	private final RentPostMapper rentPostMapper;
-	private final DefaultTimeZone defaultTimeZone;
-	private final PictureRepository pictureRepository;
+    private final RentPostRepository rentPostRepository;
+    private final RentPostMapper rentPostMapper;
+    private final DefaultTimeZone defaultTimeZone;
+    private final PictureRepository pictureRepository;
+    private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
+    private final LoginRepository loginRepository;
 
-	@Value("${multipart.upload.path}")
-	String uploadPath;
+    @Value("${multipart.upload.path}")
+    String uploadPath;
 
-	public RentPostResponseDto createRentPost(CreateRentPostEntityDto dto) {
+    public RentPostResponseDto createRentPost(CreateRentPostEntityDto dto, String token) {
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
+        RentPost result = rentPostRepository.save(rentPostMapper.CreateRentPostEntityDtoToRentPost(dto));
 
-		RentPost result =
-			rentPostRepository.save(rentPostMapper.CreateRentPostEntityDtoToRentPost(dto));
+        return rentPostMapper.RentPostToRentPostResponseDto(result);
+    }
 
-		return rentPostMapper.RentPostToRentPostResponseDto(result);
-	}
+    public RentPostResponseDto updateRentPost(@Valid UpdateRentPostDto dto, String token) {
 
-	public RentPostResponseDto updateRentPost(Integer postId, UpdateRentPostDto dto) {
+        RentPost post = rentPostRepository.getReferenceById(dto.getPostId());
 
-		RentPost post = rentPostRepository.getReferenceById(postId);
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(post.getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
 
-		RentPost updatedPost = dto.updateData(post, dto);
+        RentPost updatedPost = dto.updateData(post, dto);
 
-		rentPostRepository.flush();
+        rentPostRepository.flush();
 
-		return rentPostMapper.RentPostToRentPostResponseDto(updatedPost);
-	}
+        return rentPostMapper.RentPostToRentPostResponseDto(updatedPost);
+    }
 
-	public String deleteRentPost(Integer postId) {
+    /**
+     * <p>
+     * getReferenceById는 프록시를 이용하므로 엔티티로 바로 받아오면 에러 검출이 안된다. 실제로 필드를 불러오면 예외를 확인 가능하다.
+     * </p>
+     */
+    public void deleteRentPost(Integer postId, String token) {
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
+        for (Picture picture : pictureRepository.findByPostId(postId)) {
+            if (new File(System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
+                throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
+            }
 
-		rentPostRepository.delete(rentPostRepository.getReferenceById(postId));
+            pictureRepository.delete(picture);
+        }
+        rentPostRepository.deleteById(rentPostRepository.getReferenceById(postId).getRentPostId());
+    }
 
-		return TRUE.getMsg();
-	}
+    public RentPostResponseDto getRentPost(Integer postId) {
 
-	public RentPostResponseDto getRentPost(Integer postId) {
+        RentPost result = rentPostRepository.getReferenceById(postId);
 
-		RentPost result = rentPostRepository.getReferenceById(postId);
+        result.setViewCount(result.getViewCount() + 1);
+        rentPostRepository.flush();
 
-		result.setViewCount(result.getViewCount() + 1);
-		rentPostRepository.flush();
+        return rentPostMapper.RentPostToRentPostResponseDto(result);
+    }
 
-		return rentPostMapper.RentPostToRentPostResponseDto(result);
-	}
+    public void postImages(List<MultipartFile> files, Integer postId, String token) throws IOException {
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
 
-	public String postImages(List<MultipartFile> files, Integer postId) throws IOException {
+        if (!files.isEmpty()) {
+            for (MultipartFile file : files) {
+                String uuid = UUID.randomUUID().toString();
+                File newFileName = new File(System.getProperty("user.home") + uploadPath + uuid + "_" + file.getOriginalFilename());
+                file.transferTo(newFileName);
 
-		if (!files.isEmpty()) {
-			for (MultipartFile file : files) {
-				String uuid = UUID.randomUUID().toString();
-				File newFileName =
-					new File(
-						System.getProperty("user.home")
-							+ uploadPath
-							+ uuid
-							+ "_"
-							+ file.getOriginalFilename());
-				file.transferTo(newFileName);
+                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getImageId();
+            }
+        }
+    }
 
-				pictureRepository
-					.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId))
-					.getImageId();
-			}
-		}
+    public List<Integer> getPostImages(Integer postId) {
 
-		return SUCCESS.getMsg();
-	}
+        return pictureRepository.findByPostId(postId).stream().map(picture -> picture.getImageId()).collect(Collectors.toList());
+    }
 
-	public List<Integer> getPostImages(Integer postId) {
+    public Resource getImage(Integer imageId) throws IOException {
 
-		List<Integer> result = new ArrayList<>();
+        Path path = Paths.get(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(imageId).getFileName());
 
-		pictureRepository.findByPostId(postId).stream()
-			.forEach(
-				picture -> result.add(picture.getImageId()));
+        return new InputStreamResource(Files.newInputStream(path));
+    }
 
-		return result;
-	}
+    public PagedRentPostResponseDtos getRentPosts(Pageable pageable, Boolean rentStatus, String category) {
 
-	public Resource getImage(Integer imageId) throws IOException {
+        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContaining(pageable, rentStatus, category);
 
-		Path path =
-			Paths.get(
-				System.getProperty("user.home")
-					+ uploadPath
-					+ pictureRepository.getReferenceById(imageId).getFileName());
+        List<RentPostResponseDto> mappedResult = new ArrayList<>();
+        result.stream().forEach(rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
 
-		return new InputStreamResource(Files.newInputStream(path));
-	}
+        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
+    }
 
-	public PagedRentPostResponseDtos getRentPosts(
-		Pageable pageable, Boolean rentStatus, String category) {
+    public List<RentPostResponseDto> searchAll(String phrase, String category, String sort, Integer page, Boolean rentStatus) {
+        Pageable p = PageRequest.of(page - 1, 20, Sort.Direction.DESC, sort);
+        return rentPostRepository.search(phrase, category, p, rentStatus).stream().map(rentPostId -> rentPostMapper.RentPostToRentPostResponseDto(rentPostRepository.getReferenceById(rentPostId))).collect(Collectors.toList());
+    }
 
-		Page<RentPost> result =
-			rentPostRepository.findAllByRentStatusAndCategoryContaining(pageable, rentStatus, category);
+    public List<RentPostResponseDto> ftSearchAll(String phrase) {
 
-		List<RentPostResponseDto> mappedResult = new ArrayList<>();
-		result.stream()
-			.forEach(
-				rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
-
-		return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
-	}
-
-	public List<RentPostResponseDto> searchAll(String phrase) {
-
-		return rentPostRepository.search(phrase).stream()
-			.map(
-				rentPostId ->
-					rentPostMapper.RentPostToRentPostResponseDto(
-						rentPostRepository.getReferenceById(rentPostId)))
-			.collect(Collectors.toList());
-	}
-
-	public List<RentPostResponseDto> ftSearchAll(String phrase) {
-
-		return rentPostRepository.ftSearch(phrase).stream()
-			.map(rentPostMapper::RentPostToRentPostResponseDto)
-			.collect(Collectors.toList());
-	}
+        return rentPostRepository.ftSearch(phrase).stream().map(rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
+    }
 }

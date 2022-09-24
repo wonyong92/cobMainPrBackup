@@ -1,7 +1,6 @@
 package com.team23.mainPr.Global.Enum;
 
 import java.time.ZoneId;
-
 import lombok.Getter;
 
 /**
@@ -16,12 +15,12 @@ import lombok.Getter;
 @Getter
 public enum TimeZone {
 
-	ASIA_SEOUL("Asia/Seoul");
+    ASIA_SEOUL("Asia/Seoul");
 
-	private final ZoneId zoneId;
+    private final ZoneId zoneId;
 
-	// public 시 컴파일 에러 발생
-	TimeZone(String location) {
-		this.zoneId = ZoneId.of(location);
-	}
+    // public 시 컴파일 에러 발생
+    TimeZone(String location) {
+        this.zoneId = ZoneId.of(location);
+    }
 }

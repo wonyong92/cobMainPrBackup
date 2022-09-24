@@ -1,22 +1,23 @@
 package com.team23.mainPr.Domain.Picture.Controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.team23.mainPr.Domain.Picture.Service.PictureService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/image")
 @RequiredArgsConstructor
 public class controller {
 
-	private final PictureService pictureService;
+    private final PictureService pictureService;
 
-	@GetMapping
-	public void download() {
-		pictureService.setDefaultImage();
-	}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void download() {
+        pictureService.setDefaultImage();
+    }
 }

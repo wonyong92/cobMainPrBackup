@@ -18,7 +18,8 @@ CREATE TABLE `RENT_POST` (
   `WRITER_ID` int,
   `WRITE_DATE` datetime,
   `UPDATE_DATE` datetime,
-  `RENTED` boolean DEFAULT false
+  `RENTED` boolean DEFAULT false,
+  `RENT_PRICE` int
 );
 
 CREATE TABLE `IMAGE` (
