@@ -22,6 +22,8 @@ body {
         background-color: #effffd;
     }
     .App {
+        display: flex;
+        flex-direction: column;
         width: 375px;
         background-color: white;
         border-left: 1px #464646 solid;

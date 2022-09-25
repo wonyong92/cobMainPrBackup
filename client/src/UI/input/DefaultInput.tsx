@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 interface Prop {
     type?: 'password' | 'text';
-    placeholder: string;
+    value?: string;
+    placeholder?: string;
 }
-const DefaultInput = ({ type = 'text', placeholder }: Prop) => {
+const DefaultInput = ({ type = 'text', value, placeholder }: Prop) => {
     return (
         <Container>
-            <input type={type} placeholder={placeholder} />
+            <input type={type} value={value} placeholder={placeholder} />
         </Container>
     );
 };

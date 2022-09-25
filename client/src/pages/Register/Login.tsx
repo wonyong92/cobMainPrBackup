@@ -27,9 +27,9 @@ const Login = () => {
                 />
             </LoginBox>
             <FindInfo>
-                <button>ID찾기</button>
+                <TextButton btnText={'ID 찾기'} isGray={true} />
                 <span>&#47;</span>
-                <button>비밀번호 찾기</button>
+                <TextButton btnText={'비밀번호 찾기'} isGray={true} />
             </FindInfo>
             <BtnWrapper>
                 <TextButton
@@ -43,15 +43,21 @@ const Login = () => {
 };
 export default Login;
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
+    margin-top: 80px;
+    @media screen and (max-width: 500px) {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+    }
 `;
 const LoginBox = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 15px;
     margin-bottom: 15px;
+    button {
+        width: 100%;
+    }
 `;
 const FindInfo = styled.div`
     display: flex;
@@ -74,5 +80,5 @@ const BtnWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 35px;
+    margin-top: 60px;
 `;
