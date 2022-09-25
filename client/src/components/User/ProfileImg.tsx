@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 const ProfileImg = () => {
+    const imgUrl: string =
+        'https://i.pinimg.com/474x/a8/34/51/a83451b046c3505aadcbdb64cfdb8ad6.jpg';
     return (
         <Container>
             <div className="title">프로필이미지</div>
             <ImgWrapper>
-                <img
-                    alt="profile"
-                    src="https://i.pinimg.com/474x/a8/34/51/a83451b046c3505aadcbdb64cfdb8ad6.jpg"
-                />
+                <img alt="profile" src={imgUrl} />
                 <Button type={'white'} width={'short'} text={'변경'} />
             </ImgWrapper>
         </Container>
@@ -46,12 +45,9 @@ const ImgWrapper = styled.div`
             height: 40px;
         }
         button {
-            border: #4a4747 1px solid;
-            margin-left: 15px;
             width: 40px;
             height: 30px;
             font-size: 12px;
-            border-radius: 5px;
         }
     }
 `;
