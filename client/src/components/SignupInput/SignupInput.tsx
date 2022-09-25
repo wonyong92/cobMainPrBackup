@@ -81,7 +81,7 @@ const SignupInput = () => {
                 break;
             case 'name':
                 isValidUsername(value)
-                    ? setMessage({ ...message, ['name']: '' })
+                    ? setMessage({ ...message, ['name']: '>' })
                     : setMessage({ ...message, ['name']: MSG_10 });
                 break;
             case 'nickname':
@@ -91,7 +91,7 @@ const SignupInput = () => {
                 break;
             case 'email':
                 isValidEmail(value)
-                    ? setMessage({ ...message, ['email']: '' })
+                    ? setMessage({ ...message, ['email']: '>' })
                     : setMessage({ ...message, ['email']: MSG_15 });
                 break;
             default:
@@ -118,12 +118,11 @@ const SignupInput = () => {
     const checkUserID = () => {
         if (isValidId(userInfo.loginId)) {
             axios
-                .post(
-                    `http://3.39.180.45:56178/member/post/checkExistId?id=${userInfo.loginId}`,
+                .get(
+                    `http://3.39.180.45:56178/member/checkExistId?id=${userInfo.loginId}`,
                     { withCredentials: false },
                 )
                 .then((res) => {
-                    console.log(res.data);
                     res.data === 'not exist'
                         ? setMessage({ ...message, ['loginId']: MSG_03 })
                         : setMessage({ ...message, ['loginId']: MSG_04 });
@@ -136,8 +135,8 @@ const SignupInput = () => {
     const checkNickname = () => {
         if (isValidNickname(userInfo.nickname)) {
             axios
-                .post(
-                    `http://3.39.180.45:56178/member/post/checkExistNickname?nickname=${userInfo.nickname}`,
+                .get(
+                    `http://3.39.180.45:56178/member/checkExistNickname?nickname=${userInfo.nickname}`,
                     { withCredentials: false },
                 )
                 .then((res) => {
@@ -153,8 +152,8 @@ const SignupInput = () => {
     const checkEmail = () => {
         if (isValidEmail(userInfo.email)) {
             axios
-                .post(
-                    `http://3.39.180.45:56178/member/post/checkExistEmail?email=${userInfo.email}`,
+                .get(
+                    `http://3.39.180.45:56178/member/checkExistEmail?email=${userInfo.email}`,
                     { withCredentials: false },
                 )
                 .then((res) => {
