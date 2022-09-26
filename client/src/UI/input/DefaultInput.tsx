@@ -1,43 +1,5 @@
 import styled from 'styled-components';
 
-interface Prop {
-    type?: 'password' | 'text';
-    label?: string;
-    value?: string;
-    name?: string;
-    message?: string;
-    placeholder?: string;
-    ref?: null;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any; //?
-}
-const DefaultInput = ({
-    type = 'text',
-    label,
-    value,
-    name,
-    message,
-    placeholder,
-    ref,
-    onChange,
-}: Prop) => {
-    const msgProp: string = message!;
-    return (
-        <Container>
-            {label && <label>{label}</label>}
-            <input
-                ref={ref}
-                type={type}
-                value={value}
-                name={name}
-                placeholder={placeholder}
-                onChange={onChange}
-            />
-            <Message msgProp={msgProp}>{message}</Message>
-        </Container>
-    );
-};
-export default DefaultInput;
-
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -61,3 +23,38 @@ const Message = styled.p<{ msgProp: string }>`
     text-indent: 3px;
     color: ${(props) => (props.msgProp === '>' ? 'white' : '#ff7f7f')};
 `;
+
+interface Prop {
+    type?: 'password' | 'text';
+    label?: string;
+    value?: string;
+    name?: string;
+    message?: string;
+    placeholder?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any; //?
+}
+const DefaultInput = ({
+    type = 'text',
+    label,
+    value,
+    name,
+    message,
+    placeholder,
+    onChange,
+}: Prop) => {
+    const msgProp: string = message!;
+    return (
+        <Container>
+            {label && <label>{label}</label>}
+            <input
+                type={type}
+                value={value}
+                name={name}
+                placeholder={placeholder}
+                onChange={onChange}
+            />
+            <Message msgProp={msgProp}>{message}</Message>
+        </Container>
+    );
+};
+export default DefaultInput;

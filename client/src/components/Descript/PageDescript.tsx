@@ -1,28 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '../../asessts/img/biglogo.svg';
 import { ReactComponent as success } from '../../asessts/img/success.svg';
-interface Prop {
-    title: string;
-    descript?: string;
-    isSuccess?: boolean;
-}
-const PageDescript = ({ title, descript, isSuccess }: Prop) => {
-    return (
-        <DescriptWrapper>
-            {isSuccess === true ? <IconSVG /> : <LogoSVG />}
-            <h4>{title}</h4>
-
-            {isSuccess === true ? (
-                <Back>
-                    <p>{descript}</p>
-                </Back>
-            ) : (
-                <p>{descript}</p>
-            )}
-        </DescriptWrapper>
-    );
-};
-export default PageDescript;
 const DescriptWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -63,3 +41,26 @@ const IconSVG = styled(success)`
     margin: 0 10px;
     margin-bottom: 30px;
 `;
+
+interface Prop {
+    title: string;
+    descript?: string;
+    isSuccess?: boolean;
+}
+const PageDescript = ({ title, descript, isSuccess }: Prop) => {
+    return (
+        <DescriptWrapper>
+            {isSuccess === true ? <IconSVG /> : <LogoSVG />}
+            <h4>{title}</h4>
+
+            {isSuccess === true ? (
+                <Back>
+                    <p>{descript}</p>
+                </Back>
+            ) : (
+                <p>{descript}</p>
+            )}
+        </DescriptWrapper>
+    );
+};
+export default PageDescript;
