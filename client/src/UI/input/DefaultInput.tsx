@@ -52,6 +52,7 @@ const DefaultInput = ({
                 name={name}
                 placeholder={placeholder}
                 onChange={onChange}
+                autoComplete={type === 'password' ? 'off' : ''}
             />
             <Message msgProp={msgProp}>{message}</Message>
         </Container>
