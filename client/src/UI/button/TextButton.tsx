@@ -1,33 +1,35 @@
 import styled from 'styled-components';
 interface Prop {
-    text: string;
+    text?: string;
     btnText: string;
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    isGray?: boolean;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-const TextButton = ({ text, btnText, onClick }: Prop) => {
+const TextButton = ({ text, btnText, isGray, onClick }: Prop) => {
+    const btnColor: boolean = isGray ? true : false;
     return (
         <Container>
-            <div className="title">{text}</div>
-            <button onClick={onClick}>{btnText}</button>
+            {!isGray && <Text className="title">{text}</Text>}
+            <Btn btnColor={btnColor} onClick={onClick}>
+                {btnText}
+            </Btn>
         </Container>
     );
 };
 export default TextButton;
 const Container = styled.div`
     display: flex;
-    width: 65%;
-    margin-top: 30px;
-    justify-content: space-around;
-    .title {
-        color: #727272;
-        font-size: 12px;
-    }
-    button {
-        cursor: pointer;
-        color: #c1a57c;
-        font-weight: 600;
-        font-size: 12px;
-        background-color: transparent;
-        border: none;
-    }
+`;
+const Text = styled.div`
+    color: #727272;
+    font-size: 12px;
+    margin-right: 10px;
+`;
+const Btn = styled.button<{ btnColor: boolean }>`
+    cursor: pointer;
+    color: ${(props) => (props.btnColor ? '#727272' : '#c1a57c;')};
+    font-weight: 400;
+    font-size: 12px;
+    background-color: transparent;
+    border: none;
 `;

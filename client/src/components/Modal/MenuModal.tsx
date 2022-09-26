@@ -12,6 +12,7 @@ const MenuModal = ({ setMenuModal }: PropsType) => {
     };
     const dummy: string[] = [
         '인기리스트',
+        '캠핑용품',
         '디지털기기',
         '생활가전',
         '가구/인테리어',
@@ -46,55 +47,100 @@ const MenuModal = ({ setMenuModal }: PropsType) => {
 
 export default MenuModal;
 const ModalBackDrop = styled.div`
+    display: flex;
     position: fixed;
     z-index: 999;
-    top: 10px;
     left: 0;
     bottom: 0;
     right: 0;
-    display: flex;
-    justify-content: center;
+    top: 0;
+
+    @media screen and (max-width: 500px) {
+        position: fixed;
+        z-index: 999;
+        top: 10px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+    }
 `;
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 340px;
-    height: 390px;
+    position: relative;
+    top: 60px;
+    left: 80px;
+    padding: 10px;
+    height: 40px;
+    width: 100%;
     background-color: white;
-    box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
+    opacity: 0.8;
+
+    @media screen and (max-width: 500px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 340px;
+        min-height: 420px;
+        position: relative;
+        top: 10px;
+        left: 0.01px;
+        opacity: 1;
+        background-color: white;
+        box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
+    }
 `;
 const Top = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px 0px;
-    border-bottom: 1px solid #f1efef;
-    width: 90%;
-    margin-top: 5px;
-    color: #282828;
-    .title {
-        font-weight: 600;
-        font-size: 15px;
-        width: 95%;
-        text-align: center;
-    }
-    .icon {
-        width: 5%;
-        cursor: pointer;
+    display: none;
+    @media screen and (max-width: 500px) {
+        display: flex;
+        align-items: center;
+        padding: 10px 0px;
+        border-bottom: 1px solid #f1efef;
+        width: 90%;
+        margin-top: 5px;
+        color: #282828;
+        .title {
+            font-weight: 600;
+            font-size: 15px;
+            width: 95%;
+            text-align: center;
+        }
+        .icon {
+            width: 5%;
+            cursor: pointer;
+        }
     }
 `;
 const Bottom = styled.div`
-    margin-top: 5px;
     display: flex;
-    flex-direction: column;
-    min-width: 280px;
-    align-items: flex-start;
+
+    @media screen and (max-width: 500px) {
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        min-width: 280px;
+        align-items: flex-start;
+    }
 `;
 
 const Item = styled.div`
     cursor: pointer;
-    color: #464646;
+    color: black;
     font-size: 14px;
-    font-weight: 300;
-    padding-top: 10px;
+    font-weight: 500;
+    margin-right: 10px;
+    &:hover {
+        color: #96d1cc;
+        transition: 0.2s;
+    }
+    @media screen and (max-width: 500px) {
+        cursor: pointer;
+        color: #464646;
+        font-size: 14px;
+        font-weight: 300;
+        padding-top: 10px;
+    }
 `;
