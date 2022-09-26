@@ -1,6 +1,7 @@
 package com.team23.mainPr.Domain.RentPost.Controller;
 
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostPageRequestDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
@@ -11,9 +12,6 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,12 +82,10 @@ public class RentPostController {
     @Operation(description = "전체 게시글 목록 조회, 목록 크기 20 고정, page 0번 부터 시작 , 기본 정렬 - 최신순, sort에서 writeDate, viewCount 로 최신순,인기순 변경 가능," + " 렌트 상태 rentStatus 기본값 false, 카테고리 categoryXXX 형태로 카테고리 설정 가능")
     @GetMapping("/posts")
     public PagedRentPostResponseDtos getRentPosts(
-        @RequestParam(defaultValue = "0") Integer page,
-        @RequestParam(defaultValue = "20") Integer size,
-        @RequestParam(defaultValue = "writeDate") String sort,
+        @RequestBody RentPostPageRequestDto dto,
         @RequestParam(defaultValue = "false") Boolean rentStatus,
         @RequestParam(defaultValue = "category") String category) {
-        return rentPostService.getRentPosts(page, size, sort, rentStatus, category);
+        return rentPostService.getRentPosts(dto, rentStatus, category);
     }
 
     /**
@@ -123,10 +119,9 @@ public class RentPostController {
     public List<RentPostResponseDto> search(
         @RequestParam String phrase,
         @RequestParam(defaultValue = "category") String category,
-        @RequestParam(defaultValue = "RENT_POST_ID") String sort,
-        @RequestParam(defaultValue = "1") Integer page,
+        @RequestBody RentPostPageRequestDto dto,
         @RequestParam(defaultValue = "false") Boolean rentStatus) {
-        return rentPostService.searchAll(phrase.replace(" ", "|").trim(), category, sort, page,
+        return rentPostService.searchAll(phrase.replace(" ", "|").trim(), category, dto,
             rentStatus);
     }
 
