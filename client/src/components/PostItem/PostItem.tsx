@@ -13,13 +13,14 @@ interface Props{
 }
 
 const PostItem = ({}:Props) => {
+  const imgUrl: string = 'https://images.unsplash.com/photo-1616161616161-1b1b1b1b1b1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
   return (
     <>
       <HeadRow>
         <h2>인기리스트</h2>
       </HeadRow>
       <ListWrapper>
-        <Image src="https://media.gettyimages.com/photos/fixedgear-road-bike-picture-id594837789?k=20&m=594837789&s=612x612&w=0&h=-NM56HgV7IKV6RNRXKbdwD_U6tnyvos-P5hKvNk8QqU="></Image>
+        <Image src={imgUrl} />
         <DescriptionWrapper>
           <Title>50년된 자전거</Title>
           <Region>서울</Region>
