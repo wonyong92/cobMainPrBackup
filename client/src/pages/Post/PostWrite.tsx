@@ -8,44 +8,44 @@ import TextInput from '../../UI/input/TextInput';
 import { useState } from 'react';
 
 
+
 const PostWrite = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [location, setLocation] = useState('');
-  
-
-  const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const onChangeContent = (e: ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
-  };
-
-  const onChangePrice = (e: ChangeEvent<HTMLInputElement>) => {
-    setPrice(e.target.value);
-  };
-
-  const onChangeCategory = (e: ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
-  };
-
-  const onChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
-    setLocation(e.target.value);
+  interface Post {
+    title: string;
+    content: string;
+    price: string;
+    category: string;
+    location: string;
+    userId: string;
+    userName: string;
+    userImg: string
+    }
+  const [post,setPost] = useState<Post>({
+    title: '',
+    content: '',
+    price: '',
+    category: '',
+    location: '',
+    userId: '',
+    userName: '',
+    userImg: '',
+  })
+  const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
+  const {name, value}= e.target;
+  setPost({...post,[name]:value,})
   };
 
   
   const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     sendPost({
-      title ,
-      content,
-      price,
-      category,
-      location,
-    });
+      title: post.title,
+      content: post.content,
+      price: post.price,
+      category: post.category,
+      location: post.location,
+    })
+      
     }
     
     
@@ -66,34 +66,36 @@ const PostWrite = () => {
             
             <span>글제목</span>
             <TextInput 
-            placeholder={'글제목을 입력해주세요'} 
-            onChange={onChangeTitle} 
-            type={'text'} 
-            value={title} />
+            placeholder={'글제목을 입력해주세요'}
+            onChange={onChangePost}
+            type={'text'}
+            value={post.title} name={'title'} />
             <span>지역</span>
             <TextInput 
-            placeholder={'지역을 입력해주세요'} 
-            onChange={onChangeLocation} 
-            type={'text'} 
-            value={location}/>
+            placeholder={'지역을 입력해주세요'}
+            onChange={onChangePost}
+            type={'text'}
+            value={post.location} name={'location'}/>
             
             <span>카테고리</span>
             <TextInput 
-            placeholder={'카테고리를 입력해주세요'} 
-            onChange={onChangeCategory} 
-            type={'text'} 
-            value={category}  />
+            placeholder={'카테고리를 입력해주세요'}
+            onChange={onChangePost}
+            type={'text'}
+            value={post.category} 
+            name={'catergory'} />
             
             <span>가격</span>
             <TextInput 
-            placeholder={'가격을 입력해주세요'} 
-            onChange={onChangePrice} 
-            type={'text'} 
-            value={price} />
+            placeholder={'가격을 입력해주세요'}
+            onChange={onChangePost}
+            type={'text'}
+            value={post.price} 
+            name={'price'} />
             </WriteWrapper>
             
-            <h4>{content}</h4>
-            <CustomEditor value={''} isError={false}  onChange={()=>onChangeContent} />
+            <h4>{post.content}</h4>
+            <CustomEditor value={''} isError={false}  onChange={()=>onChangePost} />
         
         </>
      
