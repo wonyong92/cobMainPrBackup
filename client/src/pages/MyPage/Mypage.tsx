@@ -2,8 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEdit } from '@fortawesome/free-solid-svg-icons';
-import MyInfo from '../../components/MyInfo';
-import MyAccount from '../../components/MyAccount';
+import MyInfo from '../../components/User/MyInfo';
+import MyAccount from '../../components/User/MyAccount';
 const Mypage = () => {
     const [isInfo, setIsInfo] = useState(true);
     return (

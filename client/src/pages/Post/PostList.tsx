@@ -1,40 +1,35 @@
-
-import PostItem from '../../components/PostItem';
-import axios from 'axios';
-import { useEffect } from 'react';
+import { getPosts }  from '../../Utils/ApiCall';
+import PostItem from '../../components/PostItem/PostItem';
+import { useState, useEffect } from 'react';
 
 const PostList = () => {
 
-// const [posts, setPosts] = useState([]);
-// useEffect(() => {
-//     axios.get('http://localhost:4000/posts')
-//         .then((res) => {
-//             setPosts(res.data);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// }, []);
+    const [posts, setPosts] = useState([]);
 
+    useEffect(() => {
+        getPosts().then((res) => {
+            setPosts(res.data);
+            console.log(res);
+        });
+    }, []);
+
+        
 
 return (
     <>
-        {/* {posts.map((post) => ( */}
+        {posts.map((post) => ( 
             <PostItem
-                // key={post}
-                // id={post.id}
-                // title={post}
-                // content={post}
-                // price={post}
-                // category={post}
-                // location={post}
-                // createdAt={post}
-                // updatedAt={post}
-                // userId={post}
-                // userName={post}
-                // userImg={post}
+            category= {post}
+            rentPostContents= {post}
+            rentPostId= {post}
+            rentPostName= {post}
+            updateDate= {post}
+            viewCount= {post}
+            writeDate= {post}
+            writerId= {post}
+            rentStatus= {post}
             />
-        {/* ))} */}
+        ))}
     </>
 );
 };

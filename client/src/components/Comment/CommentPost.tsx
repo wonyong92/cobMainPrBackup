@@ -1,47 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ChangeEvent } from 'react';
-import Button from './Button';
-import TextInput from './TextInput';
+import Button from '../../UI/button/Button';
+import TextInput from '../../UI/input/TextInput';
 
 const CommentPost = () => {
 
     const [comment, setComment] = useState('');
-    // const [commentError, setCommentError] = useState(false);
-
-    // const onChangeComment = (e: ChangeEvent<HTMLInputElement>) => {
-    //     setComment(e.target.value);
-    //     setCommentError(false);
-    // };
-
-    // const onClickComment = () => {
-    //     if (comment === '') {
-    //         setCommentError(true);
-    //         return;
-    //     }
-    //     setComment('');
-    // };
-
-    
-
-    // const onSubmit = (e: ChangeEvent<HTMLInputElement>) => {
-    //     e.preventDefault();
-    //     axios.post('http://localhost:4000/comments', {
-    //         content: content,
-    //         postId: postId,
-    //         userId: userId,
-    //     })
-    //         .then((res) => {
-    //             console.log(res);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // };
-
-    
-
-   
   
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
       setComment(e.target.value);

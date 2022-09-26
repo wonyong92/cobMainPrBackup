@@ -1,10 +1,18 @@
-
-import { ChangeEvent } from 'react';
+import { getPosts } from '../../Utils/ApiCall';
 import styled from 'styled-components';
-import PostItem from '../../components/PostItem';
-import TextInput from '../../components/TextInput';
+import PostItem from '../../components/PostItem/PostItem';
+import { useEffect, useState } from 'react';
 
 const Main = () => {
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        getPosts().then((res) => {
+            setPosts(res.data);
+            console.log(res);
+        });
+    }, []);
+
     return (
         <>
             <section>
@@ -26,18 +34,19 @@ const Main = () => {
                     </SubTitle>
                 </WelcomePage>
             </section>
-            <TextInput
-                type={'text'}
-                value={''}
-                placeholder={''}   
-                onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-                    throw new Error('Function not implemented.');
-                } }            />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
+            {posts.map((post) => (
+                <PostItem
+                category= {post}
+                rentPostContents= {post}
+                rentPostId= {post}
+                rentPostName= {post} 
+                updateDate= {post}
+                viewCount= {post}
+                writeDate= {post}
+                writerId= {post}
+                rentStatus= {post}
+                />
+            ))}
         </>
     );
 };

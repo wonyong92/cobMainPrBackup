@@ -1,6 +1,18 @@
 import styled from 'styled-components';
 
-const PostItem = () => {
+interface Props{
+  category: string,
+  rentPostContents: string,
+  rentPostId: number,
+  rentPostName: string,
+  updateDate: string,
+  viewCount: number,
+  writeDate: string,
+  writerId: number,
+  rentStatus: string,
+}
+
+const PostItem = ({}:Props) => {
   return (
     <>
       <HeadRow>
@@ -9,7 +21,7 @@ const PostItem = () => {
       <ListWrapper>
         <Image src="https://media.gettyimages.com/photos/fixedgear-road-bike-picture-id594837789?k=20&m=594837789&s=612x612&w=0&h=-NM56HgV7IKV6RNRXKbdwD_U6tnyvos-P5hKvNk8QqU="></Image>
         <DescriptionWrapper>
-          <Title>50년된 새거같은 자전거</Title>
+          <Title>50년된 자전거</Title>
           <Region>서울</Region>
           <Price>50000원</Price>
           <div style={{ color: '#868e96', fontSize: '13px' }}>

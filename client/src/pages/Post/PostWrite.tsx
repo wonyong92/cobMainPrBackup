@@ -1,10 +1,10 @@
 
 import { ChangeEvent, MouseEvent } from 'react';
+import { sendPost } from '../../Utils/ApiCall';
 import styled from 'styled-components';
-import Button from '../../components/Button';
-import CustomEditor from '../../components/CustomEditor';
-import TextInput from '../../components/TextInput';
-import axios from 'axios';
+import Button from '../../UI/button/Button';
+import CustomEditor from '../../components/Editor/CustomEditor';
+import TextInput from '../../UI/input/TextInput';
 import { useState } from 'react';
 
 
@@ -37,31 +37,23 @@ const PostWrite = () => {
   };
 
   
-  const onSubmit = (e: ChangeEvent<HTMLInputElement>) => {
+  const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    axios.post('http://localhost:4000/posts', {
-      title: title,
-      content: content,
-      price: price,
-      category: category,
-      location: location,
-      
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-
+    sendPost({
+      title ,
+      content,
+      price,
+      category,
+      location,
+    });
+    }
+    
+    
+  
     return (
         <>
             <h4>빌려주기 작성가이드</h4>
-            <Button text={'글저장'} onClick={function (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void {
-          throw new Error('Function not implemented.');
-        } } />
+            <Button text={'글저장'} onClick={(e: MouseEvent<HTMLButtonElement>)=> clickHandler(e)} />
             <GuideWrapper>
               <li>사진을 올려주세요</li>
               <li>거래지역을 명시해주세요</li>
@@ -71,19 +63,38 @@ const PostWrite = () => {
             </GuideWrapper>
             <WriteWrapper>
             <h4>필수 정보 입력</h4>
+            
             <span>글제목</span>
-            <TextInput placeholder={'글제목을 입력해주세요'} onChange={onChangeTitle} type={'text'} value={''}  />
+            <TextInput 
+            placeholder={'글제목을 입력해주세요'} 
+            onChange={onChangeTitle} 
+            type={'text'} 
+            value={title} />
             <span>지역</span>
-            <TextInput placeholder={'지역을 입력해주세요'} onChange={onChangeLocation} type={'text'} value={''}  />
+            <TextInput 
+            placeholder={'지역을 입력해주세요'} 
+            onChange={onChangeLocation} 
+            type={'text'} 
+            value={location}/>
+            
             <span>카테고리</span>
-            <TextInput placeholder={'카테고리를 입력해주세요'} onChange={onChangeCategory} type={'text'} value={''}  />
+            <TextInput 
+            placeholder={'카테고리를 입력해주세요'} 
+            onChange={onChangeCategory} 
+            type={'text'} 
+            value={category}  />
+            
             <span>가격</span>
-            <TextInput placeholder={'가격을 입력해주세요'} onChange={onChangePrice} type={'text'} value={''} />
+            <TextInput 
+            placeholder={'가격을 입력해주세요'} 
+            onChange={onChangePrice} 
+            type={'text'} 
+            value={price} />
             </WriteWrapper>
-            <h4>제품설명</h4>
-            <CustomEditor value={''} isError={false}  onChange={function (): void {
-          throw new Error('Function not implemented.');
-        } } />
+            
+            <h4>{content}</h4>
+            <CustomEditor value={''} isError={false}  onChange={()=>onChangeContent} />
+        
         </>
      
     )

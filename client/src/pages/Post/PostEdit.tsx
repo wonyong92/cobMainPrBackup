@@ -1,12 +1,12 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import Button from '../../components/Button';
-import CustomEditor from '../../components/CustomEditor';
-import TextInput from '../../components/TextInput';
+import Button from '../../UI/button/Button';
+import CustomEditor from '../../components/Editor/CustomEditor';
+import TextInput from '../../UI/input/TextInput';
 
 const PostEdit = () => {
 
-  
+
     return (
         <>
             <h4>빌려주기 작성가이드</h4>
