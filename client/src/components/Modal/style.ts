@@ -7,15 +7,8 @@ export const ModalBackDrop = styled.div`
     bottom: 0;
     right: 0;
     top: 0;
-
     @media screen and (max-width: 500px) {
-        position: fixed;
-        z-index: 999;
         top: 10px;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        display: flex;
         justify-content: center;
     }
 `;
@@ -24,7 +17,7 @@ export const Container = styled.div`
     flex-direction: column;
     position: relative;
     top: 60px;
-    left: 80px;
+    left: 150px;
     padding: 10px;
     height: 40px;
     width: 100%;
@@ -32,16 +25,12 @@ export const Container = styled.div`
     opacity: 0.8;
 
     @media screen and (max-width: 500px) {
-        display: flex;
-        flex-direction: column;
         align-items: center;
         width: 340px;
-        min-height: 420px;
-        position: relative;
+        height: 420px;
         top: 10px;
         left: 0.01px;
         opacity: 1;
-        background-color: white;
         box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
     }
 `;
