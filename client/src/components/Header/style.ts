@@ -24,6 +24,7 @@ export const Top = styled.div`
         height: 40px;
     }
 `;
+
 export const LogoWrapper = styled.div<{
     menuModal: boolean;
 }>`
@@ -96,13 +97,20 @@ export const Bottom = styled.div`
     }
 `;
 
-export const DesktopBtnWrapper = styled.div`
+export const DesktopTopRight = styled.div`
     display: flex;
     width: 200px;
-    justify-content: space-between;
     align-items: center;
     button {
         font-size: 13px;
+        margin-left: 15px;
+        white-space: nowrap;
+    }
+    .icon {
+        cursor: pointer;
+        color: #95d1cc;
+        width: 25px;
+        height: 20px;
     }
     @media screen and (max-width: 500px) {
         display: none;
