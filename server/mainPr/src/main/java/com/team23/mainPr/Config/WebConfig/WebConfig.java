@@ -22,13 +22,14 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-
-        registry.addMapping("/**").allowedMethods("*").allowCredentials(false).allowedHeaders("*").allowedOriginPatterns("*");
+        registry.addMapping("/**").exposedHeaders("Authorization").allowedMethods(
+            "*").allowCredentials(false).allowedHeaders("*").allowedOriginPatterns("*");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui.html**").addResourceLocations("classpath:/swagger-ui.html");
+        registry.addResourceHandler("/swagger-ui.html**").addResourceLocations(
+            "classpath:/swagger-ui.html");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/");
     }
 

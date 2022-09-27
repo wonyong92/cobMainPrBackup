@@ -16,4 +16,5 @@ public class RentPostResponseDto {
     private String category;
     private Boolean rentStatus;
     private Integer rentPrice;
+    private String location;
 }

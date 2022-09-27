@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,8 +18,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtBuilder {
 
+    @Value("${token.secret.key}")
+    String key;
     public String buildJwt(Member member) {
-
-        return "Bearer "+JWT.create().withSubject("cos jwt token").withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000))).withClaim("memberId", member.getMemberId()).sign(Algorithm.HMAC512("cos_jwt_token"));
+        return "Bearer " + JWT.create().withSubject("cos jwt token").withExpiresAt(
+            new Date(System.currentTimeMillis() + (60 * 1000 * 10000))).withClaim("memberId",
+            member.getMemberId()).sign(Algorithm.HMAC512(key));
     }
 }

@@ -8,7 +8,6 @@ import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Service.MemberService;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
-import com.team23.mainPr.Global.Interceptor.Login;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import java.util.List;
@@ -57,7 +56,9 @@ public class MemberController {
 
     @Operation(description = "회원 정보 확인, 토큰을 이용하여 본인 확인.")
     @GetMapping
-    public MemberResponseDto getMember(@RequestParam @Valid @Min(value = 1) Integer memberId, @RequestHeader(value = "Authorization", required = false) String token) {
+    public MemberResponseDto getMember(
+        @RequestParam @Valid @Min(value = 1) Integer memberId,
+        @RequestHeader(value = "Authorization", required = false) String token) {
         return memberService.getMember(memberId, token);
     }
 
@@ -69,13 +70,17 @@ public class MemberController {
 
     @Operation(description = "프로필 정보 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
     @PutMapping("profile")
-    public MemberProfileDto updateProfile(@RequestBody @Valid UpdateMemberDto updateMemberDto, @RequestHeader(value = "Authorization", required = false) String token) {
+    public MemberProfileDto updateProfile(
+        @RequestBody @Valid UpdateMemberDto updateMemberDto,
+        @RequestHeader(value = "Authorization", required = false) String token) {
         return memberService.updateProfile(updateMemberDto, token);
     }
 
     @Operation(description = "회원 탈퇴, 토큰을 이용하여 본인 정보인지 확인.")
     @DeleteMapping("/delete")
-    public void deleteMember(@RequestParam @Valid @Min(value = 1) Integer memberId, @RequestHeader(value = "Authorization", required = false) String token) {
+    public void deleteMember(
+        @RequestParam @Valid @Min(value = 1) Integer memberId,
+        @RequestHeader(value = "Authorization", required = false) String token) {
         memberService.deleteMember(memberId, token);
     }
 
@@ -111,9 +116,13 @@ public class MemberController {
 
     @Operation(description = "프로필 이미지 변경, 토큰을 이용하여 본인인지 확인.")
     @PostMapping("/profileImage/post")
-    public void upload(@RequestParam MultipartFile file, @RequestParam Integer memberId, @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
+    public void upload(
+        @RequestParam MultipartFile file,
+        @RequestParam Integer memberId,
+        @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         memberService.setProfilePicture(memberId, file, token);
     }
+
     @Operation(description = "프로필 이미지 조회.")
     @GetMapping(value = "/profileImage/get", produces = "image/png")
     public Resource getDefaultProfileImage(@RequestParam Integer memberId) throws IOException {
@@ -126,10 +135,10 @@ public class MemberController {
         return memberService.getRentPostMember(memberId);
     }
 
-//    @Operation(description = "인터셉터 테스트")
-//    @GetMapping("/inter")
-//    @Login
-//    public Boolean checkInter(@RequestParam Integer memberId) {
-//        return memberService.checkInter(memberId);
-//    }
+    //    @Operation(description = "인터셉터 테스트")
+    //    @GetMapping("/inter")
+    //    @Login
+    //    public Boolean checkInter(@RequestParam Integer memberId) {
+    //        return memberService.checkInter(memberId);
+    //    }
 }

@@ -23,4 +23,8 @@ public class CreateRentPostEntityDto {
 
     @NotNull(message = "가격 정보가 누락되었습니다.(rentPrice)")
     private Integer rentPrice;
+
+    @NotNull(message = "지역 정보가 누락되었습니다.(location)")
+    @Pattern(regexp = "^(location).*")
+    private String location = "location";
 }

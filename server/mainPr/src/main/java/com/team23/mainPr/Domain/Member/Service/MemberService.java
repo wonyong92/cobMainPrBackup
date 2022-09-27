@@ -72,17 +72,11 @@ public class MemberService {
 
     public MemberResponseDto getMember(Integer memberId, String token) {
         Member member = memberRepository.getReferenceById(memberId);
-//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-//        }
         return memberMapper.MemberToMemberResponse(member);
     }
 
     //PR
     public void deleteMember(Integer memberId, String token) {
-//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(memberId)) {
-//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-//        }
         loginRepository.findByMemberId(memberId).ifPresentOrElse(login -> {
             if (!login.getLogouted()) {
                 loginRepository.delete(login);
@@ -90,7 +84,8 @@ public class MemberService {
         }, () -> {
             throw new CustomException(ErrorData.NOT_EXIST_LOGIN_INFORMATION);
         });
-        String fileName = pictureRepository.getReferenceById(memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
+        String fileName = pictureRepository.getReferenceById(
+            memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
         if (!fileName.equals("defaultProfileImage.png")) {
             if (new File(homePath + uploadPath + fileName).delete()) {
                 throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
@@ -108,9 +103,9 @@ public class MemberService {
     public MemberProfileDto updateProfile(UpdateMemberDto dto, String token) {
 
         Member member = memberRepository.getReferenceById(dto.getMemberId());
-//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-//        }
+        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        //        }
         member.setNickname(dto.getNickname());
         memberRepository.flush();
         return memberMapper.MemberToMemberProfileDto(member);
@@ -122,13 +117,15 @@ public class MemberService {
     public String checkExistEmail(String email) {
         final String[] result = new String[1];
         // optional 의 메소드를 활용하여 불필요한 if 문을 제거, null 에 대한 처리를 한번에 할 수 있었다.
-        memberRepository.findByEmail(email).ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
+        memberRepository.findByEmail(email).ifPresentOrElse(member -> result[0] = "exist",
+            () -> result[0] = "not exist");
         return result[0];
     }
 
     public String checkExistId(String id) {
         final String[] result = new String[1];
-        memberRepository.findByLoginId(id).ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
+        memberRepository.findByLoginId(id).ifPresentOrElse(member -> result[0] = "exist",
+            () -> result[0] = "not exist");
         return result[0];
     }
 
@@ -146,7 +143,8 @@ public class MemberService {
     public String findPassword(FindPasswordDto dto) {
         final String[] result = new String[1];
         memberRepository.findByEmail(dto.getEmail()).ifPresent(member -> {
-            if (member.getName().equals(dto.getName()) && member.getLoginId().equals(dto.getLoginId())) {
+            if (member.getName().equals(dto.getName()) && member.getLoginId().equals(
+                dto.getLoginId())) {
                 result[0] = member.getPassword();
             }
         });
@@ -157,23 +155,23 @@ public class MemberService {
     public void setProfilePicture(Integer memberId, MultipartFile file, String token) throws IOException {
 
         Member member = memberRepository.getReferenceById(memberId);
-//        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-//            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-//        }
 
         if (!file.isEmpty()) {
             String uuid = UUID.randomUUID().toString();
-            File newFileName = new File(homePath + uploadPath + uuid + "_" + file.getOriginalFilename());
+            File newFileName = new File(
+                homePath + uploadPath + uuid + "_" + file.getOriginalFilename());
             file.transferTo(newFileName);
 
-            member.setProfileImageId(pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename())).getImageId());
+            member.setProfileImageId(pictureRepository.save(
+                new Picture(uuid + "_" + file.getOriginalFilename())).getImageId());
             memberRepository.flush();
         }
     }
 
     public Resource getProfilePicture(Integer memberId) throws IOException {
 
-        String filename = pictureRepository.getReferenceById(memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
+        String filename = pictureRepository.getReferenceById(
+            memberRepository.getReferenceById(memberId).getProfileImageId()).getFileName();
         Path path = Paths.get(homePath + uploadPath + filename);
 
         return new InputStreamResource(Files.newInputStream(path));
@@ -186,7 +184,8 @@ public class MemberService {
      * </p>
      */
     public List<RentPostResponseDto> getRentPostMember(Integer memberId) {
-        return rentPostRepository.findByWriterIdOrderByRentPostIdDesc(memberId).stream().map(rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
+        return rentPostRepository.findByWriterIdOrderByRentPostIdDesc(memberId).stream().map(
+            rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
     }
 
     public Boolean checkInter(Integer memberId) {
@@ -195,7 +194,8 @@ public class MemberService {
 
     public String checkNickname(String nickname) {
         final String[] result = new String[1];
-        memberRepository.findByNickname(nickname).ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
+        memberRepository.findByNickname(nickname).ifPresentOrElse(member -> result[0] = "exist",
+            () -> result[0] = "not exist");
         return result[0];
     }
 }

@@ -39,4 +39,5 @@ public class RentPost {
     private Boolean rentStatus = false;
     private String category;
     private Integer rentPrice;
+    private String location;
 }

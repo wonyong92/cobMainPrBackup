@@ -37,12 +37,14 @@ public class RentHistoryService {
     }
 
     public RentHistoryResponseDtos getReceiveRentHistory(Integer memberId) {
-        return new RentHistoryResponseDtos(rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(rentHistoryRepository.findByTargetMemberIdAndRentDataTypeTrue(memberId)));
+        return new RentHistoryResponseDtos(rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(
+            rentHistoryRepository.findByTargetMemberIdAndRentDataTypeTrue(memberId)));
     }
 
     public RentHistoryResponseDtos getSendRentHistory(Integer memberId) {
 
-        List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(rentHistoryRepository.findByRequesterIdAndRentDataTypeFalse(memberId));
+        List<RentHistoryResponseDto> responses = rentHistoryMapper.RentHistorysToRentHistoryResponseDtos(
+            rentHistoryRepository.findByRequesterIdAndRentDataTypeFalse(memberId));
         // 생성자에 바로 리스트를 리턴하는 내용을 넣을 수 있지만 너무 길어져서 가독성에 좋지 않아보여 별도로 객체 생성하도록 구성
         return new RentHistoryResponseDtos(responses);
     }
@@ -70,7 +72,8 @@ public class RentHistoryService {
     public RentHistoryResponseDto updateRentHistoryData(UpdateRentHistoryEntityDto dto) {
         // getReferenceById 를 사용하여 getReferenceById 내부의 에러 throw 를 이용, if문 대신 컨트롤러 예외 핸들러가 작동하도록 구성
         RentHistory rentHistory = rentHistoryRepository.getReferenceById(dto.getRentHistoryId());
-        RentHistory relatedRentHistory = rentHistoryRepository.getReferenceById(rentHistory.getRelateRentHistory());
+        RentHistory relatedRentHistory = rentHistoryRepository.getReferenceById(
+            rentHistory.getRelateRentHistory());
 
         // 수정 사항 변경은 DTO에서 한번에 처리하는 게 효율적이므로 결정하므로 DTO에 필드값 업데이트용 메소드(updateData) 생성 및 사용
         RentHistory updatedRentHistory = dto.updateData(rentHistory, dto);
@@ -78,7 +81,8 @@ public class RentHistoryService {
 
         // 조건에 따라 데이터 변경이 필요한 경우는 따로 분리하여 서비스 메소드에서 직접 수행
         // 렌트 수락/거절 기능 : 렌트 요청 타입이 Receive(RentDataType = TRUE) 일때만 수락, 거절 선택 가능
-        if (updatedRentHistory.getRentDataType().equals(Boolean.TRUE) && updatedRentHistory.getRentStatus().equals("not selected")) {
+        if (updatedRentHistory.getRentDataType().equals(
+            Boolean.TRUE) && updatedRentHistory.getRentStatus().equals("not selected")) {
             updatedRentHistory.setRentStatus(dto.getRentStatus());
             updatedRelatedRentHistory.setRentStatus(dto.getRentStatus()); // 연결된 요청 데이터도 수락/거절 상태 변경
         }

@@ -17,6 +17,7 @@ public class UpdateRentPostDto {
     private String rentPostName;
     private Boolean rentStatus = false;
     private Integer rentPrice;
+    private String location;
 
     public RentPost updateData(RentPost rentPost, UpdateRentPostDto dto) {
 
@@ -24,6 +25,7 @@ public class UpdateRentPostDto {
         rentPost.setRentPostContents(dto.getRentPostContents());
         rentPost.setRentStatus(dto.getRentStatus());
         rentPost.setRentPrice(dto.getRentPrice());
+        rentPost.setLocation(dto.getLocation());
         return rentPost;
     }
 }

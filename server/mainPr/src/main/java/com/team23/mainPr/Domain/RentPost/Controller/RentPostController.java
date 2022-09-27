@@ -84,8 +84,9 @@ public class RentPostController {
     public PagedRentPostResponseDtos getRentPosts(
         @RequestBody RentPostPageRequestDto dto,
         @RequestParam(defaultValue = "false") Boolean rentStatus,
-        @RequestParam(defaultValue = "category") String category) {
-        return rentPostService.getRentPosts(dto, rentStatus, category);
+        @RequestParam(defaultValue = "category") String category,
+        @RequestParam(defaultValue = "location") String location) {
+        return rentPostService.getRentPosts(dto, rentStatus, category, location);
     }
 
     /**

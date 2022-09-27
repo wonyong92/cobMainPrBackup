@@ -1,6 +1,5 @@
 package com.team23.mainPr.Domain.RentPost.Service;
 
-import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
 import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
@@ -11,10 +10,8 @@ import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
 import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
-import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
 import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.CustomException.ErrorData;
-import com.team23.mainPr.Global.DefaultTimeZone;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -46,10 +43,8 @@ public class RentPostService {
 
     private final RentPostRepository rentPostRepository;
     private final RentPostMapper rentPostMapper;
-    private final DefaultTimeZone defaultTimeZone;
     private final PictureRepository pictureRepository;
-    private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
-    private final LoginRepository loginRepository;
+
 
     @Value("${multipart.upload.path}")
     String uploadPath;
@@ -85,9 +80,6 @@ public class RentPostService {
      * </p>
      */
     public void deleteRentPost(Integer postId, String token) {
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
         for (Picture picture : pictureRepository.findByPostId(postId)) {
             if (new File(
                 System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
@@ -110,9 +102,6 @@ public class RentPostService {
     }
 
     public void postImages(List<MultipartFile> files, Integer postId, String token) throws IOException {
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(rentPostRepository.getReferenceById(postId).getWriterId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
         if (!files.isEmpty()) {
             for (MultipartFile file : files) {
                 String uuid = UUID.randomUUID().toString();
@@ -138,9 +127,9 @@ public class RentPostService {
         return new InputStreamResource(Files.newInputStream(path));
     }
 
-    public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category) {
-        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContaining(
-            dto.getPageRequest(), rentStatus, category);
+    public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category, String location) {
+        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContainingAndLocationContaining(
+            dto.getPageRequest(), rentStatus, category, location);
         List<RentPostResponseDto> mappedResult = new ArrayList<>();
         result.stream().forEach(
             rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));

@@ -6,12 +6,12 @@ import org.springframework.data.domain.Sort;
 
 @Data
 public class RentPostPageRequestDto {
+
     Integer page = 0;
     Integer size = 20;
     String sort = "writeDate";
 
-    public PageRequest getPageRequest()
-    {
-        return PageRequest.of(this.page,this.size,Sort.Direction.DESC,this.sort);
+    public PageRequest getPageRequest() {
+        return PageRequest.of(this.page, this.size, Sort.Direction.DESC, this.sort);
     }
 }

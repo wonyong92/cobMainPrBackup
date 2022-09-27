@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Getter
@@ -25,6 +26,7 @@ public class Login {
 
     Integer memberId;
     String token;
+    @UpdateTimestamp
     ZonedDateTime lastLoginDate;
     ZonedDateTime logoutDate;
     Boolean logouted;

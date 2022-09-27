@@ -25,36 +25,39 @@ public class LoginService {
     private final DefaultTimeZone defaultTimeZone;
     private final JwtBuilder jwtBuilder;
 
-    public String doLogin(DoLoginDto dto) {
-        final String[] token = new String[1];
+    public String[] doLogin(DoLoginDto dto) {
+        final String[] token = new String[2];
         final Member[] loginMember = new Member[1];
-        memberRepository.findByLoginId(dto.getLoginId()).ifPresentOrElse(findmember -> loginMember[0] = findmember, () -> {
-            throw new CustomException(NOT_MATCHED_ID);
-        });
-        loginRepository.findByMemberId(loginMember[0].getMemberId()).ifPresentOrElse(login -> memberRepository.findById(login.getMemberId()).ifPresent(member -> {
-            if (member.getPassword().equals(dto.getPassword())) {
-                token[0] = jwtService.buildJwt(member);
-                login.setToken(token[0]);
-                login.setLogouted(false);
-                login.setLogoutDate(null);
-                login.setLastLoginDate(defaultTimeZone.getNow());
-                loginRepository.flush();
-            } else {
-                throw new CustomException(NOT_MATCHED_PASSWORD);
-            }
-        }), () -> memberRepository.findByLoginId(dto.getLoginId()).ifPresentOrElse(member -> {
-            System.out.println("here2");
-            if (member.getPassword().equals(dto.getPassword())) {
-                token[0] = jwtService.buildJwt(member);
-                loginRepository.save(Login.builder().lastLoginDate(defaultTimeZone.getNow()).logoutDate(null).token(token[0]).logouted(false).memberId(member.getMemberId()).build());
-            } else {
-                throw new CustomException(NOT_MATCHED_PASSWORD);
-            }
-        }, () -> {
-            throw new CustomException(NOT_MATCHED_ID);
-        }));
-
-        return token[0];
+        memberRepository.findByLoginId(dto.getLoginId()).ifPresentOrElse(
+            findmember -> loginMember[0] = findmember, () -> {
+                throw new CustomException(NOT_MATCHED_ID);
+            });
+        loginRepository.findByMemberId(loginMember[0].getMemberId()).ifPresentOrElse(
+            login -> memberRepository.findById(login.getMemberId()).ifPresent(member -> {
+                if (member.getPassword().equals(dto.getPassword())) {
+                    token[0] = jwtService.buildJwt(member);
+                    login.setToken(token[0]);
+                    login.setLogouted(false);
+                    login.setLogoutDate(null);
+                    loginRepository.flush();
+                } else {
+                    throw new CustomException(NOT_MATCHED_PASSWORD);
+                }
+            }), () -> memberRepository.findByLoginId(dto.getLoginId()).ifPresentOrElse(member -> {
+                if (member.getPassword().equals(dto.getPassword())) {
+                    token[0] = jwtService.buildJwt(member);
+                    loginRepository.save(
+                        Login.builder().lastLoginDate(defaultTimeZone.getNow()).logoutDate(
+                            null).token(token[0]).logouted(false).memberId(
+                            member.getMemberId()).build());
+                } else {
+                    throw new CustomException(NOT_MATCHED_PASSWORD);
+                }
+            }, () -> {
+                throw new CustomException(NOT_MATCHED_ID);
+            }));
+        token[1] = Integer.toString(loginMember[0].getMemberId());
+        return token;
     }
 
     public void doLogout(String token) {
@@ -72,7 +75,8 @@ public class LoginService {
         final String[] newToken = new String[1];
 
         loginRepository.findByToken(token).ifPresent(login -> {
-            String createdToken = jwtBuilder.buildJwt(memberRepository.getReferenceById(login.getMemberId()));
+            String createdToken = jwtBuilder.buildJwt(
+                memberRepository.getReferenceById(login.getMemberId()));
             login.setToken(createdToken);
             loginRepository.flush();
             newToken[0] = createdToken;

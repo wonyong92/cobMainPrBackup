@@ -21,16 +21,19 @@ public class LoginController {
     private final LoginService loginService;
 
     @Operation(description = "로그인 기능, 응답 헤더 Authorization 키에 토큰 반환")
-    @PostMapping
+    @PostMapping(produces = "application/json; charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
-    public void doLogin(@RequestBody DoLoginDto doLoginDto, HttpServletResponse response) {
-        response.setHeader("Authorization", loginService.doLogin(doLoginDto));
+    public String doLogin(@RequestBody DoLoginDto doLoginDto, HttpServletResponse response) {
+        String[] result = loginService.doLogin(doLoginDto);
+        response.setHeader("Authorization", result[0]);
+        return "\"MemberId\" : " + result[1];
     }
 
     @Operation(description = "토큰 재발급, 응답 헤더 Authorization 키에 토큰 반환")
     @PostMapping("/refeshToken")
     @ResponseStatus(HttpStatus.CREATED)
-    public void refeshToken(@RequestHeader(value = "Authorization", required = false) String token, HttpServletResponse response) {
+    public void refeshToken(
+        @RequestHeader(value = "Authorization", required = false) String token, HttpServletResponse response) {
         response.setHeader("Authorization", loginService.refreshToken(token));
     }
 }
