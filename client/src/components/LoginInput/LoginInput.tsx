@@ -25,8 +25,24 @@ const LoginInput = () => {
             [e.target.name]: e.target.value,
         });
     };
-    const trySignIn = async (e: any) => {
-        e.preventDefault();
+    // JWT 디코딩 - utils
+    const DecodeJWT = (token: string) => {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map((c) => {
+                    return (
+                        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                    );
+                })
+                .join(''),
+        );
+        return JSON.parse(jsonPayload);
+    };
+    // 로그인
+    const trySignIn = async () => {
         if (!loginInfo.loginId || !loginInfo.password) {
             setErrorMsg('아이디와 비밀번호를 입력해주세요.');
             return;
@@ -37,14 +53,14 @@ const LoginInput = () => {
                 loginInfo,
                 { withCredentials: false },
             );
-            // 전역상태
-            const data = res.data;
-            const memberId = data.slice(13, 14);
-            setUser({ ...user, memberId });
-            localStorage.setItem('userInfo', String(memberId));
             // 토큰
             const token = res.headers.authorization;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            // 유저정보
+            const result = DecodeJWT(token);
+            const memberId = result.memberId;
+            setUser({ ...user, memberId });
+            localStorage.setItem('userInfo', String(memberId));
             navigate('/');
         } catch {
             setErrorMsg('아이디와 비밀번호를 확인해주세요.');
