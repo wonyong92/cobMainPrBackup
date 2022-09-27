@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultTimeZone {
 
-    @Value("${timeZone.location.asia_seoul}")
-    String location;
+    @Value("${timeZone.location.asia_seoul}") String location;
 
     public DefaultTimeZone() {
 

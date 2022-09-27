@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class MainPrApplication {
-    @Autowired
-    PictureService pictureService;
+
+    @Autowired PictureService pictureService;
 
     public static void main(String[] args) {
         SpringApplication.run(MainPrApplication.class, args);

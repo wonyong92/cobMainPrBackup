@@ -33,8 +33,7 @@ public class CommentService {
         //        }
         Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(dto);
         //        newComment.setWriterId(memberIdExtractorFromJwt.getMemberId(token));
-        Comment result = commentRepository.getReferenceById(
-            commentRepository.save(newComment).getCommentId());
+        Comment result = commentRepository.getReferenceById(commentRepository.save(newComment).getCommentId());
         return commentMapper.CommentEntityToCommentResponsDto(result);
     }
 
@@ -69,8 +68,7 @@ public class CommentService {
     public CommentEntityResponseDtos getComments(Integer targetPostId) {
         List<Comment> comments = commentRepository.findAllByTargetPostId(targetPostId);
         List<CommentEntityResponseDto> commentResponses = new ArrayList<>();
-        comments.forEach(comment -> commentResponses.add(
-            commentMapper.CommentEntityToCommentResponsDto(comment)));
+        comments.forEach(comment -> commentResponses.add(commentMapper.CommentEntityToCommentResponsDto(comment)));
         CommentEntityResponseDtos result = new CommentEntityResponseDtos();
         result.setComments(commentResponses);
         return result;

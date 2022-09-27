@@ -20,10 +20,8 @@ public class Comment {
     Integer commentId;
 
     String commentContents;
-    @CreationTimestamp
-    ZonedDateTime writeDate;
-    @UpdateTimestamp
-    ZonedDateTime updateDate;
+    @CreationTimestamp ZonedDateTime writeDate;
+    @UpdateTimestamp ZonedDateTime updateDate;
     Integer writerId;
     Integer targetPostId;
 }

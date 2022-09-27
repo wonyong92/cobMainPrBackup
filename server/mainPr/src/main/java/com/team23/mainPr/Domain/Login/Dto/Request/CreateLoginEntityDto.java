@@ -7,17 +7,13 @@ import lombok.Data;
 @Data
 public class CreateLoginEntityDto {
 
-    @NotNull(message = "로그인 아이디 정보가 누락되었습니다.(loginId)(loginId)")
-    private String loginId;
+    @NotNull(message = "로그인 아이디 정보가 누락되었습니다.(loginId)(loginId)") private String loginId;
 
-    @NotNull(message = "password must not be null")
-    private String password;
+    @NotNull(message = "password must not be null") private String password;
 
-    @NotNull(message = "memberId must not be null")
-    private Integer memberId;
+    @NotNull(message = "memberId must not be null") private Integer memberId;
 
-    @NotNull(message = "token must not be null")
-    private String token;
+    @NotNull(message = "token must not be null") private String token;
 
     private ZonedDateTime lastLoginData;
     private ZonedDateTime logoutData = null;

@@ -14,13 +14,11 @@ import org.springframework.stereotype.Service;
 public class PictureService {
 
     private final PictureRepository pictureRepository;
-    @Value("${multipart.upload.path}")
-    String uploadPath;
+    @Value("${multipart.upload.path}") String uploadPath;
 
     public void setDefaultImage() {
-        File f = new File(System.getProperty(
-            "user.home") + uploadPath+"defaultProfileImage.png");
-        if(!f.exists()) {
+        File f = new File(System.getProperty("user.home") + uploadPath + "defaultProfileImage.png");
+        if (!f.exists()) {
             throw new CustomException(ErrorData.FILE_NOT_FOUND);
         }
         Picture defaultImage = new Picture();

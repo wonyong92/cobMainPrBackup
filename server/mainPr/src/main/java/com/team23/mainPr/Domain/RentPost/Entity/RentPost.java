@@ -30,10 +30,8 @@ public class RentPost {
 
     private String rentPostContents;
     private String rentPostName;
-    @CreationTimestamp
-    private ZonedDateTime writeDate;
-    @UpdateTimestamp
-    private ZonedDateTime updateDate;
+    @CreationTimestamp private ZonedDateTime writeDate;
+    @UpdateTimestamp private ZonedDateTime updateDate;
     private Integer writerId;
     private Integer viewCount = 0;
     private Boolean rentStatus = false;

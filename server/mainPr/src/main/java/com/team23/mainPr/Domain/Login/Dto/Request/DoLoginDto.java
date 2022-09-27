@@ -6,9 +6,7 @@ import lombok.Data;
 @Data
 public class DoLoginDto {
 
-    @NotNull(message = "loginId must not be null")
-    private String loginId;
+    @NotNull(message = "loginId must not be null") private String loginId;
 
-    @NotNull(message = "password must not be null")
-    private String password;
+    @NotNull(message = "password must not be null") private String password;
 }

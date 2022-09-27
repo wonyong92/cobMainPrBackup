@@ -26,8 +26,7 @@ public class Login {
 
     Integer memberId;
     String token;
-    @UpdateTimestamp
-    ZonedDateTime lastLoginDate;
+    @UpdateTimestamp ZonedDateTime lastLoginDate;
     ZonedDateTime logoutDate;
     Boolean logouted;
 }

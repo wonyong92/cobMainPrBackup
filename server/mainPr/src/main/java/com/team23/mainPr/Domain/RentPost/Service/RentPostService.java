@@ -45,16 +45,13 @@ public class RentPostService {
     private final RentPostMapper rentPostMapper;
     private final PictureRepository pictureRepository;
 
-
-    @Value("${multipart.upload.path}")
-    String uploadPath;
+    @Value("${multipart.upload.path}") String uploadPath;
 
     public RentPostResponseDto createRentPost(CreateRentPostEntityDto dto, String token) {
         //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
         //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
         //        }
-        RentPost result = rentPostRepository.save(
-            rentPostMapper.CreateRentPostEntityDtoToRentPost(dto));
+        RentPost result = rentPostRepository.save(rentPostMapper.CreateRentPostEntityDtoToRentPost(dto));
 
         return rentPostMapper.RentPostToRentPostResponseDto(result);
     }
@@ -81,8 +78,7 @@ public class RentPostService {
      */
     public void deleteRentPost(Integer postId, String token) {
         for (Picture picture : pictureRepository.findByPostId(postId)) {
-            if (new File(
-                System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
+            if (new File(System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
                 throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
             }
 
@@ -105,46 +101,35 @@ public class RentPostService {
         if (!files.isEmpty()) {
             for (MultipartFile file : files) {
                 String uuid = UUID.randomUUID().toString();
-                File newFileName = new File(System.getProperty(
-                    "user.home") + uploadPath + uuid + "_" + file.getOriginalFilename());
+                File newFileName = new File(System.getProperty("user.home") + uploadPath + uuid + "_" + file.getOriginalFilename());
                 file.transferTo(newFileName);
 
-                pictureRepository.save(
-                    new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getImageId();
+                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getImageId();
             }
         }
     }
 
     public List<Integer> getPostImages(Integer postId) {
-        return pictureRepository.findByPostId(postId).stream().map(
-            picture -> picture.getImageId()).collect(Collectors.toList());
+        return pictureRepository.findByPostId(postId).stream().map(picture -> picture.getImageId()).collect(Collectors.toList());
     }
 
     public Resource getImage(Integer imageId) throws IOException {
-        Path path = Paths.get(
-            System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(
-                imageId).getFileName());
+        Path path = Paths.get(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(imageId).getFileName());
         return new InputStreamResource(Files.newInputStream(path));
     }
 
     public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category, String location) {
-        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContainingAndLocationContaining(
-            dto.getPageRequest(), rentStatus, category, location);
+        Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContainingAndLocationContaining(dto.getPageRequest(), rentStatus, category, location);
         List<RentPostResponseDto> mappedResult = new ArrayList<>();
-        result.stream().forEach(
-            rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
-        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult,
-            result.getPageable());
+        result.stream().forEach(rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
+        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
     }
 
     public List<RentPostResponseDto> searchAll(String phrase, String category, RentPostPageRequestDto dto, Boolean rentStatus) {
-        return rentPostRepository.search(phrase, category, dto.getPageRequest(),
-            rentStatus).stream().map(rentPostId -> rentPostMapper.RentPostToRentPostResponseDto(
-            rentPostRepository.getReferenceById(rentPostId))).collect(Collectors.toList());
+        return rentPostRepository.search(phrase, category, dto.getPageRequest(), rentStatus).stream().map(rentPostId -> rentPostMapper.RentPostToRentPostResponseDto(rentPostRepository.getReferenceById(rentPostId))).collect(Collectors.toList());
     }
 
     public List<RentPostResponseDto> ftSearchAll(String phrase) {
-        return rentPostRepository.ftSearch(phrase).stream().map(
-            rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
+        return rentPostRepository.ftSearch(phrase).stream().map(rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
     }
 }

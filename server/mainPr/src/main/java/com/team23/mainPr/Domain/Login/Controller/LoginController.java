@@ -23,7 +23,8 @@ public class LoginController {
     @Operation(description = "로그인 기능, 응답 헤더 Authorization 키에 토큰 반환")
     @PostMapping(produces = "application/json; charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
-    public String doLogin(@RequestBody DoLoginDto doLoginDto, HttpServletResponse response) {
+    public String doLogin(
+        @RequestBody DoLoginDto doLoginDto, HttpServletResponse response) {
         String[] result = loginService.doLogin(doLoginDto);
         response.setHeader("Authorization", result[0]);
         return "\"MemberId\" : " + result[1];

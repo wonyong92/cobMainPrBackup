@@ -25,7 +25,6 @@ public enum ChildCommonDtoMsgList {
     NULL_EMAIL("이메일 정보가 누락 되었습니다.(email)"),
     NULL_LOGINID("로그인 아이디 정보가 누락 되었습니다.(loginId)");
 
-
     private final String msg;
 
     // public 시 컴파일 에러 발생

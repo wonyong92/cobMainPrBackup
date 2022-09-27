@@ -9,12 +9,9 @@ import lombok.Data;
 @Data
 public class UpdateRentPostDto {
 
-    @NotNull(message = "게시글 식별자 정보가 누락되었습니다.(postId)")
-    private Integer postId;
-    @NotNull(message = "게시글 정보가 누락되었습니다.(rentPostContents)")
-    private String rentPostContents;
-    @NotNull(message = "게시글 이름 정보가 누락되었습니다.(rentPostName)")
-    private String rentPostName;
+    @NotNull(message = "게시글 식별자 정보가 누락되었습니다.(postId)") private Integer postId;
+    @NotNull(message = "게시글 정보가 누락되었습니다.(rentPostContents)") private String rentPostContents;
+    @NotNull(message = "게시글 이름 정보가 누락되었습니다.(rentPostName)") private String rentPostName;
     private Boolean rentStatus = false;
     private Integer rentPrice;
     private String location;

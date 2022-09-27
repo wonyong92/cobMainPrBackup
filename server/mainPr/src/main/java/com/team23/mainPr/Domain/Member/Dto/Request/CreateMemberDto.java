@@ -15,18 +15,13 @@ import lombok.NoArgsConstructor;
 @ApiModel(value = "CreateMemberDto", description = "입력 받은 회원 가입 정보를 dto로 맵핑")
 public class CreateMemberDto {
 
-    @NotNull(message = "로그인 아이디 정보가 누락되었습니다.(loginId)")
-    private String loginId;
+    @NotNull(message = "로그인 아이디 정보가 누락되었습니다.(loginId)") private String loginId;
 
-    @NotNull(message = "패스워드 정보가 누락되었습니다.(password)")
-    private String password;
+    @NotNull(message = "패스워드 정보가 누락되었습니다.(password)") private String password;
 
-    @NotNull(message = "닉네임 정보가 누락되었습니다.(nickname)")
-    private String nickname;
+    @NotNull(message = "닉네임 정보가 누락되었습니다.(nickname)") private String nickname;
 
-    @NotNull(message = "이메일 정보가 누락되었습니다.(email)")
-    private String email;
+    @NotNull(message = "이메일 정보가 누락되었습니다.(email)") private String email;
 
-    @NotNull(message = "이름 정보가 누락되었습니다.(name)")
-    private String name;
+    @NotNull(message = "이름 정보가 누락되었습니다.(name)") private String name;
 }

@@ -37,7 +37,8 @@ public class RentPostController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
     public RentPostResponseDto createRentPost(
-        @RequestBody @Valid CreateRentPostEntityDto dto,
+        @RequestBody
+        @Valid CreateRentPostEntityDto dto,
         @RequestHeader(value = "Authorization", required = false) String token) {
         return rentPostService.createRentPost(dto, token);
     }
@@ -50,7 +51,8 @@ public class RentPostController {
     @Operation(description = "게시글 수정, 토큰을 이용하여 작성자 본인이 맞는지 확인.")
     @PutMapping("/update")
     public RentPostResponseDto updateRentPost(
-        @RequestBody @Valid UpdateRentPostDto updateRentPostDto,
+        @RequestBody
+        @Valid UpdateRentPostDto updateRentPostDto,
         @RequestHeader(value = "Authorization", required = false) String token) {
         return rentPostService.updateRentPost(updateRentPostDto, token);
     }
@@ -76,7 +78,8 @@ public class RentPostController {
     // 멱등성이 보장되지 않는 api에 대해서는 put으로 변경 - 요청할 때 마다 조회수가 상승하므로 멱등성이 지켜지지 않는 api
     @Operation(description = "게시글 조회.")
     @PostMapping
-    public RentPostResponseDto getRentPost(@RequestParam Integer postId) {
+    public RentPostResponseDto getRentPost(
+        @RequestParam Integer postId) {
         return rentPostService.getRentPost(postId);
     }
 
@@ -106,13 +109,15 @@ public class RentPostController {
 
     @Operation(description = "게시글 이미지 조회 - 이미지 식별 번호만 리턴 - 실제 이미지 조회는 해당 api의 식별번호들을 이용하여 /image/get api를 통해 렌더링.")
     @GetMapping("/images/get")
-    public List<Integer> getImages(@RequestParam Integer postId) {
+    public List<Integer> getImages(
+        @RequestParam Integer postId) {
         return rentPostService.getPostImages(postId);
     }
 
     @Operation(description = "게시글 이미지 조회.")
     @GetMapping(value = "/image/get", produces = "image/png")
-    public Resource getImage(@RequestParam Integer imageId) throws IOException {
+    public Resource getImage(
+        @RequestParam Integer imageId) throws IOException {
         return rentPostService.getImage(imageId);
     }
 
@@ -123,13 +128,13 @@ public class RentPostController {
         @RequestParam(defaultValue = "category") String category,
         @RequestBody RentPostPageRequestDto dto,
         @RequestParam(defaultValue = "false") Boolean rentStatus) {
-        return rentPostService.searchAll(phrase.replace(" ", "|").trim(), category, dto,
-            rentStatus);
+        return rentPostService.searchAll(phrase.replace(" ", "|").trim(), category, dto, rentStatus);
     }
 
     @Operation(description = "H2의 FULL TEXT SEARCH 기능을 사용한 메소드 입니다. 속도 확인 후 기존의 search 메소드를 대체할수 있다고 판단되면 통합하도록 하겠습니다.")
     @PostMapping("/ftSearch")
-    public List<RentPostResponseDto> ftSearch(@RequestParam String phrase) {
+    public List<RentPostResponseDto> ftSearch(
+        @RequestParam String phrase) {
         return rentPostService.ftSearchAll(phrase);
     }
 }

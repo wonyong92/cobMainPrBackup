@@ -9,20 +9,15 @@ import lombok.Data;
 @Data
 public class CreateRentPostEntityDto {
 
-    @NotNull(message = "게시글 정보가 누락되었습니다.(rentPostContents)")
-    private String rentPostContents;
+    @NotNull(message = "게시글 정보가 누락되었습니다.(rentPostContents)") private String rentPostContents;
 
-    @NotNull(message = "게시글 이름 정보가 누락되었습니다.(rentPostName)")
-    private String rentPostName;
+    @NotNull(message = "게시글 이름 정보가 누락되었습니다.(rentPostName)") private String rentPostName;
 
-    @NotNull(message = "작성자 정보가 누락되었습니다.(writerId)")
-    private Integer writerId;
+    @NotNull(message = "작성자 정보가 누락되었습니다.(writerId)") private Integer writerId;
 
-    @Pattern(regexp = "^(category).*")
-    private String category = "category";
+    @Pattern(regexp = "^(category).*") private String category = "category";
 
-    @NotNull(message = "가격 정보가 누락되었습니다.(rentPrice)")
-    private Integer rentPrice;
+    @NotNull(message = "가격 정보가 누락되었습니다.(rentPrice)") private Integer rentPrice;
 
     @NotNull(message = "지역 정보가 누락되었습니다.(location)")
     @Pattern(regexp = "^(location).*")

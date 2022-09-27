@@ -29,9 +29,7 @@ public class RentHistory {
     Integer requesterId; // ref member
     String msg = "nothing";
     Integer targetPosId; // ref rentPost
-    @CreationTimestamp
-    ZonedDateTime createdTime;
-    @UpdateTimestamp
-    ZonedDateTime updateTime;
+    @CreationTimestamp ZonedDateTime createdTime;
+    @UpdateTimestamp ZonedDateTime updateTime;
     Integer relateRentHistory;
 }

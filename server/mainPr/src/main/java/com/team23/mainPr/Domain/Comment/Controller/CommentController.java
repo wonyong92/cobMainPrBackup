@@ -30,7 +30,8 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
     public CommentEntityResponseDto postComment(
-        @RequestBody @Valid CreateCommentEntityDto dto,
+        @RequestBody
+        @Valid CreateCommentEntityDto dto,
         @RequestHeader(value = "Authorization", required = false) String token) {
         return commentService.createCommentEntity(dto, token);
     }
@@ -38,14 +39,16 @@ public class CommentController {
     @Operation(description = "단일 댓글 내용 조회")
     @GetMapping
     public CommentEntityResponseDto getComment(
-        @RequestParam @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
+        @RequestParam
+        @Min(value = 1, message = "commentId must be above 1") Integer commentId) {
         return commentService.getComment(commentId);
     }
 
     @Operation(description = "댓글 수정, 토큰으로 작성자와 요청값의 작성자 확인")
     @PostMapping("/update")
     public CommentEntityResponseDto updateComment(
-        @RequestBody @Valid UpdateCommentEntityDto dto,
+        @RequestBody
+        @Valid UpdateCommentEntityDto dto,
         @RequestHeader(value = "Authorization", required = false) String token) {
         return commentService.updateCommentEntity(dto, token);
     }
@@ -53,7 +56,8 @@ public class CommentController {
     @Operation(description = "댓글 삭제, 토큰으로 작성자와 요청값의 작성자 확인")
     @PostMapping("/delete")
     public String deleteCommentEntity(
-        @RequestParam @Min(value = 1, message = "commentId must be above 1") Integer commentId,
+        @RequestParam
+        @Min(value = 1, message = "commentId must be above 1") Integer commentId,
         @RequestHeader(value = "Authorization", required = false) String token) {
         return commentService.deleteCommentEntity(commentId, token);
     }
@@ -61,7 +65,8 @@ public class CommentController {
     @Operation(description = "게시글에 달린 전체 댓글 조회 - 작성 시간 오름차순 정렬")
     @GetMapping("/getComments")
     public CommentEntityResponseDtos getComments(
-        @RequestParam @Valid @Min(value = 1, message = "postId must be above 1") Integer postId) {
+        @RequestParam
+        @Valid @Min(value = 1, message = "postId must be above 1") Integer postId) {
         return commentService.getComments(postId);
     }
 }

@@ -12,8 +12,7 @@ import org.springframework.http.HttpStatus;
 public class ChildCommonDto<T> {
 
     String msg = "";
-    @JsonIgnore
-    HttpStatus httpStatus;
+    @JsonIgnore HttpStatus httpStatus;
     T t;
 
     public ChildCommonDto(HttpStatus statusCode, T dto) {

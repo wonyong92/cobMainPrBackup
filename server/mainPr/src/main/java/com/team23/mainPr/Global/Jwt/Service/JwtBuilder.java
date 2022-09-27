@@ -18,11 +18,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtBuilder {
 
-    @Value("${token.secret.key}")
-    String key;
+    @Value("${token.secret.key}") String key;
+
     public String buildJwt(Member member) {
-        return "Bearer " + JWT.create().withSubject("cos jwt token").withExpiresAt(
-            new Date(System.currentTimeMillis() + (60 * 1000 * 10000))).withClaim("memberId",
-            member.getMemberId()).sign(Algorithm.HMAC512(key));
+        return "Bearer " + JWT.create().withSubject("cos jwt token").withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000))).withClaim("memberId", member.getMemberId()).sign(Algorithm.HMAC512(key));
     }
 }

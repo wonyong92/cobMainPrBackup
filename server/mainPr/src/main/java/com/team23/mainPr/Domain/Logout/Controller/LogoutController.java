@@ -18,7 +18,8 @@ public class LogoutController {
     @Operation(description = "로그아웃, 200 상태코드만 응답")
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.CREATED)
-    public void doLogout(@RequestHeader(value = "Authorization", required = false) String token) {
+    public void doLogout(
+        @RequestHeader(value = "Authorization", required = false) String token) {
         loginService.doLogout(token);
     }
 }

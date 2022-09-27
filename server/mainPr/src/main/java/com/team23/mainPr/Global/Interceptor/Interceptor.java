@@ -17,16 +17,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class Interceptor implements HandlerInterceptor {
 
-    @Autowired
-    MemberIdExtractorFromJwt memberIdExtractorFromJwt;
-    @Autowired
-    LoginRepository loginRepository;
-    @Autowired
-    RentPostRepository rentPostRepository;
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    CommentRepository commentRepository;
+    @Autowired MemberIdExtractorFromJwt memberIdExtractorFromJwt;
+    @Autowired LoginRepository loginRepository;
+    @Autowired RentPostRepository rentPostRepository;
+    @Autowired MemberRepository memberRepository;
+    @Autowired CommentRepository commentRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -47,27 +42,15 @@ public class Interceptor implements HandlerInterceptor {
         }, () -> {
             throw new CustomException(ErrorData.NOT_EXIST_LOGIN_INFORMATION);
         });
+
         Integer tokenData = memberIdExtractorFromJwt.getMemberId(token);
-        /**
-         * 1. 토큰 해석값 = 요청 유저 아이디 확인 + 로그인 상태 확인 - 유저 정보 수정, 유저 정보 삭제
-         * 2. 토큰 해석값 = 요청 포스트 주인 확인 + 로그인 상태 확인 - 포스트 수정, 삭제
-         * 3. 토큰 해석값 = 요청 댓글 주인 확인 + 로그인 상태 확인 - 댓글 수정, 삭제
-         * */
-        if (request.getParameter("memberId") != null && !tokenData.equals(
-            memberRepository.getReferenceById(
-                Integer.parseInt(request.getParameter("memberId"))).getMemberId())) {
+
+        if (request.getParameter("postId") != null && !tokenData.equals(rentPostRepository.getReferenceById(Integer.parseInt(request.getParameter("postId"))).getWriterId())) {
             response.setStatus(403);
             return false;
         }
-        if (request.getParameter("postId") != null && !tokenData.equals(
-            rentPostRepository.getReferenceById(
-                Integer.parseInt(request.getParameter("postId"))).getWriterId())) {
-            response.setStatus(403);
-            return false;
-        }
-        if (request.getParameter("comment") != null && !tokenData.equals(
-            commentRepository.getReferenceById(
-                Integer.parseInt(request.getParameter("commentId"))).getWriterId())) {
+
+        if (request.getParameter("comment") != null && !tokenData.equals(commentRepository.getReferenceById(Integer.parseInt(request.getParameter("commentId"))).getWriterId())) {
             response.setStatus(403);
             return false;
         }
