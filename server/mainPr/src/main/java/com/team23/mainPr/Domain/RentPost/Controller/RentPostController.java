@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -82,7 +83,7 @@ public class RentPostController {
     @Operation(description = "전체 게시글 목록 조회, 목록 크기 20 고정, page 0번 부터 시작 , 기본 정렬 - 최신순, sort에서 writeDate, viewCount 로 최신순,인기순 변경 가능," + " 렌트 상태 rentStatus 기본값 false, 카테고리 categoryXXX 형태로 카테고리 설정 가능")
     @GetMapping("/posts")
     public PagedRentPostResponseDtos getRentPosts(
-        @RequestBody RentPostPageRequestDto dto,
+        @ModelAttribute RentPostPageRequestDto dto,
         @RequestParam(defaultValue = "false") Boolean rentStatus,
         @RequestParam(defaultValue = "category") String category,
         @RequestParam(defaultValue = "location") String location) {

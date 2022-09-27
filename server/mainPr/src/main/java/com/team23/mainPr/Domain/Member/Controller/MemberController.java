@@ -8,6 +8,7 @@ import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Service.MemberService;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
+import com.team23.mainPr.Global.Interceptor.Login;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import java.util.List;
@@ -135,10 +136,10 @@ public class MemberController {
         return memberService.getRentPostMember(memberId);
     }
 
-    //    @Operation(description = "인터셉터 테스트")
-    //    @GetMapping("/inter")
-    //    @Login
-    //    public Boolean checkInter(@RequestParam Integer memberId) {
-    //        return memberService.checkInter(memberId);
-    //    }
+        @Operation(description = "인터셉터 테스트")
+        @GetMapping("/inter")
+        @Login
+        public Boolean checkInter(@RequestParam Integer memberId) {
+            return memberService.checkInter(memberId);
+        }
 }

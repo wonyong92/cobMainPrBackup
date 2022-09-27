@@ -34,6 +34,6 @@ public class Member {
     // 어노테이션을 활용하여 자동으로 값을 할당하게 수정하였다.
     @CreationTimestamp
     private ZonedDateTime createdAt;
-    private Integer profileImageId;
+    private Integer profileImageId=1;
     private String name;
 }

@@ -27,8 +27,6 @@ public class CreateMemberDto {
     @NotNull(message = "이메일 정보가 누락되었습니다.(email)")
     private String email;
 
-    private Integer profileImageId = 1;
-
     @NotNull(message = "이름 정보가 누락되었습니다.(name)")
     private String name;
 }

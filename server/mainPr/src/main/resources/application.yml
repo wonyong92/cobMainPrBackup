@@ -43,10 +43,14 @@ oauth2:
       client-id: ${Oauth.client-id}
       client-secret: ${Oauth.client-secret}
       redirect-uri: ${Oauth.redirect.url}
+      scope:
+        - email
+        - profile
   provider:
     google:
       token-uri: https://www.googleapis.com/oauth2/v4/token
       user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+
 
 jwt:
   token:
