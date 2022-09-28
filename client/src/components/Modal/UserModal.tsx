@@ -7,21 +7,18 @@ import { UserContext } from '../../context/context';
 import axios from 'axios';
 import TextButton from '../../UI/button/TextButton';
 import { useNavigate } from 'react-router-dom';
+import { IUserProfile } from '../../types';
 interface PropsType {
     userModal: boolean;
     setUserModal: (state: boolean) => void;
 }
-interface IUserProfile {
-    createdAt: string;
-    email: string;
-    loginId: string;
-    nickname: string;
-    profileImageId: number;
-}
 const UserModal = ({ setUserModal }: PropsType) => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
-    const imgUrl = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuTh8Y-eanPL6nLZ9l7YqEpYibo5kG07xCug&usqp=CAU`;
+    const [imageUrl, setImageUrl] = useState('');
+    useEffect(() => {
+        setImageUrl(`http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`);
+    }, [user]);
     const [userInfo, setUserInfo] = useState<IUserProfile>({
         createdAt: '',
         email: '',
@@ -36,6 +33,7 @@ const UserModal = ({ setUserModal }: PropsType) => {
         const data = res.data;
         setUserInfo({ ...data });
     };
+
     useEffect(() => {
         getUserData();
     }, [user]);
@@ -45,22 +43,18 @@ const UserModal = ({ setUserModal }: PropsType) => {
     };
     const trySignout = () => {
         setUser({ ...user, memberId: null });
-        localStorage.clear();
+        localStorage.removeItem('userInfo');
         navigate('/');
     };
     return (
         <Container>
             <Top>
                 <LogoSVG />
-                <FontAwesomeIcon
-                    icon={faX}
-                    onClick={closeModal}
-                    className="icon"
-                />
+                <FontAwesomeIcon icon={faX} onClick={closeModal} className="icon" />
             </Top>
             <Middle>
                 <ImgWrapper>
-                    <img src={imgUrl}></img>
+                    <img alt="profile" src={imageUrl} />
                 </ImgWrapper>
                 <InfoWrapper>
                     <div>{userInfo.nickname}</div>
@@ -71,18 +65,20 @@ const UserModal = ({ setUserModal }: PropsType) => {
                 <TextButton
                     isGray={true}
                     btnText="활동내역"
-                    onClick={() => navigate('/myactivity')}
+                    onClick={() => {
+                        closeModal();
+                        navigate('/myactivity');
+                    }}
                 />
                 <TextButton
                     isGray={true}
                     btnText="회원정보"
-                    onClick={() => navigate('/mypage')}
+                    onClick={() => {
+                        closeModal();
+                        navigate('/mypage');
+                    }}
                 />
-                <TextButton
-                    isGray={true}
-                    btnText="로그아웃"
-                    onClick={trySignout}
-                />
+                <TextButton isGray={true} btnText="로그아웃" onClick={trySignout} />
             </Bottom>
         </Container>
     );
@@ -95,12 +91,12 @@ export const Container = styled.div`
     align-items: center;
     position: absolute;
     top: 10px;
-
-    right: 380px;
+    right: 270px;
     width: 300px;
     height: 240px;
     background-color: white;
-    box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
+    z-index: 1;
+    box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 5px 5px;
     @media screen and (max-width: 500px) {
         top: 10px;
         left: 0.01px;
