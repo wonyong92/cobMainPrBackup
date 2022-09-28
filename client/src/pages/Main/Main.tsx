@@ -1,17 +1,36 @@
-import { getPosts } from '../../Utils/ApiCall';
+import { getImage, getPosts } from '../../Utils/ApiCall';
 import styled from 'styled-components';
-import PostItem from '../../components/PostItem/PostItem';
+import PostItem, { PostItemData } from '../../components/PostItem/PostItem';
 import { useEffect, useState } from 'react';
 
-const Main = () => {
-    const [posts, setPosts] = useState([]);
 
+const Main = () => {
+    
+    const [posts, setPosts] = useState<PostItemData[]>([]);
+ 
     useEffect(() => {
         getPosts().then((res) => {
-            setPosts(res.data);
-            console.log(res);
+            console.log(res)
+        //     let arr = res.rentPosts;
+        //     arr=arr.map((el:any)=>el.rentPostId);
+        // getImage(arr)
+        // .then((image)=>{
+            console.log(res.rentPosts)
+            // let obj = {...res?.rentPosts[0], image: image}
+            // console.log(obj)
+            // console.log(image)
+            setPosts(res.rentPosts);
+        
+         
+        })
+        
+        .catch((err) => {
+            console.log(err);
         });
     }, []);
+
+
+
 
     return (
         <>
@@ -25,7 +44,7 @@ const Main = () => {
                         써보세요 :)
                     </SubTitle>
                 </WelcomePage>
-                <WelcomePage style={{ background: '#FFFCFE' }}>
+                <WelcomePage style={{backgroundColor: '#FFFCFE'}}>
                     <Title style={{ paddingLeft: '150px' }}>
                         사지말고<br></br> 빌려보세요
                     </Title>
@@ -34,22 +53,17 @@ const Main = () => {
                     </SubTitle>
                 </WelcomePage>
             </section>
-            {posts.map((post) => (
-                <PostItem
-                category= {post}
-                rentPostContents= {post}
-                rentPostId= {post}
-                rentPostName= {post} 
-                updateDate= {post}
-                viewCount= {post}
-                writeDate= {post}
-                writerId= {post}
-                rentStatus= {post}
-                />
+            <HeadRow>
+        <h2>인기리스트</h2>
+      </HeadRow>
+            {posts && posts.map((el, idx) => (
+                <PostItem data={el} key={idx} />
             ))}
-        </>
+            </>
     );
 };
+
+const HeadRow = styled.div``;
 
 const WelcomePage = styled.article`
     background-color: #fffbef;
