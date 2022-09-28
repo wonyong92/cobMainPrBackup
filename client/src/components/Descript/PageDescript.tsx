@@ -5,6 +5,7 @@ const DescriptWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
     margin-top: 30px;
     h4 {
         font-size: 18px;
@@ -12,8 +13,12 @@ const DescriptWrapper = styled.div`
     }
     p {
         font-size: 12px;
-        width: 100%;
         text-align: center;
+    }
+    @media screen and (max-width: 500px) {
+        p {
+            width: 80%;
+        }
     }
 `;
 const Back = styled.div`
@@ -25,13 +30,8 @@ const Back = styled.div`
     width: 330px;
     margin: 30px 0;
     @media screen and (max-width: 500px) {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f4fcfb;
         padding: 20px 4px;
         width: 290px;
-        margin: 30px 0;
     }
 `;
 const LogoSVG = styled(Logo)`
