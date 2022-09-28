@@ -1,38 +1,35 @@
 import { getPosts }  from '../../Utils/ApiCall';
-import PostItem from '../../components/PostItem/PostItem';
+import PostItem, { PostItemData } from '../../components/PostItem/PostItem';
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 const PostList = () => {
 
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState<PostItemData[]>([]);
 
     useEffect(() => {
         getPosts().then((res) => {
-            setPosts(res.data);
-            console.log(res);
+            setPosts(res.rentPosts);
         });
     }, []);
+
 
         
 
 return (
     <>
-        {posts.map((post) => ( 
+        <HeadRow>
+        <h2>인기리스트</h2>
+        </HeadRow>
+        {posts && posts.map((el, idx) => ( 
             <PostItem
-            category= {post}
-            rentPostContents= {post}
-            rentPostId= {post}
-            rentPostName= {post}
-            updateDate= {post}
-            viewCount= {post}
-            writeDate= {post}
-            writerId= {post}
-            rentStatus= {post}
-            />
+                data={el} key={idx} />
+                       
         ))}
     </>
 );
 };
 
+const HeadRow = styled.div``;
 
 export default PostList;
