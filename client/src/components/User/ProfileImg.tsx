@@ -1,14 +1,70 @@
+import { useContext, useEffect, useRef, useState } from 'react';
+import { UserContext } from '../../context/context';
+import axios from 'axios';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
+import imageCompression from 'browser-image-compression';
+
 const ProfileImg = () => {
-    const imgUrl: string =
-        'https://i.pinimg.com/474x/a8/34/51/a83451b046c3505aadcbdb64cfdb8ad6.jpg';
+    const { user } = useContext(UserContext);
+    const memberId = user.memberId;
+    const imgInput: any = useRef<HTMLInputElement>(null);
+    const [imageUrl, setImageUrl] = useState('');
+    useEffect(() => {
+        setImageUrl(`http://3.39.180.45:56178/member/profileImage/get?memberId=${memberId}`);
+    }, [user]);
+
+    const handleChangeBtnClick = (e: any) => {
+        e.preventDefault();
+        imgInput.current.click();
+    };
+    const compressImg = async (e: any) => {
+        e.preventDefault();
+        setImageUrl(URL.createObjectURL(e.target.files[0]));
+        const imgFile = e.target.files[0];
+        const options = {
+            maxSizeMB: 2,
+            maxWidthOrHeight: 170,
+        };
+        return await imageCompression(imgFile, options);
+    };
+    const handleImgChange = async (e: any) => {
+        const compressedFile = await compressImg(e);
+        const formData = new FormData();
+        formData.append('file', compressedFile);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        };
+        await axios
+            .post(
+                `http://3.39.180.45:56178/member/profileImage/post?memberId=${memberId}`,
+                formData,
+                config,
+            )
+            .catch(() => {
+                alert('이미지 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ');
+            });
+    };
     return (
         <Container>
             <div className="title">프로필이미지</div>
             <ImgWrapper>
-                <img alt="profile" src={imgUrl} />
-                <Button type={'white'} width={'short'} text={'변경'} />
+                <img alt="practice" src={imageUrl} />
+                <input
+                    type="file"
+                    ref={imgInput}
+                    accept="image/*"
+                    onChange={(e) => handleImgChange(e)}
+                    style={{ display: 'none' }}
+                />
+                <Button
+                    onClick={(e) => handleChangeBtnClick(e)}
+                    type={'white'}
+                    width={'short'}
+                    text={'변경'}
+                />
             </ImgWrapper>
         </Container>
     );
