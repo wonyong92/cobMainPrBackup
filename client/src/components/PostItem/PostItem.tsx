@@ -1,32 +1,40 @@
 import styled from 'styled-components';
 
-interface Props{
-  category: string,
-  rentPostContents: string,
-  rentPostId: number,
-  rentPostName: string,
-  updateDate: string,
-  viewCount: number,
-  writeDate: string,
-  writerId: number,
-  rentStatus: string,
+export interface PostItemData {
+  
+    catergory: string;
+    image: string;
+    location: string;
+    rentPostContents: string;
+    rentPostId: number;
+    rentPostName: string;
+    rentPrice: number;
+    rentStatus: boolean;
+    updateDate: string;
+    viewCount: number;
+    writeDate: string;
+    writerId: number;
+  
+}
+interface PostItemProps {
+  data:PostItemData;
+  
 }
 
-const PostItem = ({}:Props) => {
-  const imgUrl: string = 'https://images.unsplash.com/photo-1616161616161-1b1b1b1b1b1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
+const PostItem = ({data}:PostItemProps) => {
+  const imgUrl= `http://3.39.180.45:56178/rentPost/image/get?imageId=${data.rentPostId}`;
+  
   return (
     <>
-      <HeadRow>
-        <h2>인기리스트</h2>
-      </HeadRow>
+      
       <ListWrapper>
         <Image src={imgUrl} />
         <DescriptionWrapper>
-          <Title>50년된 자전거</Title>
-          <Region>서울</Region>
-          <Price>50000원</Price>
+          <Title>{data.rentPostName}</Title>
+          <Region>{data.location}</Region>
+          <Price>{data.rentPrice}</Price>
           <div style={{ color: '#868e96', fontSize: '13px' }}>
-            <span>❤️</span> <span>조회</span>
+            <span>❤️</span> <span>조회:{data.viewCount}</span>
           </div>
         </DescriptionWrapper>
       </ListWrapper>
@@ -44,9 +52,7 @@ const PostItem = ({}:Props) => {
 //   view: '5',
 // };
 
-export default PostItem;
 
-const HeadRow = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -62,7 +68,7 @@ const Image = styled.img`
 //
   width: 100px;
   height: 100px;
-  background-image: url('https://pbs.twimg.com/profile_images/449975524350103554/zBK8lr4U.jpeg');
+  /* background-image: url('https://pbs.twimg.com/profile_images/449975524350103554/zBK8lr4 */
   background-size: 100px 100px;
   border-radius: 12px;
   border: 0px solid transparent;
@@ -97,3 +103,5 @@ const Region = styled.div`
   margin-bottom: 4px;
   line-height: 1.5;
 `;
+
+export default PostItem;
