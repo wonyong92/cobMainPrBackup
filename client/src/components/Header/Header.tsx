@@ -1,5 +1,13 @@
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '../../asessts/img/logo.svg';
+import {
+    MyHeader,
+    Top,
+    LogoWrapper,
+    LogoSVG,
+    Icons,
+    Bottom,
+    DesktopTopRight,
+} from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBars,
@@ -7,53 +15,67 @@ import {
     faCirclePlus,
     faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import MenuModal from '../Modal/MenuModal';
 import TextInput from '../../UI/input/TextInput';
 import TextButton from '../../UI/button/TextButton';
 import Button from '../../UI/button/Button';
-
+import UserModal from '../Modal/UserModal';
+import { UserContext } from '../../context/context';
+const TopLeft = styled.div``;
+const TopRight = styled.div``;
 const Header = () => {
+    const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const location = useLocation();
     const pathCondition =
         location.pathname === '/mypage' || location.pathname === '/myactiviery';
     const [menuModal, setMenuModal] = useState(false);
+    const [userModal, setUserModal] = useState(false);
     const [keyword, setKeyword] = useState<string>('');
     return (
         <MyHeader>
             <Top>
-                <LogoWrapper
-                    menuModal={menuModal}
-                    onClick={() => navigate(`/`)}
-                >
-                    <LogoSVG />
-                    <div className="title">빌리지뭐</div>
-                    <div
-                        className="category"
-                        onClick={() => setMenuModal(true)}
+                <TopLeft>
+                    <LogoWrapper
+                        menuModal={menuModal}
+                        onClick={() => navigate(`/`)}
                     >
-                        카테고리
-                    </div>
-                </LogoWrapper>
-                <Icons>
-                    <FontAwesomeIcon
-                        icon={faCirclePlus}
-                        onClick={() => navigate(`/postwrite`)}
-                        className="icon"
-                    />
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        onClick={() => setMenuModal(true)}
-                        className="icon"
-                    />
-                    <FontAwesomeIcon
-                        icon={faUser}
-                        onClick={() => navigate(`/mypage`)}
-                        className="icon"
-                    />
-                </Icons>
+                        <LogoSVG />
+                        <div className="title">빌리지뭐</div>
+                        <div
+                            className="category"
+                            onClick={() => setMenuModal(true)}
+                        >
+                            카테고리
+                        </div>
+                    </LogoWrapper>
+                </TopLeft>
+                <TopRight>
+                    <Icons>
+                        <Link to={user.memberId ? '/postwrite' : '/login'}>
+                            <FontAwesomeIcon
+                                icon={faCirclePlus}
+                                className="icon"
+                            />
+                        </Link>
+                        <FontAwesomeIcon
+                            icon={faBars}
+                            onClick={() => setMenuModal(true)}
+                            className="icon"
+                        />
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            onClick={
+                                user.memberId
+                                    ? () => setUserModal(true)
+                                    : () => navigate('/login')
+                            }
+                            className="icon"
+                        />
+                    </Icons>
+                </TopRight>
             </Top>
             {pathCondition ? null : (
                 <Bottom>
@@ -70,131 +92,42 @@ const Header = () => {
                     />
                 </Bottom>
             )}
+            <DesktopTopRight>
+                {user.memberId ? (
+                    <FontAwesomeIcon
+                        icon={faUser}
+                        onClick={
+                            user.memberId
+                                ? () => setUserModal(true)
+                                : () => navigate('/login')
+                        }
+                        className="icon"
+                    />
+                ) : (
+                    <>
+                        <TextButton
+                            isGray={true}
+                            btnText={'로그인'}
+                            onClick={() => navigate('/login')}
+                        />
+                        <TextButton
+                            isGray={true}
+                            btnText={'회원가입'}
+                            onClick={() => navigate('/signup')}
+                        />
+                    </>
+                )}
+                <Link to={user.memberId ? '/postwrite' : '/login'}>
+                    <Button text={'글쓰기 +'} width={'short'} />
+                </Link>
+            </DesktopTopRight>
             {menuModal ? (
                 <MenuModal menuModal={menuModal} setMenuModal={setMenuModal} />
             ) : null}
-            <DesktopBtnWrapper>
-                <TextButton
-                    isGray={true}
-                    btnText={'로그인'}
-                    onClick={() => navigate('/login')}
-                />
-                <TextButton
-                    isGray={true}
-                    btnText={'회원가입'}
-                    onClick={() => navigate('/signup')}
-                />
-                <Button text={'글쓰기 +'} width={'short'} />
-            </DesktopBtnWrapper>
+            {user.memberId && userModal ? (
+                <UserModal userModal={userModal} setUserModal={setUserModal} />
+            ) : null}
         </MyHeader>
     );
 };
 export default Header;
-
-const MyHeader = styled.header`
-    width: 100vw;
-    display: flex;
-    justify-content: space-around;
-    padding-bottom: 5px;
-    border-bottom: 0.5px solid #f5f5f5;
-    @media screen and (max-width: 500px) {
-        flex-direction: column;
-        display: flex;
-        align-items: center;
-        padding-top: 5px;
-        padding-bottom: 10px;
-    }
-`;
-const Top = styled.div`
-    display: flex;
-    @media screen and (max-width: 500px) {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 350px;
-        height: 40px;
-    }
-`;
-const LogoWrapper = styled.div<{
-    menuModal: boolean;
-}>`
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    .title {
-        font-size: 22px;
-        font-weight: 500;
-        padding-top: 5px;
-        margin-right: 10px;
-    }
-
-    .category {
-        padding-top: 15px;
-        padding-bottom: 5px;
-        color: ${(props) => (props.menuModal === true ? '#95d1cc' : '#464646')};
-        border-bottom: ${(props) =>
-            props.menuModal === true
-                ? '3px solid #95d1cc'
-                : '3px solid transparent'};
-    }
-    .category:hover {
-        color: #95d1cc;
-    }
-    @media screen and (max-width: 500px) {
-        cursor: pointer;
-        .title {
-            font-size: 18px;
-            padding-top: 3px;
-        }
-        .category {
-            display: none;
-        }
-    }
-`;
-const LogoSVG = styled(Logo)`
-    margin: 0 10px;
-`;
-const Icons = styled.div`
-    display: none;
-    @media screen and (max-width: 500px) {
-        display: inline-block;
-        margin-right: 10px;
-        .icon {
-            cursor: pointer;
-            color: #95d1cc;
-            width: 25px;
-            height: 20px;
-            margin-left: 10px;
-        }
-    }
-`;
-const Bottom = styled.div`
-    display: flex;
-    justify-content: center;
-    input {
-        margin-top: 10px;
-        min-width: 330px;
-        text-indent: 5px;
-        font-size: 12px;
-    }
-    .magnify {
-        position: relative;
-        top: 14px;
-        right: 30px;
-        color: #c0bec8;
-        cursor: pointer;
-    }
-`;
-
-const DesktopBtnWrapper = styled.div`
-    display: flex;
-    width: 200px;
-    justify-content: space-between;
-    align-items: center;
-    button {
-        font-size: 13px;
-    }
-    @media screen and (max-width: 500px) {
-        display: none;
-    }
-`;

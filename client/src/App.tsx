@@ -1,7 +1,5 @@
 import './App.css';
-
 import { Route, Routes, useLocation } from 'react-router-dom';
-
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import Main from './pages/Main/Main';
@@ -18,9 +16,16 @@ import FindPw from './pages/Register/FindPassword';
 import SetNewPassword from './pages/Register/SetNewPassword';
 import NewPwGuide from './pages/Guide/NewPwGuide';
 import FindIdGuide from './pages/Guide/FindIdGuide';
+import { useEffect, useState } from 'react';
+import { IUserData } from './types';
+import { UserContext } from './context/context';
 
 const App = () => {
     const location = useLocation();
+    const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState<IUserData>({
+        memberId: '',
+    });
     const pathCondition = [
         '/login',
         '/signup',
@@ -30,6 +35,13 @@ const App = () => {
         '/newpwguide',
         '/findidguide',
     ].includes(location.pathname);
+    // 로그인유지
+    useEffect(() => {
+        const userInfo = localStorage.getItem('userInfo');
+        setUser({ ...user, memberId: userInfo } || null);
+        setIsLoading(false);
+    }, []);
+    if (isLoading) return <p>loading</p>;
 
     return (
         <div className="App">
