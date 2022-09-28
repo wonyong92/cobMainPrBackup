@@ -4,6 +4,7 @@ import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.UpdateMemberDto;
+import com.team23.mainPr.Domain.Member.Dto.Request.UpdatePasswordDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Service.MemberService;
@@ -82,6 +83,15 @@ public class MemberController {
         return memberService.updateProfile(updateMemberDto, token);
     }
 
+    @Operation(description = "비밀번호 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
+    @PutMapping("password")
+    public void updatePassword(
+        @RequestBody
+        @Valid UpdatePasswordDto dto,
+        @RequestHeader(value = "Authorization", required = false) String token) {
+        memberService.updatePassword(dto, token);
+    }
+
     @Operation(description = "회원 탈퇴, 토큰을 이용하여 본인 정보인지 확인.")
     @DeleteMapping("/delete")
     public void deleteMember(
@@ -111,7 +121,7 @@ public class MemberController {
     }
 
     @Operation(description = "아이디 찾기, 이름과 이메일을 확인하여 매칭되는 아이디 응답.")
-    @GetMapping("/findId")
+    @PostMapping("/findId")
     public String findId(
         @RequestBody
         @Valid FindIdDto findIdDto) {
@@ -119,7 +129,7 @@ public class MemberController {
     }
 
     @Operation(description = "비밀번호 찾기, 이름과 이메일, 아이디를 확인하여 매칭되는 비밀번호 응답.")
-    @GetMapping("/findPassword")
+    @PostMapping("/findPassword")
     public String findPassword(
         @RequestBody
         @Valid FindPasswordDto findPasswordDto) {

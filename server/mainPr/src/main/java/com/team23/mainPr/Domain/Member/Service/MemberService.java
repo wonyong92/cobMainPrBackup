@@ -6,6 +6,7 @@ import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
 import com.team23.mainPr.Domain.Member.Dto.Request.UpdateMemberDto;
+import com.team23.mainPr.Domain.Member.Dto.Request.UpdatePasswordDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
 import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
 import com.team23.mainPr.Domain.Member.Entity.Member;
@@ -188,5 +189,11 @@ public class MemberService {
         final String[] result = new String[1];
         memberRepository.findByNickname(nickname).ifPresentOrElse(member -> result[0] = "exist", () -> result[0] = "not exist");
         return result[0];
+    }
+
+    public void updatePassword(UpdatePasswordDto dto, String token) {
+        Member member = memberRepository.getReferenceById(memberIdExtractorFromJwt.getMemberId(token));
+        member.setPassword(dto.getNewPassword());
+        memberRepository.flush();
     }
 }
