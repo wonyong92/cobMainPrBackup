@@ -1,58 +1,69 @@
-import styled from 'styled-components';
+import { ChangeEvent, useContext, useState, useEffect } from 'react';
+import { UserContext } from '../../context/context';
+import { NicknameWrapper, BtnWrapper, MsgWrapper } from './nickname-style';
 import Button from '../../UI/button/Button';
 import DefaultInput from '../../UI/input/DefaultInput';
+import axios from 'axios';
 const Nickname = () => {
+    const { user } = useContext(UserContext);
+    const [nickname, setNickname] = useState('');
+    const [message, setMessage] = useState('');
+    const getOriginNickname = async () => {
+        const res = await axios.get(
+            `http://3.39.180.45:56178/member/profile?memberId=${user.memberId}`,
+        );
+        setNickname(res.data.nickname);
+    };
+    useEffect(() => {
+        getOriginNickname();
+    }, []);
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setNickname(e.target.value);
+    };
+    const changeNickname = async () => {
+        const data = {
+            memberId: user.memberId,
+            nickname,
+        };
+        try {
+            const res = await axios.put(`http://3.39.180.45:56178/member/profile`, data);
+            setNickname(res.data.nickname);
+            setMessage(`닉네임이 ${nickname} 으로 변경되었습니다 :)`);
+        } catch {
+            setMessage(`다시 시도해주세요-!`);
+        }
+    };
+    const cancleChangeNickname = () => {
+        setNickname(nickname);
+    };
     return (
         <NicknameWrapper>
             <div className="title">닉네임</div>
-            <DefaultInput value="정원드래곤" placeholder=""></DefaultInput>
+            <DefaultInput
+                value={nickname}
+                onChange={handleChange}
+                placeholder="2-10자 내로 입력해주세요"
+            ></DefaultInput>
             <BtnWrapper>
-                <Button type={'white'} width={'short'} text={'취소'}></Button>
-                <Button type={'white'} width={'short'} text={'변경'}></Button>
+                <Button
+                    onClick={cancleChangeNickname}
+                    type={'white'}
+                    width={'short'}
+                    text={'취소'}
+                ></Button>
+                <Button
+                    onClick={changeNickname}
+                    type={'white'}
+                    width={'short'}
+                    text={'변경'}
+                ></Button>
             </BtnWrapper>
+            {message !== '' ? (
+                <MsgWrapper>
+                    <p>{message}</p>
+                </MsgWrapper>
+            ) : null}
         </NicknameWrapper>
     );
 };
 export default Nickname;
-const NicknameWrapper = styled.div`
-    padding-top: 5px;
-    padding-left: 10px;
-    .title {
-        color: #4a4747;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-    input {
-        width: 300px;
-        height: 30px;
-        border: 1px solid #4a4747;
-        border-radius: 3px;
-        text-indent: 5px;
-        margin-bottom: 10px;
-    }
-    @media screen and (max-width: 500px) {
-        input {
-            width: 95%;
-        }
-    }
-`;
-const BtnWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    width: 95%;
-    margin-left: 15px;
-    button {
-        border: #4a4747 1px solid;
-        margin-left: 15px;
-        width: 50px;
-        border-radius: 5px;
-    }
-    @media screen and (max-width: 500px) {
-        margin-left: 0px;
-        button {
-            width: 40px;
-            height: 30px;
-            font-size: 12px;
-        }
-    }
-`;
