@@ -44,28 +44,26 @@ const App = () => {
     if (isLoading) return <p>loading</p>;
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
-            <div className="App">
-                {pathCondition ? undefined : <Header />}
-                <Routes>
-                    <Route path="/" element={<Main />} />
-                    <Route path="/postlist" element={<PostList />} />
-                    <Route path="/postedit/:id" element={<PostEdit />} />
-                    <Route path="/postdetail/:id" element={<PostDetail />} />
-                    <Route path="/postwrite" element={<PostWrite />} />
-                    <Route path="/mypage" element={<Mypage />} />
-                    <Route path="/myactivity" element={<MyActivity />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/findid" element={<FindId />} />
-                    <Route path="/findpw" element={<FindPw />} />
-                    <Route path="/newpassword" element={<SetNewPassword />} />
-                    <Route path="/newpwguide" element={<NewPwGuide />} />
-                    <Route path="/findidguide" element={<FindIdGuide />} />
-                </Routes>
-                {pathCondition ? undefined : <Footer />}
-            </div>
-        </UserContext.Provider>
+        <div className="App">
+            {pathCondition ? undefined : <Header />}
+            <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/postlist" element={<PostList />} />
+                <Route path="/postedit" element={<PostEdit />} />
+                <Route path="/postdetail" element={<PostDetail />} />
+                <Route path="/postwrite" element={<PostWrite />} />
+                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/myactivity" element={<MyActivity />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/findid" element={<FindId />} />
+                <Route path="/findpw" element={<FindPw />} />
+                <Route path="/newpassword" element={<SetNewPassword />} />
+                <Route path="/newpwguide" element={<NewPwGuide />} />
+                <Route path="/findidguide" element={<FindIdGuide />} />
+            </Routes>
+            {pathCondition ? undefined : <Footer />}
+        </div>
     );
 };
 
