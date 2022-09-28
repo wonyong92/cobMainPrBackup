@@ -19,9 +19,13 @@ const Login = () => {
             <InputDescript text={'아이디로 로그인'} />
             <LoginInput />
             <FindInfo>
-                <TextButton btnText={'ID 찾기'} isGray={true} />
+                <TextButton btnText={'ID 찾기'} isGray={true} onClick={() => navigate('/findid')} />
                 <span>&#47;</span>
-                <TextButton btnText={'비밀번호 찾기'} isGray={true} />
+                <TextButton
+                    btnText={'비밀번호 찾기'}
+                    isGray={true}
+                    onClick={() => navigate('/findpw')}
+                />
             </FindInfo>
             <BtnWrapper>
                 <TextButton
