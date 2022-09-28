@@ -24,7 +24,13 @@ const App = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<IUserData>({
-        memberId: null,
+        memberId: 0,
+        loginId: '',
+        email: '',
+        name: '',
+        nickname: '',
+        createdAt: '',
+        profileImageId: 0,
     });
     const pathCondition = [
         '/login',
@@ -36,11 +42,17 @@ const App = () => {
         '/findidguide',
     ].includes(location.pathname);
     // 로그인유지
+    const getUserFromLocalStorage = (): IUserData | null => {
+        const result = localStorage.getItem('userInfo');
+        const userInfo = result ? JSON.parse(result) : null;
+        return userInfo;
+    };
     useEffect(() => {
-        const userInfo = localStorage.getItem('userInfo');
-        setUser({ ...user, memberId: userInfo } || null);
+        const userInfo = getUserFromLocalStorage();
+        setUser({ ...user, ...userInfo });
         setIsLoading(false);
     }, []);
+    console.log(user);
     if (isLoading) return <p>loading...</p>;
 
     return (

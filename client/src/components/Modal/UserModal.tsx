@@ -7,7 +7,6 @@ import { UserContext } from '../../context/context';
 import axios from 'axios';
 import TextButton from '../../UI/button/TextButton';
 import { useNavigate } from 'react-router-dom';
-import { IUserProfile } from '../../types';
 interface PropsType {
     userModal: boolean;
     setUserModal: (state: boolean) => void;
@@ -15,34 +14,20 @@ interface PropsType {
 const UserModal = ({ setUserModal }: PropsType) => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
-    const [imageUrl, setImageUrl] = useState('');
-    useEffect(() => {
-        setImageUrl(`http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`);
-    }, [user]);
-    const [userInfo, setUserInfo] = useState<IUserProfile>({
-        createdAt: '',
-        email: '',
-        loginId: '',
-        nickname: '',
-        profileImageId: 0,
-    });
-    const getUserData = async () => {
-        const res = await axios.get(
-            `http://3.39.180.45:56178/member/profile?memberId=${user.memberId}`,
-        );
-        const data = res.data;
-        setUserInfo({ ...data });
-    };
-
-    useEffect(() => {
-        getUserData();
-    }, [user]);
-
+    const imageUrl = `http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`;
     const closeModal = () => {
         setUserModal(false);
     };
     const trySignout = () => {
-        setUser({ ...user, memberId: null });
+        setUser({
+            memberId: 0,
+            loginId: '',
+            email: '',
+            name: '',
+            nickname: '',
+            createdAt: '',
+            profileImageId: 0,
+        });
         localStorage.removeItem('userInfo');
         navigate('/');
     };
@@ -57,8 +42,8 @@ const UserModal = ({ setUserModal }: PropsType) => {
                     <img alt="profile" src={imageUrl} />
                 </ImgWrapper>
                 <InfoWrapper>
-                    <div>{userInfo.nickname}</div>
-                    <div className="loginId">{userInfo.loginId}</div>
+                    <div>{user.nickname}</div>
+                    <div className="loginId">{user.loginId}</div>
                 </InfoWrapper>
             </Middle>
             <Bottom>

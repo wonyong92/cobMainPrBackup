@@ -12,7 +12,6 @@ export interface Login {
 }
 const LoginInput = () => {
     const { setUser, user } = React.useContext(UserContext);
-
     const navigate = useNavigate();
     const [loginInfo, setLoginInfo] = useState<Login>({
         loginId: '',
@@ -33,9 +32,7 @@ const LoginInput = () => {
             atob(base64)
                 .split('')
                 .map((c) => {
-                    return (
-                        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-                    );
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                 })
                 .join(''),
         );
@@ -48,19 +45,18 @@ const LoginInput = () => {
             return;
         }
         try {
-            const res = await axios.post(
-                `http://3.39.180.45:56178/login`,
-                loginInfo,
-                { withCredentials: false },
-            );
+            const res = await axios.post(`http://3.39.180.45:56178/login`, loginInfo, {
+                withCredentials: false,
+            });
             // 토큰
             const token = res.headers.authorization;
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            axios.defaults.headers.common['Authorization'] = token;
             // 유저정보
             const result = DecodeJWT(token);
-            const memberId = result.memberId;
-            setUser({ ...user, memberId });
-            localStorage.setItem('userInfo', String(memberId));
+            delete result.sub;
+            delete result.exp;
+            setUser({ ...user, ...result });
+            localStorage.setItem('userInfo', JSON.stringify(result));
             navigate('/');
         } catch {
             setErrorMsg('아이디와 비밀번호를 확인해주세요.');

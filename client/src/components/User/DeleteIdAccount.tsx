@@ -13,8 +13,16 @@ const DeleteIdAccount = () => {
                 `http://3.39.180.45:56178/member/delete?memberId=${user.memberId}`,
             );
             if (res.status === 200) {
-                localStorage.clear();
-                setUser({ ...user, memberId: null });
+                localStorage.removeItem('userInfo');
+                setUser({
+                    memberId: 0,
+                    loginId: '',
+                    email: '',
+                    name: '',
+                    nickname: '',
+                    createdAt: '',
+                    profileImageId: 0,
+                });
                 alert('회원탈퇴가 정상적으로 완료되었습니다 :)');
                 navigate('/');
             }

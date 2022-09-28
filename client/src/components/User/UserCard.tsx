@@ -1,38 +1,21 @@
-import axios from 'axios';
 import styled from 'styled-components';
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../context/context';
-import { IUserProfile } from '../../types';
+
 const UserCard = () => {
     const { user } = useContext(UserContext);
-    const [imageUrl, setImageUrl] = useState('');
-    const [userInfo, setUserInfo] = useState<IUserProfile>({
-        createdAt: '',
-        email: '',
-        loginId: '',
-        nickname: '',
-        profileImageId: 0,
-    });
-    const date = new Date(userInfo.createdAt);
-    const createdAt = `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDate()}일`;
-    const getUserData = async () => {
-        const res = await axios.get(
-            `http://3.39.180.45:56178/member/profile?memberId=${user.memberId}`,
-        );
-        const data = res.data;
-        setUserInfo({ ...data });
-    };
-    useEffect(() => {
-        getUserData();
-        setImageUrl(`http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`);
-    }, [user]);
+    const imageUrl = `http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`;
+    let date = user.createdAt;
+    const createdAt = date?.slice(0, 10);
+    // const createdAt = `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDate()}일`;
+
     return (
         <Container>
             <ImgWrapper>
                 <img alt="profile" src={imageUrl} />
             </ImgWrapper>
             <InfoWrppaer>
-                <div className="nickname">{userInfo.nickname}</div>
+                <div className="nickname">{user.nickname}</div>
                 <div className="signedAt">가입일: {createdAt}</div>
             </InfoWrppaer>
         </Container>

@@ -6,17 +6,9 @@ import DefaultInput from '../../UI/input/DefaultInput';
 import axios from 'axios';
 const Nickname = () => {
     const { user } = useContext(UserContext);
-    const [nickname, setNickname] = useState('');
+    const [nickname, setNickname] = useState(user.nickname);
     const [message, setMessage] = useState('');
-    const getOriginNickname = async () => {
-        const res = await axios.get(
-            `http://3.39.180.45:56178/member/profile?memberId=${user.memberId}`,
-        );
-        setNickname(res.data.nickname);
-    };
-    useEffect(() => {
-        getOriginNickname();
-    }, []);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
     };
@@ -28,7 +20,7 @@ const Nickname = () => {
         try {
             const res = await axios.put(`http://3.39.180.45:56178/member/profile`, data);
             setNickname(res.data.nickname);
-            setMessage(`닉네임이 ${nickname} 으로 변경되었습니다 :)`);
+            setMessage(`닉네임이 ${nickname} (으)로 변경되었습니다 :)`);
         } catch {
             setMessage(`다시 시도해주세요-!`);
         }

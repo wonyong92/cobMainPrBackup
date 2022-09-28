@@ -7,11 +7,10 @@ import imageCompression from 'browser-image-compression';
 
 const ProfileImg = () => {
     const { user } = useContext(UserContext);
-    const memberId = user.memberId;
     const imgInput: any = useRef<HTMLInputElement>(null);
     const [imageUrl, setImageUrl] = useState('');
     useEffect(() => {
-        setImageUrl(`http://3.39.180.45:56178/member/profileImage/get?memberId=${memberId}`);
+        setImageUrl(`http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`);
     }, [user]);
 
     const handleChangeBtnClick = (e: any) => {
@@ -39,7 +38,7 @@ const ProfileImg = () => {
         };
         await axios
             .post(
-                `http://3.39.180.45:56178/member/profileImage/post?memberId=${memberId}`,
+                `http://3.39.180.45:56178/member/profileImage/post?memberId=${user.memberId}`,
                 formData,
                 config,
             )
