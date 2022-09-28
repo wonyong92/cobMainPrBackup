@@ -11,11 +11,11 @@ import PostList from './pages/Post/PostList';
 import PostWrite from './pages/Post/PostWrite';
 import Signup from './pages/Register/Signup';
 import Login from './pages/Register/Login';
-import FindId from './pages/Register/FindId';
-import FindPw from './pages/Register/FindPassword';
+import FindId from './pages/FindUserInfo/FindId';
+import FindPassword from './pages/FindUserInfo/FindPassword';
+import FindUserInfoGuide from './pages/Guide/FindUserInfoGuide';
 import SetNewPassword from './pages/Register/SetNewPassword';
 import NewPwGuide from './pages/Guide/NewPwGuide';
-import FindIdGuide from './pages/Guide/FindIdGuide';
 import { useEffect, useState } from 'react';
 import { IUserData } from './types';
 import { UserContext } from './context/context';
@@ -24,7 +24,7 @@ const App = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<IUserData>({
-        memberId: '',
+        memberId: null,
     });
     const pathCondition = [
         '/login',
@@ -41,7 +41,7 @@ const App = () => {
         setUser({ ...user, memberId: userInfo } || null);
         setIsLoading(false);
     }, []);
-    if (isLoading) return <p>loading</p>;
+    if (isLoading) return <p>loading...</p>;
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
@@ -58,10 +58,10 @@ const App = () => {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/findid" element={<FindId />} />
-                    <Route path="/findpw" element={<FindPw />} />
+                    <Route path="/findpw" element={<FindPassword />} />
+                    <Route path="/findguide" element={<FindUserInfoGuide />} />
                     <Route path="/newpassword" element={<SetNewPassword />} />
                     <Route path="/newpwguide" element={<NewPwGuide />} />
-                    <Route path="/findidguide" element={<FindIdGuide />} />
                 </Routes>
                 {pathCondition ? undefined : <Footer />}
             </div>
