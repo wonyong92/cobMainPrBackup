@@ -1,19 +1,20 @@
 import styled from 'styled-components';
 
-interface Props{
-  category: string,
-  rentPostContents: string,
-  rentPostId: number,
-  rentPostName: string,
-  updateDate: string,
-  viewCount: number,
-  writeDate: string,
-  writerId: number,
-  rentStatus: string,
+interface Props {
+  category?: string;
+  rentPostContents?: string;
+  rentPostId?: number;
+  rentPostName?: string;
+  updateDate?: string;
+  viewCount?: number;
+  writeDate?: string;
+  writerId?: number;
+  rentStatus?: string;
 }
 
-const PostItem = ({}:Props) => {
-  const imgUrl: string = 'https://images.unsplash.com/photo-1616161616161-1b1b1b1b1b1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
+const PostItem = ({}: Props) => {
+  const imgUrl: string =
+    'https://images.unsplash.com/photo-1616161616161-1b1b1b1b1b1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
   return (
     <>
       <HeadRow>
@@ -59,7 +60,7 @@ const DescriptionWrapper = styled.div`
 `;
 
 const Image = styled.img`
-//
+  //
   width: 100px;
   height: 100px;
   background-image: url('https://pbs.twimg.com/profile_images/449975524350103554/zBK8lr4U.jpeg');

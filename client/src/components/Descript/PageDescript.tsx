@@ -5,19 +5,22 @@ const DescriptWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
     margin-top: 30px;
     h4 {
-        font-size: 18px;
+        font-size: 20px;
         margin-bottom: 15px;
     }
     p {
-        font-size: 12px;
+        font-size: 14px;
         text-align: center;
     }
     @media screen and (max-width: 500px) {
+        h4 {
+            font-size: 18px;
+        }
         p {
             width: 80%;
+            font-size: 12px;
         }
     }
 `;

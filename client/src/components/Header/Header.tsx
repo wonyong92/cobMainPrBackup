@@ -59,8 +59,8 @@ const Header = () => {
                     <TextInput
                         type="text"
                         value={keyword}
-                        input="??"
                         onChange={(e) => setKeyword(e.target.value)}
+                        placeholder="검색어"
                     />
                     <FontAwesomeIcon
                         icon={faMagnifyingGlass}
@@ -69,7 +69,9 @@ const Header = () => {
                     />
                 </Bottom>
             )}
+
             <DesktopTopRight>
+                {/* 자식으로 memberId props받기 따로 분리,, 이 안에 userModal을 자식으로*/}
                 {user.memberId ? (
                     <FontAwesomeIcon
                         icon={faUser}
