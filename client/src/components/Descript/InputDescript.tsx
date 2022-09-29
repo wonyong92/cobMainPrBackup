@@ -1,17 +1,4 @@
 import styled from 'styled-components';
-interface Prop {
-    text: string;
-}
-const InputDescript = ({ text }: Prop) => {
-    return (
-        <Container>
-            <div className="line" />
-            <div className="text">{text}</div>
-            <div className="line" />
-        </Container>
-    );
-};
-export default InputDescript;
 const Container = styled.div`
     display: flex;
     justify-content: center;
@@ -29,3 +16,16 @@ const Container = styled.div`
         margin: 0 10px;
     }
 `;
+interface Prop {
+    text: string;
+}
+const InputDescript = ({ text }: Prop) => {
+    return (
+        <Container>
+            <div className="line" />
+            <div className="text">{text}</div>
+            <div className="line" />
+        </Container>
+    );
+};
+export default InputDescript;

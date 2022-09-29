@@ -23,12 +23,12 @@ export const getPosts = async() => {
 export const getImage = async (postId:any) => {
     try {
         // let imageArr = postId.map((el:any)=> {
-        //     return AxiosInstance.get(`http://3.39.180.45:56178/rentPost/images/get?postId=${el}`).then((res)=>{
+        //     return AxiosInstance.get(`http://3.35.90.143:54130/rentPost/images/get?postId=${el}`).then((res)=>{
         //         return res.data;
         //     })
         //     });
         //     console.log(imageArr);
-        const res = await AxiosInstance.get(`http://3.39.180.45:56178/rentPost/images/get?postId=${postId}`);
+        const res = await AxiosInstance.get(`http://3.35.90.143:54130/rentPost/images/get?postId=${postId}`);
         console.log(res);
         console.log(res.data);
         const data = res.data

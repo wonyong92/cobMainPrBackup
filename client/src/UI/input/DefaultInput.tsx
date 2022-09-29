@@ -1,22 +1,13 @@
 import styled from 'styled-components';
-interface Prop {
-    type?: 'password' | 'text';
-    value?: string;
-    placeholder?: string;
-}
-const DefaultInput = ({ type = 'text', value, placeholder }: Prop) => {
-    return (
-        <Container>
-            <input type={type} value={value} placeholder={placeholder} />
-        </Container>
-    );
-};
-export default DefaultInput;
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    label {
+        font-size: 13px;
+        color: #464646;
+    }
     input {
         height: 35px;
         padding: 5px;
@@ -26,3 +17,45 @@ const Container = styled.div`
         font-size: 12px;
     }
 `;
+const Message = styled.p<{ msgProp: string }>`
+    margin-top: 3px;
+    font-size: 11px;
+    text-indent: 3px;
+    color: ${(props) => (props.msgProp === '>' ? 'white' : '#ff7f7f')};
+`;
+
+interface Prop {
+    type?: 'password' | 'text';
+    label?: string;
+    value?: string;
+    name?: string;
+    message?: string;
+    placeholder?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any; //?
+}
+const DefaultInput = ({
+    type = 'text',
+    label,
+    value,
+    name,
+    message,
+    placeholder,
+    onChange,
+}: Prop) => {
+    const msgProp: string = message!;
+    return (
+        <Container>
+            {label && <label>{label}</label>}
+            <input
+                type={type}
+                value={value}
+                name={name}
+                placeholder={placeholder}
+                onChange={onChange}
+                autoComplete={type === 'password' ? 'off' : ''}
+            />
+            <Message msgProp={msgProp}>{message}</Message>
+        </Container>
+    );
+};
+export default DefaultInput;

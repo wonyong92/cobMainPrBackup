@@ -24,7 +24,7 @@ export interface PostItemDetailProps {
 }
 
 const PostDetailItem = ({data}:PostItemDetailProps) => {
-  const imgUrl: string = `http://3.39.180.45:56178/rentPost/image/get?imageId=${data.rentPostId}`;
+  const imgUrl: string = `http://3.39.180.45:56178/rentPost/image/get?imageId=1`;
   
   return (
     <>

@@ -1,6 +1,35 @@
-import styled from 'styled-components';
-import Button from '../../UI/button/Button';
+import { useContext, useState } from 'react';
+import { UserContext } from '../../context/context';
+import { Container, Info, CheckBox, BtnWrapper } from './deleteaccount-style';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const DeleteIdAccount = () => {
+    const { user, setUser } = useContext(UserContext);
+    const [isChecked, setIsChecked] = useState(false);
+    const navigate = useNavigate();
+    const deleteAccount = async () => {
+        try {
+            const res = await axios.delete(
+                `http://3.35.90.143:54130/member/delete?memberId=${user.memberId}`,
+            );
+            if (res.status === 200) {
+                localStorage.removeItem('userInfo');
+                setUser({
+                    memberId: 0,
+                    loginId: '',
+                    email: '',
+                    name: '',
+                    nickname: '',
+                    createdAt: '',
+                    profileImageId: 0,
+                });
+                alert('회원탈퇴가 정상적으로 완료되었습니다 :)');
+                navigate('/');
+            }
+        } catch {
+            alert('잘못된 요청입니다');
+        }
+    };
     return (
         <Container>
             <div className="title">계정삭제</div>
@@ -10,74 +39,24 @@ const DeleteIdAccount = () => {
                 </p>
             </Info>
             <CheckBox>
-                <input type="checkbox"></input>
-                <p className="descript">
-                    계정 삭제에 관한 정책을 읽고 이에 동의합니다.
-                </p>
+                <input
+                    type="checkbox"
+                    onClick={() => {
+                        setIsChecked(!isChecked);
+                    }}
+                ></input>
+                <p className="descript">계정 삭제에 관한 정책을 읽고 이에 동의합니다.</p>
             </CheckBox>
             <BtnWrapper>
-                <Button
-                    type="red"
-                    text="회원탈퇴"
-                    onClick={() => console.log('삭제')}
-                ></Button>
+                <button
+                    className={isChecked ? 'active' : ''}
+                    disabled={isChecked ? false : true}
+                    onClick={deleteAccount}
+                >
+                    회원탈퇴
+                </button>
             </BtnWrapper>
         </Container>
     );
 };
 export default DeleteIdAccount;
-const Container = styled.div`
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-
-    .title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #464646;
-        margin-bottom: 20px;
-    }
-    .descript {
-        font-size: 12px;
-        font-weight: 400;
-        color: #464646;
-    }
-`;
-const Info = styled.div`
-    border: 1px solid #aba8a8;
-    border-radius: 3px;
-    padding: 15px;
-    flex-grow: 1;
-    @media screen and (max-width: 500px) {
-        width: 290px;
-        padding: 10px;
-    }
-`;
-const CheckBox = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-    margin-bottom: 18px;
-    p {
-        margin-left: 5px;
-    }
-    @media screen and (max-width: 500px) {
-        display: flex;
-        justify-content: space-between;
-        width: 290px;
-    }
-`;
-const BtnWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    button {
-        width: 80px;
-    }
-    @media screen and (max-width: 500px) {
-        display: flex;
-        justify-content: center;
-        button {
-            width: 290px;
-        }
-    }
-`;

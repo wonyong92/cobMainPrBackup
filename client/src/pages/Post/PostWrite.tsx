@@ -61,8 +61,6 @@ const PostWrite = () => {
       writerId: post.writerId,
       rentPrice: post.rentPrice,
       location: post.location,
-      
-      
     })
       
   

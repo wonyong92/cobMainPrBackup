@@ -1,11 +1,7 @@
 import styled from 'styled-components';
-// import { useState } from 'react';
 import {Link} from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
-
-// import { deleteComment } from '../../Utils/ApiCall';     
-// import updateComment from '../../Utils/ApiCall';
-
+// import { useEffect, useState } from 'react';
 
 interface Props {
     postId: string;
@@ -14,28 +10,22 @@ interface Props {
     content: string;
     createdAt: string;
     onDelete: (id: number) => void;
+    
+
 }
 
-const CommentItem = () => {
+const CommentItem = ({commentData}:any) => {
 
     // const [isOwner, setIsOwner] = useState<boolean>(false);
-    // const [comments, setComments] = useState([]);
+   
+    
+   
+    // useEffect(() => {
+    //     if (data.userId === userId) {
+    //         setIsOwner(true);
+    //     }
+    // }, [data.userId, userId]);
 
-    // const onDelete = () => {
-    //     deleteComment('id').then((res) => {
-    //         setComments(res.data);
-    //         console.log(res);
-    //     });
-        
-    // };
-    //  const onUpdate = () => {
-    //     updateComment().then((res) => {
-    //         console.log(res);
-    //     });
-    // };
-
-
-        
 
    return (
         <>
@@ -44,13 +34,13 @@ const CommentItem = () => {
                 <Link to={`/user/${'user.id'}`}>{'user.nickname'}</Link>
                 <span>{'createdAt'}</span>
             </CommentItemHeader>
-            <CommentItemContent>comments</CommentItemContent>
+            <CommentItemContent>{commentData.comments}</CommentItemContent>
             {/* {isOwner && ( */}
                 <CommentItemFooter>
                     <TextButton text='수정' btnText={''} />
                     <TextButton text='삭제' btnText={''} onClick={() =>{}}/>
                 </CommentItemFooter>
-            {/* )} */}
+             {/* )} */}
         </CommentItemWrapper>
     </>
     );
@@ -86,3 +76,16 @@ const CommentItemFooter = styled.div`
 
 
 export default CommentItem;
+
+// const onDelete = () => {
+    //     deleteComment('id').then((res) => {
+    //         setComments(res.data);
+    //         console.log(res);
+    //     });
+        
+    // };
+    //  const onUpdate = () => {
+    //     updateComment().then((res) => {
+    //         console.log(res);
+    //     });
+    // };

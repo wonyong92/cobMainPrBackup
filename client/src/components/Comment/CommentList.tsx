@@ -15,12 +15,13 @@ const CommentList = () => {
 
     return (
       <>
-      {comments && comments.map((el, idx) => 
-         <CommentItem key={idx} data={el}  />
-      )}
-         
+      {comments && comments.map((el, idx) => (
+        <CommentItem
+          commentData={el} key={idx} />
+      ))}
       </>
     );
+      }
      
 
 export default CommentList;

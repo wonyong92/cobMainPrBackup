@@ -1,9 +1,4 @@
 import styled from 'styled-components';
-const Footer = () => {
-    return <MyFooter>@ 2022 빌리지뭐, All rights reserved.</MyFooter>;
-};
-export default Footer;
-
 const MyFooter = styled.footer`
     font-size: 12px;
     text-align: center;
@@ -13,3 +8,7 @@ const MyFooter = styled.footer`
     padding: 15px;
     margin-top: 15px;
 `;
+const Footer = () => {
+    return <MyFooter>@ 2022 빌리지뭐, All rights reserved.</MyFooter>;
+};
+export default Footer;

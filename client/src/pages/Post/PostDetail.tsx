@@ -4,29 +4,25 @@ import PostDetailItem from '../../components/PostItem/PostDetailItem';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import { useState,useEffect } from 'react';
-import { getPosts } from '../../Utils/ApiCall';
+import { getPosts} from '../../Utils/ApiCall';
 import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
 
 
 const PostDetail = () => {
     const [post, setPost] = useState<PostItemDetailData[]>([]);
+   
 
-
- 
     useEffect(() => {
         getPosts().then((res) => {
             console.log(res)
             console.log(res.rentPosts)
             setPost(res.rentPosts)
         })
-        
         .catch((err) => {
             console.log(err);
         });
     }, []);
 
-  
-    
     return (
         <>
         <PostDetailItem data={post[0]}/> 
