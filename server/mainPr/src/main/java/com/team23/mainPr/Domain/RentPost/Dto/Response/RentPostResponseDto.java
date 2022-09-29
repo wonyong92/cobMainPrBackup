@@ -1,6 +1,7 @@
 package com.team23.mainPr.Domain.RentPost.Dto.Response;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -17,4 +18,5 @@ public class RentPostResponseDto {
     private Boolean rentStatus;
     private Integer rentPrice;
     private String location;
+    private List<Integer> rentPostImages;
 }

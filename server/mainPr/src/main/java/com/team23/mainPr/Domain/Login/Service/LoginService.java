@@ -26,7 +26,7 @@ public class LoginService {
     private final JwtBuilder jwtBuilder;
 
     public String[] doLogin(DoLoginDto dto) {
-        final String[] token = new String[2];
+        final String[] token = new String[1];
         final Member[] loginMember = new Member[1];
         memberRepository.findByLoginId(dto.getLoginId()).ifPresentOrElse(findmember -> loginMember[0] = findmember, () -> {
             throw new CustomException(NOT_MATCHED_ID);
@@ -51,7 +51,7 @@ public class LoginService {
         }, () -> {
             throw new CustomException(NOT_MATCHED_ID);
         }));
-        token[1] = Integer.toString(loginMember[0].getMemberId());
+
         return token;
     }
 

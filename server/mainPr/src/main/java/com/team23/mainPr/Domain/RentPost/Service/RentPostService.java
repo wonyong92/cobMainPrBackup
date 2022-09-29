@@ -92,9 +92,12 @@ public class RentPostService {
         RentPost result = rentPostRepository.getReferenceById(postId);
 
         result.setViewCount(result.getViewCount() + 1);
-        rentPostRepository.flush();
 
-        return rentPostMapper.RentPostToRentPostResponseDto(result);
+        rentPostRepository.flush();
+        RentPostResponseDto response = rentPostMapper.RentPostToRentPostResponseDto(result);
+        response.setRentPostImages(pictureRepository.findByPostId(postId).stream().map(picture -> picture.getImageId()).collect(Collectors.toList()));
+
+        return response;
     }
 
     public void postImages(List<MultipartFile> files, Integer postId, String token) throws IOException {

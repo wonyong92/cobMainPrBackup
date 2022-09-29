@@ -1,3 +1,5 @@
+drop all objects;
+
 CREATE TABLE `MEMBER` (
   `MEMBER_ID` int PRIMARY KEY AUTO_INCREMENT,
   `LOGIN_ID` varchar(25) UNIQUE NOT NULL,
@@ -37,7 +39,7 @@ CREATE TABLE `COMMENT` (
 CREATE TABLE `LOGIN` (
   `LOGIN_ID` int PRIMARY KEY AUTO_INCREMENT,
   `MEMBER_ID` int,
-  `TOKEN` varchar(200),
+  `TOKEN` text ,
   `LAST_LOGIN_DATE` datetime,
   `LOGOUT_DATE` datetime,
   `LOGOUTED` boolean DEFAULT false

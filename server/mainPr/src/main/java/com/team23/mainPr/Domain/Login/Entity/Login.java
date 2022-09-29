@@ -1,6 +1,7 @@
 package com.team23.mainPr.Domain.Login.Entity;
 
 import java.time.ZonedDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Login {
     Integer loginId;
 
     Integer memberId;
+    @Column(columnDefinition="varchar(1000)")
     String token;
     @UpdateTimestamp ZonedDateTime lastLoginDate;
     ZonedDateTime logoutDate;

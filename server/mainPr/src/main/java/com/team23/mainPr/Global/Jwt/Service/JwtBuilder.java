@@ -21,6 +21,14 @@ public class JwtBuilder {
     @Value("${token.secret.key}") String key;
 
     public String buildJwt(Member member) {
-        return "Bearer " + JWT.create().withSubject("cos jwt token").withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000))).withClaim("memberId", member.getMemberId()).sign(Algorithm.HMAC512(key));
+        return "Bearer " + JWT.create().withSubject("JWT").withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000)))
+            .withClaim("memberId", member.getMemberId())
+            .withClaim("loginId",member.getLoginId())
+            .withClaim("nickname",member.getNickname())
+            .withClaim("name",member.getName())
+            .withClaim("email",member.getEmail())
+            .withClaim("profileImageId",member.getProfileImageId())
+            .withClaim("createdAt",member.getCreatedAt().toString())
+            .sign(Algorithm.HMAC512(key));
     }
 }
