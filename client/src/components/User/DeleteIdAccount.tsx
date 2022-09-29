@@ -4,28 +4,34 @@ import { Container, Info, CheckBox, BtnWrapper } from './deleteaccount-style';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const DeleteIdAccount = () => {
-  const { user, setUser } = useContext(UserContext);
-  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+  const token = localStorage.getItem('token');
+  const [isChecked, setIsChecked] = useState(false);
   const deleteAccount = async () => {
-    try {
-      const res = await axios.delete(`http://3.35.90.143:54130/member/delete?memberId=${user.memberId}`);
-      if (res.status === 200) {
-        localStorage.removeItem('userInfo');
-        setUser({
-          memberId: 0,
-          loginId: '',
-          email: '',
-          name: '',
-          nickname: '',
-          createdAt: '',
-          profileImageId: 0,
+    if (token) {
+      try {
+        const res = await axios.delete(`http://3.35.90.143:54130/member/delete`, {
+          headers: { Authorization: token },
         });
-        alert('회원탈퇴가 정상적으로 완료되었습니다 :)');
-        navigate('/');
+        if (res.status === 200) {
+          localStorage.removeItem('userInfo');
+          localStorage.removeItem('token');
+          setUser({
+            memberId: 0,
+            loginId: '',
+            email: '',
+            name: '',
+            nickname: '',
+            createdAt: '',
+            profileImageId: 0,
+          });
+          alert('회원탈퇴가 정상적으로 완료되었습니다 :)');
+          navigate('/', { replace: true });
+        }
+      } catch {
+        alert('에러가 발생했습니다. 잠시 후 다시 시도해주세요 ㅜ_ㅜ');
       }
-    } catch {
-      alert('잘못된 요청입니다');
     }
   };
   return (

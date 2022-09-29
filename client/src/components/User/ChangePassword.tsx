@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import PageDescript from '../Descript/PageDescript';
 import DefaultInput from '../../UI/input/DefaultInput';
 import Button from '../../UI/button/Button';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
@@ -20,6 +19,7 @@ interface Message {
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const token = localStorage.getItem('token');
   const [password, setPassword] = useState<IPassword>({
     newPassword: '',
     reNewPassword: '',
@@ -57,39 +57,46 @@ const ChangePassword = () => {
         });
     }
   };
-
-  const sendNewPasswordToServer = async () => {
+  const checkIfValidPassword = async () => {
     if (!password.newPassword || !password.reNewPassword) {
-      setMessage({ ...message, ['reNewPassword']: '비밀번호를 입력해주세요.' });
+      setMessage({ ...message, ['reNewPassword']: MSG_06 });
       return;
     } else if (password.newPassword !== password.reNewPassword) {
       setMessage({ ...message, ['reNewPassword']: MSG_09 });
       return;
-    }
-    try {
-      const res = await axios.put(`http://3.35.90.143:54130/member/password`, password.newPassword, {
-        withCredentials: false,
-      });
-      {
-        res.data.status === 200
-          ? setMessage({
-              ...message,
-              ['reNewPassword']: '비밀번호가 성공적으로 변경되었습니다. 로그인 페이지로 이동합니다 :)',
-            })
-          : null;
-      }
-      return res.data.status;
-    } catch (err) {
-      console.log(err);
-      setMessage({ ...message, ['reNewPassword']: '비밀번호 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ' });
+    } else {
+      return true;
     }
   };
-  const giveTimeToUserToReadGuide = () => {
-    useEffect(() => {
-      setTimeout(() => {
-        forceUserToLogout();
-      }, 1500);
-    });
+  const sendNewPasswordToServer = async () => {
+    const validPassword = await checkIfValidPassword();
+    if (token && validPassword) {
+      try {
+        const res = await axios.put(
+          `http://3.35.90.143:54130/member/password`,
+          { newPassword: password.newPassword },
+          { headers: { Authorization: token } },
+        );
+        if (res.status === 200) {
+          setMessage({
+            ...message,
+            ['reNewPassword']:
+              '비밀번호가 성공적으로 변경되었습니다. 로그인 페이지로 이동합니다 :)',
+          });
+        }
+        return res.status;
+      } catch {
+        setMessage({
+          ...message,
+          ['reNewPassword']: '비밀번호 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ',
+        });
+      }
+    }
+  };
+  const giveTimeToReadDescription = () => {
+    setTimeout(() => {
+      forceUserToLogout();
+    }, 2000);
   };
   const forceUserToLogout = () => {
     setUser({
@@ -107,7 +114,7 @@ const ChangePassword = () => {
   const tryChangPassword = async () => {
     const result = await sendNewPasswordToServer();
     {
-      result === 200 ? giveTimeToUserToReadGuide() : null;
+      result === 200 ? giveTimeToReadDescription() : null;
     }
   };
   const handleCancleButton = () => {
@@ -126,7 +133,7 @@ const ChangePassword = () => {
             value={password.newPassword}
             onChange={handlePasswordInputChange}
             message={message.newPassword}
-            placeholder="영문 소문자, 숫자, 특수문자 조합 8자 이상의 비밀번호"
+            placeholder={MSG_06}
           />
           <DefaultInput
             label="새 비밀번호 확인"

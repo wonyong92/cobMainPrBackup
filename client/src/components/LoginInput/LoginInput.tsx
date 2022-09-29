@@ -50,6 +50,7 @@ const LoginInput = () => {
       });
       // 토큰
       const token = res.headers.authorization;
+      localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = token;
       // 유저정보
       const result = DecodeJWT(token);

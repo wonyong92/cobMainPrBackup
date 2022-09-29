@@ -41,14 +41,19 @@ const FindId = () => {
   };
   const getId = async () => {
     const result = await foundId();
-    {
-      result ? moveToGuide(result) : null;
+    if (result) {
+      moveToGuide(result);
     }
   };
 
   return (
     <>
-      <FindUserInfo {...userInfo} onChange={handleUserInfoChange} errorMsg={errorMsg} onClick={getId} />
+      <FindUserInfo
+        {...userInfo}
+        onChange={handleUserInfoChange}
+        errorMsg={errorMsg}
+        onClick={getId}
+      />
     </>
   );
 };
