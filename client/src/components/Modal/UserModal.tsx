@@ -28,7 +28,8 @@ const UserModal = ({ setUserModal }: PropsType) => {
       profileImageId: 0,
     });
     localStorage.removeItem('userInfo');
-    navigate('/');
+    localStorage.removeItem('token');
+    navigate('/', { replace: true });
   };
   return (
     <Container>
