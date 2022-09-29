@@ -1,23 +1,41 @@
-// import CommentList from '../../components/CommentList';
+import CommentList from  '../../components/Comment/CommentList' ;
 import CommentPost from '../../components/Comment/CommentPost';
 import PostDetailItem from '../../components/PostItem/PostDetailItem';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
-import { Z_FIXED } from 'zlib';
+import { useState,useEffect } from 'react';
+import { getPosts } from '../../Utils/ApiCall';
+import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
+
 
 const PostDetail = () => {
+    const [post, setPost] = useState<PostItemDetailData[]>([]);
+
+
+ 
+    useEffect(() => {
+        getPosts().then((res) => {
+            console.log(res)
+            console.log(res.rentPosts)
+            setPost(res.rentPosts)
+        })
+        
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
   
     
     return (
         <>
-        <PostDetailItem category={''} rentPostContents={''} rentPostId={0} rentPostName={''} updateDate={''} viewCount={0} writeDate={''} writerId={0} rentStatus={''} price={''}/>
+        <PostDetailItem data={post[0]}/> 
         <ContentContainer>
             <Button text='채팅하기' type='beige' width='middle'/>
-            <div>안녕하세요 작년에 구매한 캠핑용품입니다.<br></br>레전드 브랜드 캠핑용품이구요,<br></br>하루에 5만원 총 15만원입니다. 제품구입하시면 300만원입니다. 자주 사용하시는게 아니시라면 구매비용을 절약하실수있습니다.<br></br>감사합니다.</div>
         </ContentContainer>
         <CommentCount>댓글2</CommentCount>
         <CommentPost/>
-        {/* <CommentList/> */}
+        <CommentList/>
         </>
     );
     }

@@ -7,6 +7,55 @@ import Prism from 'prismjs';
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
+
+
+interface Prop {
+  height?: string;
+  editorRef?: any;
+  value: string;
+  isError: boolean;
+  onChange: () => void;
+  ref?: any;
+}
+
+const CustomEditor = ({
+  height = '500px',
+  value,
+  isError,
+  editorRef,
+  onChange,
+  
+}: Prop) => {
+  const [isEditorFocus, setIsEditorFocus] = useState(false);
+  return (
+    <>
+      <EditorBorder isFocus={isEditorFocus} isError={isError} >
+        <Editor
+          initialValue={value}
+          height={height}
+          useCommandShortcut
+          plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} // 코드블럭 하이라이트
+          toolbarItems={[
+            ['bold', 'italic', 'strike'],
+            ['code', 'codeblock'],
+            ['hr', 'quote'],
+            ['ul', 'ol', 'task', 'indent', 'outdent'],
+            ['table', 'image', 'link'],
+          ]}
+          autofocus={false}
+          ref={editorRef}
+          onChange={onChange}
+          onFocus={() => setIsEditorFocus(true)}
+          onBlur={() => setIsEditorFocus(false)}
+          
+        />
+        {isError}
+      </EditorBorder>
+      {isError && <ErrorMsg>Body must be at least 30 characters.</ErrorMsg>}
+    </>
+  );
+};
+
 const EditorBorder = styled.div<{ isFocus: boolean; isError: boolean }>`
   position: relative;
   outline: rgba(0, 0, 0, 0) solid 4px;
@@ -40,47 +89,4 @@ const ErrorMsg = styled.p`
   color: hsl(358, 62%, 52%);
   font-size: 12px;
 `;
-
-interface Prop {
-  height?: string;
-  value: string;
-  isError: boolean;
-  onChange: () => void;
-}
-
-const CustomEditor = ({
-  height = '500px',
-  value,
-  isError,
-  onChange,
-  
-}: Prop) => {
-  const [isEditorFocus, setIsEditorFocus] = useState(false);
-  return (
-    <>
-      <EditorBorder isFocus={isEditorFocus} isError={isError}>
-        <Editor
-          initialValue={value}
-          height={height}
-          useCommandShortcut
-          plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} // 코드블럭 하이라이트
-          toolbarItems={[
-            ['bold', 'italic', 'strike'],
-            ['code', 'codeblock'],
-            ['hr', 'quote'],
-            ['ul', 'ol', 'task', 'indent', 'outdent'],
-            ['table', 'image', 'link'],
-          ]}
-          autofocus={false}
-          onChange={onChange}
-          onFocus={() => setIsEditorFocus(true)}
-          onBlur={() => setIsEditorFocus(false)}
-        />
-        {isError}
-      </EditorBorder>
-      {isError && <ErrorMsg>Body must be at least 30 characters.</ErrorMsg>}
-    </>
-  );
-};
-
 export default CustomEditor;

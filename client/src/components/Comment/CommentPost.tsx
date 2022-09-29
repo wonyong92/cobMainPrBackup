@@ -12,7 +12,7 @@ const CommentPost = () => {
       setComment(e.target.value);
     };
   
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const ClickHandler = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       console.log(comment);
       setComment('');
@@ -20,30 +20,34 @@ const CommentPost = () => {
   
     return (
       <>
-        <h4>댓글 작성</h4>
-        <CommentForm onSubmit={onSubmit}>
+        <CommentWrapper>
           <TextInput
             type="text"
             value={comment}
             onChange={onChange}
-            placeholder="댓글을 입력하세요"
-          />
-          <Button text="댓글작성" onClick={function (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-            throw new Error('Function not implemented.');
-          }} />
-        </CommentForm>
-      </>
+            placeholder="댓글을 입력하세요" name={''}          />
+          <Button text="댓글작성" width='short' onClick={()=>ClickHandler} />
+          </CommentWrapper>
+           </>
     );
   };
   
-  const CommentForm = styled.form`
+  const CommentWrapper = styled.form`
     border: 1px solid #e9ecef;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    padding: 30px;
+    
+    .Button{
+      padding-right:5px;
+    }
   `;
   
+   
+
+
+
   export default CommentPost;
   
   

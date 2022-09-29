@@ -16,13 +16,13 @@ export interface PostItemData {
     writerId: number;
   
 }
-interface PostItemProps {
+export interface PostItemProps {
   data:PostItemData;
   
 }
 
 const PostItem = ({data}:PostItemProps) => {
-  const imgUrl= `http://3.39.180.45:56178/rentPost/image/get?imageId=${data.rentPostId}`;
+  const imgUrl= `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   
   return (
     <>

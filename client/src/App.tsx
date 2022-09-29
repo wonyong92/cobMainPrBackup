@@ -6,7 +6,7 @@ import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import Main from './pages/Main/Main';
 import Mypage from './pages/MyPage/Mypage';
-import MyActivity from './pages/MyActivity/MyActivity';
+// import MyActivity from './pages/MyActivity/MyActivity';
 import PostDetail from './pages/Post/PostDetail';
 import PostEdit from './pages/Post/PostEdit';
 import PostList from './pages/Post/PostList';
@@ -41,7 +41,7 @@ const App = () => {
                 <Route path="/postdetail" element={<PostDetail />} />
                 <Route path="/postwrite" element={<PostWrite />} />
                 <Route path="/mypage" element={<Mypage />} />
-                <Route path="/myactivity" element={<MyActivity />} />
+                {/* <Route path="/myactivity" element={<MyActivity />} /> */}
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/findid" element={<FindId />} />

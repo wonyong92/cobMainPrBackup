@@ -1,4 +1,4 @@
-import { getImage, getPosts } from '../../Utils/ApiCall';
+import { getPosts } from '../../Utils/ApiCall';
 import styled from 'styled-components';
 import PostItem, { PostItemData } from '../../components/PostItem/PostItem';
 import { useEffect, useState } from 'react';
@@ -54,8 +54,8 @@ const Main = () => {
                 </WelcomePage>
             </section>
             <HeadRow>
-        <h2>인기리스트</h2>
-      </HeadRow>
+             <h2>인기리스트</h2>
+            </HeadRow>
             {posts && posts.map((el, idx) => (
                 <PostItem data={el} key={idx} />
             ))}

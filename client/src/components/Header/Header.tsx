@@ -60,9 +60,9 @@ const Header = () => {
                     <TextInput
                         type="text"
                         value={keyword}
-                        input="??"
                         onChange={(e) => setKeyword(e.target.value)}
-                    />
+                        placeholder={''} 
+                        name={'name'}                    />
                     <FontAwesomeIcon
                         icon={faMagnifyingGlass}
                         className="magnify"
