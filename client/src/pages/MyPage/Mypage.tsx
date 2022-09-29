@@ -36,7 +36,7 @@ export default Mypage;
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    width: 55%;
+    width: 980px;
     margin-top: 15px;
     @media screen and (max-width: 500px) {
         display: flex;

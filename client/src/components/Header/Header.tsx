@@ -1,20 +1,7 @@
 import styled from 'styled-components';
-import {
-    MyHeader,
-    Top,
-    LogoWrapper,
-    LogoSVG,
-    Icons,
-    Bottom,
-    DesktopTopRight,
-} from './style';
+import { MyHeader, Top, LogoWrapper, LogoSVG, Icons, Bottom, DesktopTopRight } from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBars,
-    faUser,
-    faCirclePlus,
-    faMagnifyingGlass,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser, faCirclePlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import MenuModal from '../Modal/MenuModal';
@@ -29,8 +16,7 @@ const Header = () => {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const pathCondition =
-        location.pathname === '/mypage' || location.pathname === '/myactiviery';
+    const pathCondition = location.pathname === '/mypage' || location.pathname === '/myactivity';
     const [menuModal, setMenuModal] = useState(false);
     const [userModal, setUserModal] = useState(false);
     const [keyword, setKeyword] = useState<string>('');
@@ -38,16 +24,10 @@ const Header = () => {
         <MyHeader>
             <Top>
                 <TopLeft>
-                    <LogoWrapper
-                        menuModal={menuModal}
-                        onClick={() => navigate(`/`)}
-                    >
+                    <LogoWrapper menuModal={menuModal} onClick={() => navigate(`/`)}>
                         <LogoSVG />
                         <div className="title">빌리지뭐</div>
-                        <div
-                            className="category"
-                            onClick={() => setMenuModal(true)}
-                        >
+                        <div className="category" onClick={() => setMenuModal(true)}>
                             카테고리
                         </div>
                     </LogoWrapper>
@@ -55,10 +35,7 @@ const Header = () => {
                 <TopRight>
                     <Icons>
                         <Link to={user.memberId ? '/postwrite' : '/login'}>
-                            <FontAwesomeIcon
-                                icon={faCirclePlus}
-                                className="icon"
-                            />
+                            <FontAwesomeIcon icon={faCirclePlus} className="icon" />
                         </Link>
                         <FontAwesomeIcon
                             icon={faBars}
@@ -68,16 +45,16 @@ const Header = () => {
                         <FontAwesomeIcon
                             icon={faUser}
                             onClick={
-                                user.memberId
-                                    ? () => setUserModal(true)
-                                    : () => navigate('/login')
+                                user.memberId ? () => setUserModal(true) : () => navigate('/login')
                             }
                             className="icon"
                         />
                     </Icons>
                 </TopRight>
             </Top>
-            {pathCondition ? null : (
+            {pathCondition ? (
+                <Bottom></Bottom>
+            ) : (
                 <Bottom>
                     <TextInput
                         type="text"
@@ -97,9 +74,7 @@ const Header = () => {
                     <FontAwesomeIcon
                         icon={faUser}
                         onClick={
-                            user.memberId
-                                ? () => setUserModal(true)
-                                : () => navigate('/login')
+                            user.memberId ? () => setUserModal(true) : () => navigate('/login')
                         }
                         className="icon"
                     />
@@ -121,9 +96,7 @@ const Header = () => {
                     <Button text={'글쓰기 +'} width={'short'} />
                 </Link>
             </DesktopTopRight>
-            {menuModal ? (
-                <MenuModal menuModal={menuModal} setMenuModal={setMenuModal} />
-            ) : null}
+            {menuModal ? <MenuModal menuModal={menuModal} setMenuModal={setMenuModal} /> : null}
             {user.memberId && userModal ? (
                 <UserModal userModal={userModal} setUserModal={setUserModal} />
             ) : null}

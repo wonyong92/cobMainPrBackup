@@ -1,16 +1,22 @@
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { UserContext } from '../../context/context';
+
 const UserCard = () => {
+    const { user } = useContext(UserContext);
+    const imageUrl = `http://3.39.180.45:56178/member/profileImage/get?memberId=${user.memberId}`;
+    let date = user.createdAt;
+    const createdAt = date?.slice(0, 10);
+    // const createdAt = `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDate()}일`;
+
     return (
         <Container>
             <ImgWrapper>
-                <img
-                    alt="profile"
-                    src="https://i.pinimg.com/474x/a8/34/51/a83451b046c3505aadcbdb64cfdb8ad6.jpg"
-                />
+                <img alt="profile" src={imageUrl} />
             </ImgWrapper>
             <InfoWrppaer>
-                <div className="nickname">빌려줄거하도할샤</div>
-                <div className="signedAt">가입일: 2022.09.21</div>
+                <div className="nickname">{user.nickname}</div>
+                <div className="signedAt">가입일: {createdAt}</div>
             </InfoWrppaer>
         </Container>
     );
@@ -20,10 +26,11 @@ const Container = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    border: #efeded 0.5px solid;
     padding: 20px;
-    width: 100%;
-    border-bottom: #efeded 0.5px solid;
-    margin-bottom: 25px;
+    @media screen and (max-width: 500px) {
+        width: 320px;
+    }
 `;
 const ImgWrapper = styled.div`
     img {

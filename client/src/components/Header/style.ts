@@ -43,9 +43,7 @@ export const LogoWrapper = styled.div<{
         padding-bottom: 5px;
         color: ${(props) => (props.menuModal === true ? '#95d1cc' : '#464646')};
         border-bottom: ${(props) =>
-            props.menuModal === true
-                ? '3px solid #95d1cc'
-                : '3px solid transparent'};
+            props.menuModal === true ? '3px solid #95d1cc' : '3px solid transparent'};
     }
     .category:hover {
         color: #95d1cc;
@@ -82,6 +80,7 @@ export const Icons = styled.div`
 export const Bottom = styled.div`
     display: flex;
     justify-content: center;
+    width: 30%;
     input {
         margin-top: 10px;
         min-width: 330px;

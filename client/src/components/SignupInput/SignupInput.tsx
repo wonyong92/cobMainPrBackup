@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DefaultInput from '../../UI/input/DefaultInput';
 import Button from '../../UI/button/Button';
-import { ChangeEvent, useState } from 'react';
 import {
     ID_REGEXP,
     PW_REGEXP,
@@ -28,8 +28,8 @@ import {
     MSG_18,
 } from '../../constants';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Signup } from '../../types';
+import { Signup } from '../../types/user';
+import { Container, BtnWrapper } from './style';
 
 interface Message {
     loginId: string;
@@ -95,7 +95,7 @@ const SignupInput = () => {
                     : setMessage({ ...message, ['email']: MSG_15 });
                 break;
             default:
-                alert('white'); //?
+                setMessage({ ...message });
         }
     };
     // 유효성검사
@@ -167,7 +167,7 @@ const SignupInput = () => {
         }
     };
     // 회원가입 요청
-    const handleRegisterUser = () => {
+    const handleRegisterUser = async () => {
         if (
             isValidId(userInfo.loginId) &&
             isValidPW(userInfo.password) &&
@@ -177,12 +177,15 @@ const SignupInput = () => {
         ) {
             delete userInfo.rePassword;
             userInfo.profileImageId = 0;
-            axios
+            await axios
                 .post(`http://3.39.180.45:56178/member/post`, userInfo, {
                     withCredentials: false,
                 })
                 .then(() => {
                     navigate('/login', { replace: true });
+                })
+                .catch(() => {
+                    alert('잘못된 요청입니다!');
                 });
         } else {
             return;
@@ -191,7 +194,6 @@ const SignupInput = () => {
     return (
         <>
             <Container>
-                {/* 중복버튼 */}
                 <Button
                     text={'중복확인'}
                     type={'beige'}
@@ -210,56 +212,57 @@ const SignupInput = () => {
                     width={'short'}
                     onClick={checkEmail}
                 />
-                {/* input */}
-                <DefaultInput
-                    label="아이디"
-                    name="loginId"
-                    value={userInfo.loginId}
-                    onChange={handleUserInfoChange}
-                    message={message.loginId}
-                    placeholder="아이디를 입력해주세요"
-                />
-                <DefaultInput
-                    label="비밀번호"
-                    type="password"
-                    name="password"
-                    value={userInfo.password}
-                    onChange={handleUserInfoChange}
-                    message={message.password}
-                    placeholder="영문 소문자, 숫자, 특수문자 조합 8자 이상의 비밀번호"
-                />
-                <DefaultInput
-                    label="비밀번호 확인"
-                    type="password"
-                    name="rePassword"
-                    value={userInfo.rePassword}
-                    onChange={handleUserInfoChange}
-                    message={message.rePassword}
-                    placeholder="영문 소문자, 숫자, 특수문자 조합 8자 이상의 비밀번호"
-                />
-                <DefaultInput
-                    label="이름"
-                    name="name"
-                    value={userInfo.name}
-                    onChange={handleUserInfoChange}
-                    message={message.name}
-                    placeholder="이름을 입력해주세요"
-                />
-                <DefaultInput
-                    label="닉네임"
-                    name="nickname"
-                    value={userInfo.nickname}
-                    onChange={handleUserInfoChange}
-                    message={message.nickname}
-                    placeholder="2-15자 이하로 입력해주세요"
-                />
-                <DefaultInput
-                    label="이메일"
-                    name="email"
-                    onChange={handleUserInfoChange}
-                    message={message.email}
-                    placeholder="이메일을 입력해주세요"
-                />
+                <form>
+                    <DefaultInput
+                        label="아이디"
+                        name="loginId"
+                        value={userInfo.loginId}
+                        onChange={handleUserInfoChange}
+                        message={message.loginId}
+                        placeholder="아이디를 입력해주세요"
+                    />
+                    <DefaultInput
+                        label="비밀번호"
+                        type="password"
+                        name="password"
+                        value={userInfo.password}
+                        onChange={handleUserInfoChange}
+                        message={message.password}
+                        placeholder="영문 소문자, 숫자, 특수문자 조합 8자 이상의 비밀번호"
+                    />
+                    <DefaultInput
+                        label="비밀번호 확인"
+                        type="password"
+                        name="rePassword"
+                        value={userInfo.rePassword}
+                        onChange={handleUserInfoChange}
+                        message={message.rePassword}
+                        placeholder="영문 소문자, 숫자, 특수문자 조합 8자 이상의 비밀번호"
+                    />
+                    <DefaultInput
+                        label="이름"
+                        name="name"
+                        value={userInfo.name}
+                        onChange={handleUserInfoChange}
+                        message={message.name}
+                        placeholder="이름을 입력해주세요"
+                    />
+                    <DefaultInput
+                        label="닉네임"
+                        name="nickname"
+                        value={userInfo.nickname}
+                        onChange={handleUserInfoChange}
+                        message={message.nickname}
+                        placeholder="2-15자 이하로 입력해주세요"
+                    />
+                    <DefaultInput
+                        label="이메일"
+                        name="email"
+                        onChange={handleUserInfoChange}
+                        message={message.email}
+                        placeholder="이메일을 입력해주세요"
+                    />
+                </form>
             </Container>
             <BtnWrapper>
                 <Button
@@ -272,28 +275,3 @@ const SignupInput = () => {
     );
 };
 export default SignupInput;
-
-const Container = styled.div`
-    button {
-        position: relative;
-        height: 27.5px;
-    }
-    button:first-of-type {
-        top: 48px;
-        left: 237px;
-    }
-    button:nth-of-type(2) {
-        top: 339.5px;
-        left: 167px;
-    }
-    button:nth-of-type(3) {
-        top: 412.5px;
-        left: 97px;
-    }
-`;
-const BtnWrapper = styled.div`
-    margin-top: 20px;
-    button {
-        width: 310px;
-    }
-`;
