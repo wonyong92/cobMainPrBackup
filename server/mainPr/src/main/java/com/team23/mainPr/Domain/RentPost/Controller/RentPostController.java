@@ -3,6 +3,8 @@ package com.team23.mainPr.Domain.RentPost.Controller;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostPageRequestDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryLocationResponseDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryResponseDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Service.RentPostService;
@@ -136,5 +138,11 @@ public class RentPostController {
     public List<RentPostResponseDto> ftSearch(
         @RequestParam String phrase) {
         return rentPostService.ftSearchAll(phrase);
+    }
+
+    @Operation(description = "카테고리, 지역 리스트 조회")
+    @GetMapping("/CategoriesAndLocations")
+    public CategoryLocationResponseDto getCategories(){
+        return rentPostService.getCategories();
     }
 }

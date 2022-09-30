@@ -16,10 +16,10 @@ public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer imageId;
+    Integer pictureId;
 
     String fileName;
-    Integer postId;
+    Integer rentPostId;
 
     public Picture(String fileName) {
         this.fileName = fileName;
@@ -28,6 +28,6 @@ public class Picture {
     public Picture(String fileName, Integer postId) {
 
         this.fileName = fileName;
-        this.postId = postId;
+        this.rentPostId = postId;
     }
 }

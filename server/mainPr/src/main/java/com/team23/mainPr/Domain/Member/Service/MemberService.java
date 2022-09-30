@@ -158,7 +158,7 @@ public class MemberService {
             File newFileName = new File(homePath + uploadPath + uuid + "_" + file.getOriginalFilename());
             file.transferTo(newFileName);
 
-            member.setProfileImageId(pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename())).getImageId());
+            member.setProfileImageId(pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename())).getPictureId());
             memberRepository.flush();
         }
     }

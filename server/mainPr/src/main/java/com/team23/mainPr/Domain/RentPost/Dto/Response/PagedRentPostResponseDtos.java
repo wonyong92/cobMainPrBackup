@@ -9,9 +9,11 @@ public class PagedRentPostResponseDtos {
 
     List<RentPostResponseDto> rentPosts;
     Integer pageNumber;
+    Integer totalPages;
 
-    public PagedRentPostResponseDtos(List<RentPostResponseDto> rentPosts, Pageable pageinfo) {
+    public PagedRentPostResponseDtos(List<RentPostResponseDto> rentPosts, Pageable pageinfo,Integer totalPages) {
         this.rentPosts = rentPosts;
         this.pageNumber = pageinfo.getPageNumber();
+        this.totalPages = totalPages;
     }
 }

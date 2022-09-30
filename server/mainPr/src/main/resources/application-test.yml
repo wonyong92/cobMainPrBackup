@@ -14,7 +14,7 @@ spring:
   jpa:
     #defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validation
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:

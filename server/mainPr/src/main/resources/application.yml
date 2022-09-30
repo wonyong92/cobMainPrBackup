@@ -12,7 +12,7 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
   jpa:
-    #defer-datasource-initialization: true
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect

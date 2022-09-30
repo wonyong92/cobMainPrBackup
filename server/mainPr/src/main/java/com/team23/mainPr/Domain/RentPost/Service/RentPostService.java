@@ -5,10 +5,16 @@ import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostPageRequestDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryLocationResponseDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryResponseDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
+import com.team23.mainPr.Domain.RentPost.Mapper.CategoryMapper;
+import com.team23.mainPr.Domain.RentPost.Mapper.LocationMapper;
 import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
+import com.team23.mainPr.Domain.RentPost.Repository.CategoryRepository;
+import com.team23.mainPr.Domain.RentPost.Repository.LocationRepository;
 import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
 import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.CustomException.ErrorData;
@@ -44,6 +50,10 @@ public class RentPostService {
     private final RentPostRepository rentPostRepository;
     private final RentPostMapper rentPostMapper;
     private final PictureRepository pictureRepository;
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
+    private final LocationRepository locationRepository;
+    private final LocationMapper locationMapper;
 
     @Value("${multipart.upload.path}") String uploadPath;
 
@@ -77,7 +87,7 @@ public class RentPostService {
      * </p>
      */
     public void deleteRentPost(Integer postId, String token) {
-        for (Picture picture : pictureRepository.findByPostId(postId)) {
+        for (Picture picture : pictureRepository.findByRentPostId(postId)) {
             if (new File(System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
                 throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
             }
@@ -95,7 +105,7 @@ public class RentPostService {
 
         rentPostRepository.flush();
         RentPostResponseDto response = rentPostMapper.RentPostToRentPostResponseDto(result);
-        response.setRentPostImages(pictureRepository.findByPostId(postId).stream().map(picture -> picture.getImageId()).collect(Collectors.toList()));
+        response.setRentPostImages(pictureRepository.findByRentPostId(postId).stream().map(picture -> picture.getPictureId()).collect(Collectors.toList()));
 
         return response;
     }
@@ -107,13 +117,13 @@ public class RentPostService {
                 File newFileName = new File(System.getProperty("user.home") + uploadPath + uuid + "_" + file.getOriginalFilename());
                 file.transferTo(newFileName);
 
-                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getImageId();
+                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getPictureId();
             }
         }
     }
 
     public List<Integer> getPostImages(Integer postId) {
-        return pictureRepository.findByPostId(postId).stream().map(picture -> picture.getImageId()).collect(Collectors.toList());
+        return pictureRepository.findByRentPostId(postId).stream().map(picture -> picture.getPictureId()).collect(Collectors.toList());
     }
 
     public Resource getImage(Integer imageId) throws IOException {
@@ -123,9 +133,8 @@ public class RentPostService {
 
     public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category, String location) {
         Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContainingAndLocationContaining(dto.getPageRequest(), rentStatus, category, location);
-        List<RentPostResponseDto> mappedResult = new ArrayList<>();
-        result.stream().forEach(rentPost -> mappedResult.add(rentPostMapper.RentPostToRentPostResponseDto(rentPost)));
-        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(mappedResult, result.getPageable());
+
+        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(result.stream().map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost)).collect(Collectors.toList()), result.getPageable(),result.getTotalPages());
     }
 
     public List<RentPostResponseDto> searchAll(String phrase, String category, RentPostPageRequestDto dto, Boolean rentStatus) {
@@ -134,5 +143,10 @@ public class RentPostService {
 
     public List<RentPostResponseDto> ftSearchAll(String phrase) {
         return rentPostRepository.ftSearch(phrase).stream().map(rentPostMapper::RentPostToRentPostResponseDto).collect(Collectors.toList());
+    }
+
+    public CategoryLocationResponseDto getCategories() {
+        return new CategoryLocationResponseDto(categoryRepository.findAll().stream().map(category -> categoryMapper.CategoryToCategoryResponseDto(category)).collect(Collectors.toList()),
+            locationRepository.findAll().stream().map(location -> locationMapper.LocationToLocationResponseDto(location)).collect(Collectors.toList())) ;
     }
 }

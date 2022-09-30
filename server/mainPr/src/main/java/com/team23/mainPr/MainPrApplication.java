@@ -19,8 +19,10 @@ public class MainPrApplication {
 
     @Bean
     public CommandLineRunner test(RentPostRepository rentPostRepository) {
-        pictureService.setDefaultImage();
-        return rentPostRepository::ftInit;
 
+        return args -> {
+            rentPostRepository.ftInit();
+            pictureService.setDefaultImage();
+        };
     }
 }
