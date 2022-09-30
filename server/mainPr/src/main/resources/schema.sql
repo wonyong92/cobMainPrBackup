@@ -49,7 +49,7 @@ CREATE TABLE `RENT_HISTORY` (
   `RENT_HISTORY_ID` int PRIMARY KEY AUTO_INCREMENT,
   `TARGET_MEMBER_ID` int,
   `RENT_DATA_TYPE` boolean DEFAULT false,
-  `RENT_STATUS` varchar(10) DEFAULT "not selected",
+  `RENT_STATUS` varchar(100),
   `RENT_START_DATE` datetime,
   `RENT_END_DATE` datetime,
   `REQUESTER_ID` int,

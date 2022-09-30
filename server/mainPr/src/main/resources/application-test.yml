@@ -1,14 +1,14 @@
 server:
-  port: '8080'
+  port: '8081'
 spring:
   h2:
     console:
       enabled: true
-      path: /h2
+      path: /h2Test
       settings:
         web-allow-others: true
   datasource:
-    url: 'jdbc:h2:~/test2;'
+    url: 'jdbc:h2:~/test2test;'
     driverClassName: org.h2.Driver
     username: sa
   jpa:
@@ -39,4 +39,4 @@ multipart:
 
 jwt:
   token:
-    secret-key: "cos_jwt_token"
+    secret-key: "cos_jwt_token_test"

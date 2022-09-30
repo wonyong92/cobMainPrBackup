@@ -3,6 +3,9 @@ package com.team23.mainPr.Domain.Member.Repository;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
 
@@ -12,4 +15,12 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findByEmail(String email);
 
     Optional<Member> findByNickname(String nickname);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value = "truncate table MEMBER",
+        nativeQuery = true
+    )
+    void truncate();
 }

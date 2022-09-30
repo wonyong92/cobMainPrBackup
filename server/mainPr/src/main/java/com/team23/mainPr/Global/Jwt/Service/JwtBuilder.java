@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtBuilder {
 
-    @Value("${token.secret.key}") String key;
+    @Value("${jwt.token.secret-key}") String key;
 
     public String buildJwt(Member member) {
         return "Bearer " + JWT.create().withSubject("JWT").withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000)))

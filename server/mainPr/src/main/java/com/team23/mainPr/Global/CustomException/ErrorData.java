@@ -33,7 +33,9 @@ public enum ErrorData {
     NOT_ALLOWED_ACCESS_RESOURCE(HttpStatus.FORBIDDEN, "요청한 데이터 소유자가 아닙니다."),
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "로그인 : 잘못된 비밀번호"),
     FILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 찾을 수 없습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST,"해당하는 유저 정보를 찾을 수 없습니다. 요청하신 유저 식별자를 확인하세요."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터 처리과정에서 에러가 발생하였습니다.");
+
 
     private final HttpStatus code;
     private final String reason;
