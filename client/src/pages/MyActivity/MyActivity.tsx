@@ -5,27 +5,35 @@ import PostItem from '../../components/PostItem/PostItem';
 import UserCard from '../../components/User/UserCard';
 import Button from '../../UI/button/Button';
 const MyActivity = () => {
-  const [myPosts, setMyPosts] = useState();
+  const [myPosts, setMyPosts] = useState({});
   const [errorMsg, setErrorMsg] = useState<string>();
-  const [isRenting, setIsRenting] = useState<boolean>(false);
+  const [isRenting, setIsRenting] = useState(false);
+  const [isMyPost, setIsMyPost] = useState(true);
+  const token = localStorage.getItem('token');
   useEffect(() => {
     const getMyAllPosts = async () => {
-      try {
-        const res = await axios.get(`http://3.35.90.143:54130/member/rentPosts`, { withCredentials: false });
-        setMyPosts(res.data);
-      } catch {
-        setErrorMsg('지금은 정보를 불러올 수 없습니다. ㅜ_ㅜ');
+      if (token) {
+        try {
+          const res = await axios.get(`http://3.35.90.143:54130/member/rentPosts`, {
+            headers: { Authorization: token },
+          });
+          console.log(res.data);
+          setMyPosts(res.data);
+        } catch {
+          setErrorMsg('지금은 정보를 불러올 수 없습니다. ㅜ_ㅜ');
+        }
       }
     };
     getMyAllPosts();
   }, [setMyPosts]);
+
   return (
     <Container>
-      <Title>활동내역</Title>
+      <Title>나의 활동내역</Title>
       <UserCard />
       <SubTitle>
-        <div className="subtitle">빌려준내역</div>
-        <div className="deActive">빌린내역</div>
+        <div className="subtitle">빌려준 내역</div>
+        <div className="deActive">빌린 내역</div>
       </SubTitle>
       <BtnWrapper>
         <Button
@@ -45,6 +53,9 @@ const MyActivity = () => {
       </BtnWrapper>
       <p>{errorMsg}</p>
       {myPosts && <PostItem />}
+      {/* 프롭스1: isMyPost가 트루면 채팅하기 버튼이 postitem 컴포넌트에 보이도록 */}
+      {/* 프롭스2:isRenting 팔스면 렌트스테터스가 true인 리스트만보이는 식을 반영해 setMypost에 갱신.  */}
+      <Button text={'채팅목록'} width="short" type={'beige'} />
     </Container>
   );
 };
@@ -68,22 +79,21 @@ const SubTitle = styled.div`
   display: flex;
   align-items: center;
   background-color: #f9fffe;
-  border: #efeded 0.5px solid;
-
+  border-left: #efeded 0.5px solid;
+  border-right: #efeded 0.5px solid;
+  border-bottom: #efeded 0.5px solid;
   height: 40px;
   .subtitle {
     margin-left: 10px;
     padding-top: 15px;
     padding-bottom: 10px;
     font-size: 12px;
-    font-weight: 500;
     color: #95d1cc;
     border-bottom: 3px solid #95d1cc;
     cursor: pointer;
   }
   .deActive {
     font-size: 12px;
-    font-weight: 500;
     margin-left: 15px;
     padding-top: 15px;
     padding-bottom: 10px;
