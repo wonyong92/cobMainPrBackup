@@ -10,12 +10,12 @@ const Main = () => {
  
     useEffect(() => {
         getPosts().then((res) => {
-            console.log(res)
+            // console.log(res)
         //     let arr = res.rentPosts;
         //     arr=arr.map((el:any)=>el.rentPostId);
         // getImage(arr)
         // .then((image)=>{
-            console.log(res.rentPosts)
+            // console.log(res.rentPosts)
             // let obj = {...res?.rentPosts[0], image: image}
             // console.log(obj)
             // console.log(image)
@@ -61,26 +61,27 @@ const Main = () => {
             ))}
             </>
     );
-};
+            }
+
 
 const HeadRow = styled.div``;
 
 const WelcomePage = styled.article`
-    background-color: #fffbef;
-    height: 20rem;
-    display: flex;
-    flex-direction: column; ;
+  background-color: #fffbef;
+  height: 20rem;
+  display: flex;
+  flex-direction: column; ;
 ;
 `;
 const Title = styled.h3`
-    padding: 0;
-    margin: 0;
-    padding-top: 120px;
-    padding-left: 20px;
+  padding: 0;
+  margin: 0;
+  padding-top: 120px;
+  padding-left: 20px;
 `;
 
 const SubTitle = styled.p`
-    padding-left: 20px;
+  padding-left: 20px;
 `;
 
 export default Main;

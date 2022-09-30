@@ -1,20 +1,18 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
+import { CommentData } from './CommentWrite';
 // import { useEffect, useState } from 'react';
 
-interface Props {
-    postId: string;
-    userId: string;
-    userName: string;
-    content: string;
-    createdAt: string;
-    onDelete: (id: number) => void;
+
     
 
+
+export interface CommentDataProps {
+    data: CommentData;
 }
 
-const CommentItem = ({commentData}:any) => {
+const CommentItem = ({data}:CommentDataProps) => {
 
     // const [isOwner, setIsOwner] = useState<boolean>(false);
    
@@ -29,12 +27,13 @@ const CommentItem = ({commentData}:any) => {
 
    return (
         <>
+        
         <CommentItemWrapper>
             <CommentItemHeader>
                 <Link to={`/user/${'user.id'}`}>{'user.nickname'}</Link>
                 <span>{'createdAt'}</span>
             </CommentItemHeader>
-            <CommentItemContent>{commentData.comments}</CommentItemContent>
+            <CommentItemContent>{data.commentContents}</CommentItemContent>
             {/* {isOwner && ( */}
                 <CommentItemFooter>
                     <TextButton text='수정' btnText={''} />

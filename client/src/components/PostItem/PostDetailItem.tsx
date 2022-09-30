@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
+import TextButton from '../../UI/button/TextButton';
+
 
 
 export interface PostItemDetailData {
@@ -17,13 +19,26 @@ export interface PostItemDetailData {
     writeDate: string;
     writerId: number;
   
-}
-export interface PostItemDetailProps {
-  data:PostItemDetailData;
+
   
 }
 
-const PostDetailItem = ({data}:PostItemDetailProps) => {
+interface IPostItemDetailProps{
+  data:{ catergory: string;
+    image: string;
+    location: string;
+    rentPostContents: string;
+    rentPostId: number;
+    rentPostName: string;
+    rentPrice: number;
+    rentStatus: boolean;
+    updateDate: string;
+    viewCount: number;
+    writeDate: string;
+    writerId: number;}
+}
+
+const PostDetailItem = ({data}:IPostItemDetailProps) => {
   const imgUrl: string = `http://3.39.180.45:56178/rentPost/image/get?imageId=1`;
   
   return (
@@ -34,8 +49,14 @@ const PostDetailItem = ({data}:PostItemDetailProps) => {
           <Title>{data.rentPostName}</Title>
           <Content>{data.rentPostContents}</Content>
           <Region>{data.location}  조회:{data.viewCount}</Region>
-          <Price>{data.rentPrice}원</Price>    
+          <Price>{data.rentPrice}원</Price>   
+          <ButtonWrapper> 
           <Button text='렌트가능' radius='deep' width='short'/>
+          <TextButtonWrapper>
+          <TextButton text='수정' btnText={''} />
+          <TextButton text='삭제' btnText={''} onClick={() =>{}}/>
+          </TextButtonWrapper>
+          </ButtonWrapper>
         </DescriptionWrapper>
       </ListWrapper>
     </>
@@ -59,6 +80,19 @@ const Content = styled.div`
     color: #868e96;
     margin-bottom: 10px;
 `;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+`;
+
+const TextButtonWrapper = styled.div`
+    display: flex;
+    justify-content: reverse-row;
+    margin-top: 10px;
+`;
+
 
 
 

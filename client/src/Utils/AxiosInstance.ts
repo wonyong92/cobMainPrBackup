@@ -8,6 +8,7 @@ const AxiosInstance = axios.create({
     baseURL: config.apiUrl,
     headers: {
         'Content-Type': 'application/json',
+        
     },
     withCredentials: false,
 });

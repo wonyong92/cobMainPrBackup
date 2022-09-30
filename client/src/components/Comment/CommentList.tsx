@@ -9,17 +9,16 @@ const CommentList = () => {
   useEffect (() => {
     getComments().then((res) => {
         console.log(res);
-        setComments(res.data);
+        setComments(res.comments);
     });
 }, []);
 
     return (
       <>
-      {comments && comments.map((el, idx) => (
-        <CommentItem
-          commentData={el} key={idx} />
-      ))}
-      </>
+      {comments && comments.map((el, idx) => ( 
+        <CommentItem key={idx} data={el}/>
+      ))} 
+      </> 
     );
       }
      

@@ -2,6 +2,7 @@
 
 import AxiosInstance from './AxiosInstance';
 import { PostData } from '../pages/Post/PostWrite'; 
+import { CommentData } from '../components/Comment/CommentWrite';
 
 //POST
 export const getPosts = async() => {
@@ -18,6 +19,19 @@ export const getPosts = async() => {
 
 }
 
+export const getPost = async() => {
+    
+    try {
+        const res = await AxiosInstance.post(`rentPost?postId=${1}`);
+        // console.log(res);
+        return res.data;
+        
+        
+    } catch (error) {
+        console.log('error', error);
+    }
+
+}
 
 
 export const getImage = async (postId:any) => {
@@ -39,19 +53,18 @@ export const getImage = async (postId:any) => {
 };
 
 export const sendPost = async (post:PostData) => {
-    
     try {
         const res = await AxiosInstance.post(`rentPost/post`,
         {
-    rentPostName: post.rentPostName,
-    rentPostContents: post.rentPostContents,
-    writerId: post.writerId,
-    category: post.category,
-    rentPrice: post.rentPrice,
-    location: post.location,
-        });
+            category:  post.category,
+            rentPostContents: post.rentPostContents,
+            rentPostName: post.rentPostName,
+            writerId: post.writerId,
+            rentPrice: post.rentPrice,
+            location: post.location,
+          }
+        );
         console.log(res);
-        console.log(res.data);
         const data = res.data
         return data;
     } catch (error) {
@@ -108,7 +121,7 @@ export const deletePost = async (id: any) => {
 //COMMENTS
 export const getComments = async () => {
     try {
-        const res = await AxiosInstance.get(`comment/${1}`);
+        const res = await AxiosInstance.get(`comment/getComments?postId=${1}`);
         console.log(res);
         console.log(res.data);
         const data = res.data
@@ -118,11 +131,14 @@ export const getComments = async () => {
     }
 }
 
-export const sendComment = async (comment: { content: any; }) => {
+export const sendComment = async (comment: CommentData) => {
+    console.log(comment);
     try {
-        const res = await AxiosInstance.post(`comment/post?id=${'1'}`,
+        const res = await AxiosInstance.post(`comment/post?=`,
         {
-            content: comment.content,
+            commentContents: comment.commentContents,
+            postId: comment.targetPostId,
+            writerId: comment.writerId,
         });
         console.log(res);
         console.log(res.data);

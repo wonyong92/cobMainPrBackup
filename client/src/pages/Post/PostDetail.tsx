@@ -1,22 +1,37 @@
-import CommentList from  '../../components/Comment/CommentList' ;
-import CommentPost from '../../components/Comment/CommentPost';
+
+
 import PostDetailItem from '../../components/PostItem/PostDetailItem';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import { useState,useEffect } from 'react';
-import { getPosts} from '../../Utils/ApiCall';
+import { getPost} from '../../Utils/ApiCall';
 import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
+import CommentList from '../../components/Comment/CommentList';
+import CommentWrite from '../../components/Comment/CommentWrite';
 
 
 const PostDetail = () => {
-    const [post, setPost] = useState<PostItemDetailData[]>([]);
+    const initialState = {
+    catergory: '',
+    image: '',
+    location: '',
+    rentPostContents: '',
+    rentPostId: 0,
+    rentPostName: '',
+    rentPrice: 0,
+    rentStatus: true,
+    updateDate: '',
+    viewCount: 0,
+    writeDate: '',
+    writerId: 0,}
+
+    const [post, setPost] = useState<PostItemDetailData>(initialState);
    
 
     useEffect(() => {
-        getPosts().then((res) => {
+        getPost().then((res) => {
             console.log(res)
-            console.log(res.rentPosts)
-            setPost(res.rentPosts)
+            setPost(res)
         })
         .catch((err) => {
             console.log(err);
@@ -25,16 +40,17 @@ const PostDetail = () => {
 
     return (
         <>
-        <PostDetailItem data={post[0]}/> 
+        
+        <PostDetailItem data={post}/> 
         <ContentContainer>
             <Button text='채팅하기' type='beige' width='middle'/>
         </ContentContainer>
         <CommentCount>댓글2</CommentCount>
-        <CommentPost/>
+        <CommentWrite/>
         <CommentList/>
         </>
     );
-    }
+}
 
     const ContentContainer = styled.div`
     display:flex;

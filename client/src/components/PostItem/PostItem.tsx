@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 
 export interface PostItemData {
   
@@ -24,13 +26,14 @@ export interface PostItemProps {
 const PostItem = ({data}:PostItemProps) => {
   const imgUrl= `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   
+
   return (
     <>
       
       <ListWrapper>
         <Image src={imgUrl} />
         <DescriptionWrapper>
-          <Title>{data.rentPostName}</Title>
+          <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
           <Region>{data.location}</Region>
           <Price>{data.rentPrice}</Price>
           <div style={{ color: '#868e96', fontSize: '13px' }}>
@@ -65,7 +68,7 @@ const DescriptionWrapper = styled.div`
 `;
 
 const Image = styled.img`
-//
+  //
   width: 100px;
   height: 100px;
   /* background-image: url('https://pbs.twimg.com/profile_images/449975524350103554/zBK8lr4 */
