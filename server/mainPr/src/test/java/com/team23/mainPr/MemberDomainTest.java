@@ -62,7 +62,7 @@ class MemberDomainTest {
 
     @Test
     @Transactional
-    public void 프로필_업데이트_테스트_응답의_닉네임_정보_확인(Member member) {
+    public MemberProfileDto 프로필_업데이트_테스트_응답의_닉네임_정보_확인(Member member) {
         Integer memberId = 1;
         if (member != null) {
             memberId = member.getMemberId();
@@ -71,13 +71,15 @@ class MemberDomainTest {
         MemberProfileDto result = memberController.updateProfile(updateMemberDto, token);
 
         assertThat(result.getNickname()).isEqualTo("updated테스트유저");
+        return result;
     }
 
     @Test
     @Transactional
     public void 시나리오_회원정보_확인_그리고_프로필_수정() {
         Member member = DB_회원_정보_테스트_DB응답의_이메일_정보_확인();
-        프로필_업데이트_테스트_응답의_닉네임_정보_확인(member);
+        MemberProfileDto result = 프로필_업데이트_테스트_응답의_닉네임_정보_확인(member);
+        assertThat(result.getNickname()).isEqualTo(member.getNickname());
     }
 
 }
