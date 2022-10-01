@@ -29,16 +29,17 @@ class MemberDomainTest {
 
     CreateMemberDto createMemberDto = CreateMemberDto.builder().email("test@email.com").name("홍길동").nickname("테스트유저").password("password@@").loginId("testuser1").build();
     String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJjcmVhdGVkQXQiOiIyMDIyLTA5LTI5VDIyOjUzOjQ2LjczNjY3OSswOTowMFtBc2lhL1Nlb3VsXSIsImxvZ2luSWQiOiJ3b255b25nOTIxIiwicHJvZmlsZUltYWdlSWQiOjEsIm5pY2tuYW1lIjoibmlja-uLiW5hbWU1NTg2IiwibmFtZSI6Iu2Zjeq4uOuPmSIsImV4cCI6MTY2NTA1OTYzMSwiZW1haWwiOiJ0ZXN0ZW1haWwwMUBuYXZlci5jb20iLCJtZW1iZXJJZCI6MX0._9HPrRwKhPkfaSRmwGEq-rkeseUR8InQkX2ZsHgnMgz4iwS8pqAz3xsg4aTFrV9jVZP_2vLX4GBzXgi5A3MZRw";
+    Member member = new Member();
 
     @BeforeEach
     public void 회원가입() {
         memberController.createMember(createMemberDto);
     }
 
-    @AfterEach
-    public void 회원정보초기화() {
-        memberRepository.truncate();
-    }
+//    @AfterEach
+//    public void 회원정보초기화() {
+//        memberRepository.truncate();
+//    }
 
     @Test
     public Member DB_회원_정보_테스트_DB응답의_이메일_정보_확인() {
@@ -74,10 +75,8 @@ class MemberDomainTest {
     }
 
     @Test
-    @Transactional
     public void 시나리오_회원정보_확인_그리고_프로필_수정() {
-        Member member = DB_회원_정보_테스트_DB응답의_이메일_정보_확인();
-        프로필_업데이트_테스트_응답의_닉네임_정보_확인(member);
+        Member createdMember = DB_회원_정보_테스트_DB응답의_이메일_정보_확인();
+        프로필_업데이트_테스트_응답의_닉네임_정보_확인(createdMember);
     }
-
 }

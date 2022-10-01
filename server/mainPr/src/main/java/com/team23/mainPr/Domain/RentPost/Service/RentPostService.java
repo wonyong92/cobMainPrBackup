@@ -6,7 +6,6 @@ import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostPageRequestDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryLocationResponseDto;
-import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryResponseDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
@@ -16,6 +15,7 @@ import com.team23.mainPr.Domain.RentPost.Mapper.RentPostMapper;
 import com.team23.mainPr.Domain.RentPost.Repository.CategoryRepository;
 import com.team23.mainPr.Domain.RentPost.Repository.LocationRepository;
 import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
+import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
 import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.CustomException.ErrorData;
 import java.io.File;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,6 +33,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -44,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
  * </pre>
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RentPostService {
 
@@ -54,13 +55,14 @@ public class RentPostService {
     private final CategoryMapper categoryMapper;
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
+    private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
 
     @Value("${multipart.upload.path}") String uploadPath;
 
     public RentPostResponseDto createRentPost(CreateRentPostEntityDto dto, String token) {
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
         RentPost result = rentPostRepository.save(rentPostMapper.CreateRentPostEntityDtoToRentPost(dto));
 
         return rentPostMapper.RentPostToRentPostResponseDto(result);
@@ -134,7 +136,7 @@ public class RentPostService {
     public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category, String location) {
         Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContainingAndLocationContaining(dto.getPageRequest(), rentStatus, category, location);
 
-        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(result.stream().map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost)).collect(Collectors.toList()), result.getPageable(),result.getTotalPages());
+        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(result.stream().map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost)).collect(Collectors.toList()), result.getPageable(), result.getTotalPages());
     }
 
     public List<RentPostResponseDto> searchAll(String phrase, String category, RentPostPageRequestDto dto, Boolean rentStatus) {
@@ -146,7 +148,6 @@ public class RentPostService {
     }
 
     public CategoryLocationResponseDto getCategories() {
-        return new CategoryLocationResponseDto(categoryRepository.findAll().stream().map(category -> categoryMapper.CategoryToCategoryResponseDto(category)).collect(Collectors.toList()),
-            locationRepository.findAll().stream().map(location -> locationMapper.LocationToLocationResponseDto(location)).collect(Collectors.toList())) ;
+        return new CategoryLocationResponseDto(categoryRepository.findAll().stream().map(category -> categoryMapper.CategoryToCategoryResponseDto(category)).collect(Collectors.toList()), locationRepository.findAll().stream().map(location -> locationMapper.LocationToLocationResponseDto(location)).collect(Collectors.toList()));
     }
 }

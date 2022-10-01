@@ -14,6 +14,7 @@ import com.team23.mainPr.Global.DefaultTimeZone;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
  * </pre>
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RentHistoryService {
 

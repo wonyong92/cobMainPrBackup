@@ -30,7 +30,7 @@ public enum ErrorData {
     MISSING_REQUIRED_DATA(HttpStatus.BAD_REQUEST, "요청에 필요한 데이터가 누락"),
     NOT_EXIST_LOGIN_INFORMATION(HttpStatus.FORBIDDEN, "로그인 정보가 누락되었습니다.() 재 로그인하거나 브라우저의 쿠키 사용여부 설정을 확인하세요."),
     NOT_MATCHED_ID(HttpStatus.BAD_REQUEST, "로그인 : 잘못된 아이디"),
-    NOT_ALLOWED_ACCESS_RESOURCE(HttpStatus.FORBIDDEN, "요청한 데이터 소유자가 아닙니다."),
+    NOT_ALLOWED_ACCESS_RESOURCE(HttpStatus.FORBIDDEN, "요청한 데이터 소유자가 아닙니다. 올바른 토큰인지 확인하세요."),
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "로그인 : 잘못된 비밀번호"),
     FILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 찾을 수 없습니다."),
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST,"해당하는 유저 정보를 찾을 수 없습니다. 요청하신 유저 식별자를 확인하세요."),

@@ -17,9 +17,9 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findByNickname(String nickname);
 
     @Modifying
-    @Transactional
+
     @Query(
-        value = "truncate table MEMBER",
+        value = "truncate table MEMBER cascade",
         nativeQuery = true
     )
     void truncate();

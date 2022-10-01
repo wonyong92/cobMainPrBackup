@@ -14,8 +14,10 @@ import com.team23.mainPr.Global.DefaultTimeZone;
 import com.team23.mainPr.Global.Jwt.Service.JwtBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class LoginService {
 
