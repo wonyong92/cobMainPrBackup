@@ -5,7 +5,6 @@ import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../context/context';
 import { useNavigate } from 'react-router-dom';
-import AxiosInstance from '../../Utils/AxiosInstance';
 
 export interface ILogin {
   loginId: string;
@@ -52,8 +51,7 @@ const LoginInput = () => {
       // 토큰
       const token = res.headers.authorization;
       localStorage.setItem('token', token);
-      AxiosInstance.defaults.headers.common['Authorization'] = token;
-      // axios.defaults.headers.common['Authorization'] = token;
+      axios.defaults.headers.common['Authorization'] = token;
       // 유저정보
       const result = DecodeJWT(token);
       delete result.sub;

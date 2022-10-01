@@ -7,6 +7,7 @@ import imageCompression from 'browser-image-compression';
 
 const ProfileImg = () => {
   const { user } = useContext(UserContext);
+  const token = localStorage.getItem('token');
   const imgInput = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState('');
   useEffect(() => {
@@ -31,16 +32,22 @@ const ProfileImg = () => {
     const compressedFile = await compressImg(e);
     const formData = new FormData();
     formData.append('file', compressedFile);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };
-    await axios
-      .post(`http://3.35.90.143:54130/member/profileImage/post?memberId=${user.memberId}`, formData, config)
-      .catch(() => {
-        alert('이미지 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ');
-      });
+    if (token) {
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+          Authorization: token,
+        },
+      };
+
+      try {
+        await axios.post(`http://3.35.90.143:54130/member/profileImage/post`, formData, config);
+      } catch (err) {
+        console.log(err);
+
+        // alert('이미지 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ');
+      }
+    }
   };
   return (
     <Container>
@@ -54,7 +61,12 @@ const ProfileImg = () => {
           onChange={(e) => handleImgChange(e)}
           style={{ display: 'none' }}
         />
-        <Button onClick={(e) => handleChangeBtnClick(e)} type={'white'} width={'short'} text={'변경'} />
+        <Button
+          onClick={(e) => handleChangeBtnClick(e)}
+          type={'white'}
+          width={'short'}
+          text={'변경'}
+        />
       </ImgWrapper>
     </Container>
   );
@@ -89,11 +101,6 @@ const ImgWrapper = styled.div`
     img {
       width: 40px;
       height: 40px;
-    }
-    button {
-      width: 40px;
-      height: 30px;
-      font-size: 12px;
     }
   }
 `;

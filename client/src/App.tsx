@@ -48,9 +48,9 @@ const App = () => {
   };
   useEffect(() => {
     const userInfo = getUserFromLocalStorage();
-    setUser({ ...user, ...userInfo });
+    userInfo ? setUser(userInfo) : null;
     setIsLoading(false);
-  }, []);
+  }, [setUser]);
 
   if (isLoading) return <p>loading...</p>;
 
