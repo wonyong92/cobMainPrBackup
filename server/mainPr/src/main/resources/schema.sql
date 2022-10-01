@@ -1,5 +1,5 @@
 drop all objects;
-
+-- back dev branch
 CREATE TABLE `MEMBER` (
   `MEMBER_ID` int PRIMARY KEY AUTO_INCREMENT,
   `LOGIN_ID` varchar(25) UNIQUE NOT NULL,
