@@ -13,15 +13,13 @@ interface Props {
 }
 
 const PostItem = ({}: Props) => {
-  const imgUrl: string =
-    'https://images.unsplash.com/photo-1616161616161-1b1b1b1b1b1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
+  // const imgUrl: string =
+  // 'https://images.unsplash.com/photo-1616161616161-1b1b1b1b1b1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
   return (
     <>
-      <HeadRow>
-        <h2>인기리스트</h2>
-      </HeadRow>
+      <HeadRow>{/* <h2>인기리스트</h2> */}</HeadRow>
       <ListWrapper>
-        <Image src={imgUrl} />
+        {/* <Image src={imgUrl} /> */}
         <DescriptionWrapper>
           <Title>50년된 자전거</Title>
           <Region>서울</Region>

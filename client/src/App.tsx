@@ -18,10 +18,14 @@ import { useEffect, useState } from 'react';
 import { IUserData } from './types';
 import { UserContext } from './context/context';
 import NotFound from './components/NotFound/NotFound';
+import Search from './pages/Search/Search';
+import { IPostItemData } from './types';
+import { SearchResultContext } from './context/context';
 
 const App = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const [searchResultList, setSearchResultList] = useState<IPostItemData[]>([]);
   const [user, setUser] = useState<IUserData>({
     memberId: 0,
     loginId: '',
@@ -56,25 +60,28 @@ const App = () => {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <div className="App">
-        {pathCondition ? undefined : <Header />}
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/postlist" element={<PostList />} />
-          <Route path="/postedit/:id" element={<PostEdit />} />
-          <Route path="/postdetail/:id" element={<PostDetail />} />
-          <Route path="/postwrite" element={<PostWrite />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/myactivity" element={<MyActivity />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/findid" element={<FindId />} />
-          <Route path="/findpw" element={<FindPassword />} />
-          <Route path="/findguide" element={<FindUserInfoGuide />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        {pathCondition ? undefined : <Footer />}
-      </div>
+      <SearchResultContext.Provider value={{ searchResultList, setSearchResultList }}>
+        <div className="App">
+          {pathCondition ? undefined : <Header />}
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/postlist" element={<PostList />} />
+            <Route path="/postedit/:id" element={<PostEdit />} />
+            <Route path="/postdetail/:id" element={<PostDetail />} />
+            <Route path="/postwrite" element={<PostWrite />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/myactivity" element={<MyActivity />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/findid" element={<FindId />} />
+            <Route path="/findpw" element={<FindPassword />} />
+            <Route path="/findguide" element={<FindUserInfoGuide />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          {pathCondition ? undefined : <Footer />}
+        </div>
+      </SearchResultContext.Provider>
     </UserContext.Provider>
   );
 };

@@ -1,30 +1,51 @@
 export interface Signup {
-    loginId: string;
-    password: string;
-    rePassword?: string;
-    name: string;
-    nickname: string;
-    email: string;
-    profileImageId?: number;
+  loginId: string;
+  password: string;
+  rePassword?: string;
+  name: string;
+  nickname: string;
+  email: string;
+  profileImageId?: number;
 }
 export interface IUserProfile {
-    createdAt: string;
-    email: string;
-    loginId: string;
-    nickname: string;
-    profileImageId: number;
+  createdAt: string;
+  email: string;
+  loginId: string;
+  nickname: string;
+  profileImageId: number;
 }
 // 전역상태
 export interface IUserData {
-    memberId: number | undefined;
-    loginId: string | undefined;
-    email: string | undefined;
-    name: string | undefined;
-    nickname: string | undefined;
-    createdAt: string | undefined;
-    profileImageId: number | undefined;
+  memberId: number | undefined;
+  loginId: string | undefined;
+  email: string | undefined;
+  name: string | undefined;
+  nickname: string | undefined;
+  createdAt: string | undefined;
+  profileImageId: number | undefined;
 }
 export interface IUserContext {
-    user: IUserData;
-    setUser: React.Dispatch<React.SetStateAction<IUserData>>;
+  user: IUserData;
+  setUser: React.Dispatch<React.SetStateAction<IUserData>>;
+}
+
+// -------- 검색결과, IPostItemData는 PostItem.tsx 것을 일단 복붙함
+export interface IPostItemData {
+  catergory: string | undefined;
+  image: string | undefined;
+  location: string | undefined;
+  rentPostContents: string | undefined;
+  rentPostId: number | undefined;
+  rentPostName: string | undefined;
+  rentPrice: number | undefined;
+  rentStatus: boolean | undefined;
+  updateDate: string | undefined;
+  viewCount: number | undefined;
+  writeDate: string | undefined;
+  writerId: number | undefined;
+}
+
+export interface ISearchResultContext {
+  searchResultList: IPostItemData[];
+  setSearchResultList: React.Dispatch<React.SetStateAction<IPostItemData[]>>;
 }
