@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { IUserData } from './types';
 import { UserContext } from './context/context';
 import NotFound from './components/NotFound/NotFound';
+import Search from './pages/Search/Search';
 
 const App = () => {
   const location = useLocation();
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/postedit/:id" element={<PostEdit />} />
           <Route path="/postdetail/:id" element={<PostDetail />} />
           <Route path="/postwrite" element={<PostWrite />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/myactivity" element={<MyActivity />} />
           <Route path="/signup" element={<Signup />} />
