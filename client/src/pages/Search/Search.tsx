@@ -4,12 +4,16 @@ import { SearchResultContext } from '../../context/context';
 
 const Search = () => {
   const location = useLocation();
-  const keyword = location.state.keyword;
+  const keyword: string | undefined = location?.state.keyword;
   const { searchResultList } = useContext(SearchResultContext);
-  console.log(searchResultList);
   return (
     <div>
       <div>{keyword} 검색결과</div>
+      {searchResultList.map((el) => (
+        <div key={el.rentPostId}>
+          <div>{el.rentPostName}</div>
+        </div>
+      ))}
     </div>
   );
 };

@@ -2,14 +2,12 @@ import { MyHeader, Top, LogoWrapper, LogoSVG, Icons } from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-
 import { useContext, useState } from 'react';
 import MenuModal from '../Modal/MenuModal';
 import UserModal from '../Modal/UserModal';
 import SearchBar from '../Search/SearchBar';
 import { UserContext } from '../../context/context';
 import DesktopRightSide from './DesktopRightSide/DesktopRightSide';
-
 const Header = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();

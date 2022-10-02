@@ -23,26 +23,25 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
       handleSearchKeyword();
     }
   };
-  const handleSearchKeyword = () => {
-    const data = {
-      page: 0,
-      size: 20,
-      sort: 'VIEW_COUNT',
-    };
-    axios
-      .post(`http://3.35.90.143:54130/rentPost/search?phrase=${keyword}`, data, {
-        withCredentials: false,
-      })
-      .then((res) => {
-        setSearchResultList([...searchResultList, res.data]);
-        console.log(res.data);
+  const handleSearchKeyword = async () => {
+    if (keyword !== '') {
+      const data = {
+        page: 0,
+        size: 20,
+        sort: 'VIEW_COUNT',
+      };
+      try {
+        const res = await axios.post(`http://3.35.90.143:54130/rentPost/search?phrase=${keyword}`, data, {
+          withCredentials: false,
+        });
+        setSearchResultList(res.data);
         navigate('/search', {
           state: { keyword: keyword },
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } catch {
+        alert('죄송합니다. 잠시후 다시 시도해주세요 :)');
+      }
+    }
   };
 
   const location = useLocation();
