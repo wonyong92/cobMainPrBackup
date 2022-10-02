@@ -7,14 +7,13 @@ import { SearchResultContext } from '../../context/context';
 import axios from 'axios';
 
 interface Props {
-  // menuModal: boolean;
-  setMenuModal: (state: boolean) => void;
+  setMenuModal?: (state: boolean) => void;
 }
 const MenuModal = ({ setMenuModal }: Props) => {
   const { setSearchResultList } = useContext(SearchResultContext);
   const token = localStorage.getItem('token');
   const closeModal = () => {
-    setMenuModal(false);
+    setMenuModal && setMenuModal(false);
   };
   const clickedCategory = 'categoryCamping';
   const handleSearchKeyword = () => {

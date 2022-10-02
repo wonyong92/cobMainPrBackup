@@ -8,24 +8,14 @@ import axios from 'axios';
 import { SearchResultContext } from '../../context/context';
 
 interface Props {
-  keyword: string;
-  setKeyword: (state: string) => void;
+  keyword?: string;
+  setKeyword?: (state: string) => void;
 }
-interface ISearchQuery {
-  category: string;
-  rentStatus: string;
-}
-// const getAll = () => {
-//   axios.get(`http://3.35.90.143:54130/rentPost/posts`).then((res) => {
-//     console.log(res.data);
-//   });
-// };
-// getAll();
 const SearchBar = ({ keyword, setKeyword }: Props) => {
   const { setSearchResultList, searchResultList } = useContext(SearchResultContext);
   const navigate = useNavigate();
   const handleKeywordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+    setKeyword && setKeyword(e.target.value);
     console.log(keyword);
   };
   const handleKeywordOnKeyUp = (e: any) => {
@@ -63,7 +53,7 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
         <>
           <TextInput
             type="text"
-            value={keyword}
+            value={keyword ? keyword : ''}
             onChange={handleKeywordInputChange}
             onKeyup={handleKeywordOnKeyUp}
             placeholder="검색어를 입력해주세요"

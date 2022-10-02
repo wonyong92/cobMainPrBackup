@@ -8,17 +8,8 @@ export const SearchReasultCustom: React.FC = () => {
   const [searchResultList, setSearchResultList] = useState<IPostItemData[]>([]);
   return (
     <SearchResultContext.Provider value={{ searchResultList, setSearchResultList }}>
-      <MenuModal
-        setMenuModal={function (state: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-      <SearchBar
-        keyword={''}
-        setKeyword={function (state: string): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
+      <MenuModal />
+      <SearchBar />
       <Search />
     </SearchResultContext.Provider>
   );
