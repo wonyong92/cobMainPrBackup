@@ -1,22 +1,23 @@
+import styled from 'styled-components';
+import axios from 'axios';
+import TextInput from '../../UI/input/TextInput';
+import { ChangeEvent, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { SearchResultContext } from '../../context/context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components';
-import TextInput from '../../UI/input/TextInput';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ChangeEvent, useContext } from 'react';
-import axios from 'axios';
-import { SearchResultContext } from '../../context/context';
 
 interface Props {
   keyword?: string;
   setKeyword?: (state: string) => void;
 }
 const SearchBar = ({ keyword, setKeyword }: Props) => {
-  const { setSearchResultList, searchResultList } = useContext(SearchResultContext);
+  const { setSearchResultList } = useContext(SearchResultContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathCondition = location.pathname === '/mypage' || location.pathname === '/myactivity';
   const handleKeywordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword && setKeyword(e.target.value);
-    console.log(keyword);
   };
   const handleKeywordOnKeyUp = (e: any) => {
     if (e.key === 'Enter') {
@@ -27,7 +28,7 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
     if (keyword !== '') {
       const data = {
         page: 0,
-        size: 20,
+        size: 100,
         sort: 'VIEW_COUNT',
       };
       try {
@@ -38,14 +39,13 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
         navigate('/search', {
           state: { keyword: keyword },
         });
+        setKeyword && setKeyword('');
       } catch {
         alert('죄송합니다. 잠시후 다시 시도해주세요 :)');
       }
     }
   };
 
-  const location = useLocation();
-  const pathCondition = location.pathname === '/mypage' || location.pathname === '/myactivity';
   return (
     <Container>
       {pathCondition ? null : (

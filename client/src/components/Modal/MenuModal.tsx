@@ -2,40 +2,35 @@ import { ModalBackDrop, Container, Top, Bottom, Item } from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { category } from '../../constants';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SearchResultContext } from '../../context/context';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   setMenuModal?: (state: boolean) => void;
 }
 const MenuModal = ({ setMenuModal }: Props) => {
+  const navigate = useNavigate();
   const { setSearchResultList } = useContext(SearchResultContext);
-  const token = localStorage.getItem('token');
   const closeModal = () => {
     setMenuModal && setMenuModal(false);
   };
-  const clickedCategory = 'categoryCamping';
-  const handleSearchKeyword = () => {
-    if (token) {
-      const data = {
-        page: 1,
-        size: 1,
-        sort: 'VIEW_COUNT',
-      };
-      axios
-        .post(`http://3.35.90.143:54130/rentPost/search?phrase=''&category=${clickedCategory}`, data, {
-          withCredentials: false,
-        })
-        .then((res) => {
-          setSearchResultList(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+
+  const getCategoryPosts = async (e: any) => {
+    try {
+      const res = await axios.get(`http://3.35.90.143:54130/rentPost/posts?category=${e.target.innerText}`, {
+        withCredentials: false,
+      });
+      setSearchResultList(res.data.rentPosts);
+      navigate('/search', {
+        state: { keyword: e.target.innerText },
+      });
+    } catch {
+      alert('죄송합니다 잠시 후 다시 시도해주세요 :)');
     }
   };
-  const getClickedCategory = () => {};
+
   return (
     <ModalBackDrop onClick={closeModal}>
       <Container>
@@ -46,7 +41,7 @@ const MenuModal = ({ setMenuModal }: Props) => {
         <Bottom>
           {category.map((el: any) => (
             <Item key={el.cid}>
-              <div onClick={() => getClickedCategory}>{el.name}</div>
+              <div onClick={(e) => getCategoryPosts(e)}>{el.name}</div>
             </Item>
           ))}
         </Bottom>
