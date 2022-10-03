@@ -19,13 +19,13 @@ import { IUserData } from './types';
 import { UserContext } from './context/context';
 import NotFound from './components/NotFound/NotFound';
 import Search from './pages/Search/Search';
-import { IPostItemData } from './types';
+import { IListItemData } from './types';
 import { SearchResultContext } from './context/context';
 
 const App = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
-  const [searchResultList, setSearchResultList] = useState<IPostItemData[]>([]);
+  const [searchResultList, setSearchResultList] = useState<IListItemData[]>([]);
   const [user, setUser] = useState<IUserData>({
     memberId: 0,
     loginId: '',

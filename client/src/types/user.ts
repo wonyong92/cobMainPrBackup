@@ -16,7 +16,7 @@ export interface IUserProfile {
 }
 // 전역상태
 export interface IUserData {
-  memberId: number | undefined;
+  memberId: number;
   loginId: string | undefined;
   email: string | undefined;
   name: string | undefined;
@@ -27,25 +27,4 @@ export interface IUserData {
 export interface IUserContext {
   user: IUserData;
   setUser: React.Dispatch<React.SetStateAction<IUserData>>;
-}
-
-// -------- 검색결과, IPostItemData는 PostItem.tsx 것을 일단 복붙함
-export interface IPostItemData {
-  catergory: string | undefined;
-  image: string | undefined;
-  location: string | undefined;
-  rentPostContents: string | undefined;
-  rentPostId: number | undefined;
-  rentPostName: string | undefined;
-  rentPrice: number | undefined;
-  rentStatus: boolean | undefined;
-  updateDate: string | undefined;
-  viewCount: number | undefined;
-  writeDate: string | undefined;
-  writerId: number | undefined;
-}
-
-export interface ISearchResultContext {
-  searchResultList: IPostItemData[];
-  setSearchResultList: React.Dispatch<React.SetStateAction<IPostItemData[]>>;
 }
