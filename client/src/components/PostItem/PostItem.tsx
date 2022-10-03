@@ -26,14 +26,10 @@ export interface PostItemProps {
 const PostItem = ({data}:PostItemProps) => {
   const imgUrl= `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   
-
-
-
   return (
     <>
-      
       <ListWrapper>
-        <Image src={imgUrl} />
+        {/* <Image src={imgUrl} /> */}
         <DescriptionWrapper>
           <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
           <Region>{data.location}</Region>
