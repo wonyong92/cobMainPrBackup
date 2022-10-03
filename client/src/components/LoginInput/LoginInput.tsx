@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import DefaultInput from '../../UI/input/DefaultInput';
 import Button from '../../UI/button/Button';
 import React, { ChangeEvent, useState } from 'react';
+// import { trySignIn } from '../../Utils/apiCalls_mdy';
 import axios from 'axios';
+import { DecodeJWT } from '../../Utils/decodeJWT';
 import { UserContext } from '../../context/context';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,21 +26,7 @@ const LoginInput = () => {
       [e.target.name]: e.target.value,
     });
   };
-  // JWT 디코딩 - utils
-  const DecodeJWT = (token: string) => {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join(''),
-    );
-    return JSON.parse(jsonPayload);
-  };
-  // 로그인
+
   const trySignIn = async () => {
     if (!loginInfo.loginId || !loginInfo.password) {
       setErrorMsg('아이디와 비밀번호를 입력해주세요.');
@@ -63,7 +51,13 @@ const LoginInput = () => {
       setErrorMsg('아이디와 비밀번호를 확인해주세요.');
     }
   };
-
+  // const handleSubmitUserIdPW = () => {
+  //   if (!loginInfo.loginId || !loginInfo.password) {
+  //     setErrorMsg('아이디와 비밀번호를 입력해주세요.');
+  //     return;
+  //   }
+  //   trySignIn(loginInfo);
+  // };
   return (
     <LoginBox>
       <form>
