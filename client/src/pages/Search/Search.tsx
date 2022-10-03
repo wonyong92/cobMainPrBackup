@@ -8,6 +8,7 @@ import PageDescript from '../../components/Descript/PageDescript';
 import axios from 'axios';
 import useDidMountEffect from '../../hooks/useDidMountEffect';
 import PageNation from '../../components/Pagenation/PageNation';
+import { sortOptionList, rentSortOptionList } from '../../constants';
 
 const Search = () => {
   const location = useLocation();
@@ -19,14 +20,6 @@ const Search = () => {
   const [page, setPage] = useState(1);
   const [totalPost, setTotalPost] = useState(1);
   const totalPage = Math.ceil(totalPost / 6);
-  const sortOptionList = [
-    { value: 'writeDate', name: '최신순' },
-    { value: 'viewCount', name: '인기순' },
-  ];
-  const rentSortOptionList = [
-    { value: 'false', name: '렌트가능' },
-    { value: 'true', name: '렌트중' },
-  ];
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
