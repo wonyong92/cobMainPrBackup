@@ -1,8 +1,9 @@
-
-
+import { useParams } from 'react-router-dom';
 import AxiosInstance from './AxiosInstance';
 import { PostData } from '../pages/Post/PostWrite'; 
 import { CommentData } from '../components/Comment/CommentWrite';
+
+
 
 //POST
 export const getPosts = async() => {
@@ -19,10 +20,10 @@ export const getPosts = async() => {
 
 }
 
-export const getPost = async() => {
+export const getPost = async(postId:number) => {
     
     try {
-        const res = await AxiosInstance.post(`rentPost?postId=${1}`);
+        const res = await AxiosInstance.post(`rentPost?postId=${postId}`);
         // console.log(res);
         return res.data;
         
@@ -34,15 +35,10 @@ export const getPost = async() => {
 }
 
 
-export const getImage = async (postId:any) => {
+export const getImage = async () => {
+    const params=useParams()
     try {
-        // let imageArr = postId.map((el:any)=> {
-        //     return AxiosInstance.get(`http://3.35.90.143:54130/rentPost/images/get?postId=${el}`).then((res)=>{
-        //         return res.data;
-        //     })
-        //     });
-        //     console.log(imageArr);
-        const res = await AxiosInstance.get(`http://3.35.90.143:54130/rentPost/images/get?postId=${postId}`);
+        const res = await AxiosInstance.get(`http://3.35.90.143:54130/rentPost/images/get?postId=${params.id}`);
         console.log(res);
         console.log(res.data);
         const data = res.data
@@ -52,29 +48,22 @@ export const getImage = async (postId:any) => {
     }
 };
 
-export const sendPost = async (post:PostData) => {
+export const sendPost = async (post: any) => {
     try {
-        const res = await AxiosInstance.post(`rentPost/post`,
-        {
-            category:  post.category,
-            rentPostContents: post.rentPostContents,
-            rentPostName: post.rentPostName,
-            writerId: post.writerId,
-            rentPrice: post.rentPrice,
-            location: post.location,
-          }
-        );
-        console.log(res);
-        const data = res.data
-        return data;
+      post.location = `location${post.location}`;
+      post.category = `category${post.category}`;
+      post.rentPrice = parseInt(post.rentPrice);
+      console.log(post);
+      const res = await AxiosInstance.post(`rentPost/post`, post);
+      console.log(res);
     } catch (error) {
-        console.log('error', error);
+      console.log('error', error);
     }
-}
+  };
 
 export const sendImage = async (image: any) => {
     try {
-        const res = await AxiosInstance.post(`rentPost/images/?id=${'1'}`,
+        const res = await AxiosInstance.post(`rentPost/images/?id=${`1`}`,
         {
             image: image,
         });
@@ -87,13 +76,14 @@ export const sendImage = async (image: any) => {
     }
 }
 
-export const updatePost = async (post: { title: any; content: any; price: any; category: any; location: any; }) => {
+export const updatePost = async (post:any) => {
+    const params = useParams();
     try {
-        const res = await AxiosInstance.put(`rentPost/update?id=${'1'}`,
+        const res = await AxiosInstance.put(`rentPost/update?id=${`${params.id}`}`,
         {
-            title: post.title,
-            content: post.content,
-            price: post.price,
+            title: post.rentPostName,
+            content: post.rentPostContents,
+            price: post.rentPrice,
             category: post.category,
             location: post.location,
         });
@@ -108,7 +98,7 @@ export const updatePost = async (post: { title: any; content: any; price: any; c
 
 export const deletePost = async (id: any) => {
     try {
-        const res = await AxiosInstance.delete(`rentPost/delete/?id=${id}`);
+        const res = await AxiosInstance.delete(`rentPost/delete/?postId=${id}`);
         console.log(res);
         console.log(res.data);
         const data = res.data
@@ -119,9 +109,9 @@ export const deletePost = async (id: any) => {
 }
 
 //COMMENTS
-export const getComments = async () => {
+export const getComments = async (postId:number) => {
     try {
-        const res = await AxiosInstance.get(`comment/getComments?postId=${1}`);
+        const res = await AxiosInstance.get(`comment/getComments?postId=${postId}`);
         console.log(res);
         console.log(res.data);
         const data = res.data
@@ -134,12 +124,26 @@ export const getComments = async () => {
 export const sendComment = async (comment: CommentData) => {
     console.log(comment);
     try {
-        const res = await AxiosInstance.post(`comment/post?=`,
+        const res = await AxiosInstance.post(`comment/post`,comment
+        );
+        console.log(res);
+        console.log(res.data);
+        const data = res.data
+        return data;
+    } catch (error) {
+        console.log('error', error);
+    }
+}
+
+export const updateComment = async (comment:CommentData,commentId:number) => {
+    try {
+        const res = await AxiosInstance.post(`comment/update?id=${commentId}`,
         {
-            commentContents: comment.commentContents,
-            postId: comment.targetPostId,
+            commentId: comment.commentId,
             writerId: comment.writerId,
-        });
+            commentContents: comment.commentContents,
+        })
+        
         console.log(res);
         console.log(res.data);
         const data = res.data
@@ -149,24 +153,10 @@ export const sendComment = async (comment: CommentData) => {
     }
 }
 
-export const updateComment = async (comment: { content: any; }) => {
+export const deleteComment = async (commentId: number) => {
     try {
-        const res = await AxiosInstance.put(`comment/update?id=${'1'}`,
-        {
-            content: comment.content,
-        });
-        console.log(res);
-        console.log(res.data);
-        const data = res.data
-        return data;
-    } catch (error) {
-        console.log('error', error);
-    }
-}
-
-export const deleteComment = async (id: any) => {
-    try {
-        const res = await AxiosInstance.delete(`comment/delete?id=${id}`);
+        const res = await AxiosInstance.post(`comment/delete?commentId=${commentId}`)
+        
         console.log(res);
         console.log(res.data);
         const data = res.data

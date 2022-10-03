@@ -1,46 +1,70 @@
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
 import { CommentData } from './CommentWrite';
-// import { useEffect, useState } from 'react';
-
+import {ChangeEvent, useContext, useState } from 'react';
+import { deleteComment, updateComment } from '../../Utils/ApiCall';
+import { UserContext } from '../../context/context';
+import TextInput from '../../UI/input/TextInput';
 
     
 
 
 export interface CommentDataProps {
     data: CommentData;
+    
 }
 
 const CommentItem = ({data}:CommentDataProps) => {
+console.log(data)
+    const { user } = useContext(UserContext);
+    const [editComment, setEditComment] = useState(false);
+    const [text, setText] = useState(data.commentContents);
+    const deleteCommentHandler =()=> {
+    deleteComment(data.commentId);
+   
+    }
 
-    // const [isOwner, setIsOwner] = useState<boolean>(false);
-   
-    
-   
-    // useEffect(() => {
-    //     if (data.userId === userId) {
-    //         setIsOwner(true);
-    //     }
-    // }, [data.userId, userId]);
+    const editCommentHandler = () => {
+    setEditComment(true);
+    }
+
+    const commentHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+        
+
+
+
+    }
+
+    const updateCommentHandler = () => {
+        updateComment(data,data.commentId);
+            
+            
+    }
+
 
 
    return (
         <>
-        
+    
         <CommentItemWrapper>
             <CommentItemHeader>
                 <Link to={`/user/${'user.id'}`}>{'user.nickname'}</Link>
                 <span>{'createdAt'}</span>
             </CommentItemHeader>
             <CommentItemContent>{data.commentContents}</CommentItemContent>
-            {/* {isOwner && ( */}
+            {user.memberId === data.writerId ?
                 <CommentItemFooter>
-                    <TextButton text='수정' btnText={''} />
-                    <TextButton text='삭제' btnText={''} onClick={() =>{}}/>
+                    <TextButton text='수정' isGray={true} btnText={''} onClick={editCommentHandler}/>
+                    {editComment ? <><TextInput type='text' value={text} onChange={commentHandler} placeholder={''}/>
+                        <TextButton text='확인' isGray={true} btnText={'수정'}  onClick={updateCommentHandler}/></>
+                     : null}
+                    <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={deleteCommentHandler}/>
                 </CommentItemFooter>
-             {/* )} */}
+             : null}
         </CommentItemWrapper>
+
     </>
     );
 };

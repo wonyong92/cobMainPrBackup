@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import TextButton from '../../UI/button/TextButton';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import DeleteModal from '../Modal/DeleteModal';
+import { UserContext } from '../../context/context';
 
 
 export interface PostItemDetailData {
   
-    catergory: string;
+    category: string;
     image: string;
     location: string;
     rentPostContents: string;
@@ -18,13 +21,15 @@ export interface PostItemDetailData {
     viewCount: number;
     writeDate: string;
     writerId: number;
-  
-
-  
+    deleteModal: boolean;
+    commentId: number;
+    setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+   
 }
 
 interface IPostItemDetailProps{
-  data:{ catergory: string;
+  data:{ 
+    category: string;
     image: string;
     location: string;
     rentPostContents: string;
@@ -35,30 +40,55 @@ interface IPostItemDetailProps{
     updateDate: string;
     viewCount: number;
     writeDate: string;
-    writerId: number;}
+    writerId: number;
+    deleteModal: boolean;
+    commentId: number;
+    setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+    }
 }
 
 const PostDetailItem = ({data}:IPostItemDetailProps) => {
   const imgUrl: string = `http://3.39.180.45:56178/rentPost/image/get?imageId=1`;
+  const {user}  =useContext(UserContext);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const navigate =useNavigate();
+
+  const editHandler = () => {
+    console.log(data.rentPostId)
+    navigate(`/postedit/${data.rentPostId}`)
+  }
+
   
   return (
     <>
         <ListWrapper>
         <Image src={imgUrl} />
         <DescriptionWrapper>
-          <Title>{data.rentPostName}</Title>
+          <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
           <Content>{data.rentPostContents}</Content>
           <Region>{data.location}  조회:{data.viewCount}</Region>
           <Price>{data.rentPrice}원</Price>   
           <ButtonWrapper> 
           <Button text='렌트가능' radius='deep' width='short'/>
+          
+          {user.memberId===data.writerId ? 
           <TextButtonWrapper>
-          <TextButton text='수정' btnText={''} />
-          <TextButton text='삭제' btnText={''} onClick={() =>{}}/>
+          <TextButton text='수정' isGray={true} btnText={'수정'} onClick={editHandler}/>
+          <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={() =>{
+            console.log('삭제버튼 클릭')
+            setDeleteModal(true)}}/>
           </TextButtonWrapper>
+          : null}
+           
           </ButtonWrapper>
         </DescriptionWrapper>
       </ListWrapper>
+      {deleteModal ? (
+          <DeleteModal
+            setDeleteModal={setDeleteModal}
+            data={data}
+          />
+        ) : null}
     </>
   );
 };

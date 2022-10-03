@@ -5,9 +5,12 @@ import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
 import TextInput from '../../UI/input/TextInput';
-import { useState } from 'react';
+import { useState, useContext  } from 'react';
+import { Editor } from '@toast-ui/react-editor';
 // import { useNavigate } from 'react-router-dom';
-// import { useRef } from 'react';
+import { useRef } from 'react';
+import { UserContext } from '../../context/context';
+
 
 
 export interface PostData {
@@ -17,60 +20,57 @@ export interface PostData {
   rentPrice: number;
   category: string;
   location: string;
-  writerId: number;
+  writerId: number | undefined;
+  
+  
 
   }
 
 
 
 const PostWrite = () => {
-
-  // const editorRef = useRef();
-  
-  // const navigate = useNavigate();
-  
+  const editorRef = useRef<Editor>();
+  const {user}  =useContext(UserContext);
   const [post,setPost] = useState({
     rentPostName: '',
     rentPostContents: '',
     rentPrice: 0,
     category: '',
     location: '',
-    writerId: 0,
+    writerId: user.memberId,
     
-  })
+})
   const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
   const {name, value}= e.target;
   setPost({...post,[name]:value,})
- 
   };
 
-  // const handleEditorChange = () => {
-   
-  //   setPost(editorRef.current?.getInstance().getHtml());
-    
-  // }
-
-
-  
   const clickHandler = () => {
-    // handleRegisterButton();
+   
     sendPost({
       category: post.category,
       rentPostContents: post.rentPostContents,
       rentPostName: post.rentPostName,
-      writerId: post.writerId,
-      rentPrice: post.rentPrice,
+      writerId:user.memberId,
+      rentPrice: Number(post.rentPrice),
       location: post.location,
     })
-      
-  
   }
-    
+
+const handleEditorChange = () => {
+  const editorInstance = editorRef.current?.getInstance();
   
+  console.log(editorInstance?.getMarkdown());
+  if(editorInstance){
+    setPost({...post, rentPostContents: editorInstance.getMarkdown()})
+  }
+}
+   
+
     return (
         <>
             <HeaderRow>빌려주기 작성가이드
-            <Button text={'글저장'} width='middle' onClick={clickHandler} />
+            <Button text='글저장' width='middle' onClick={clickHandler} />
             </HeaderRow>
             <GuideWrapper>
               <li>사진을 올려주세요</li>
@@ -114,8 +114,8 @@ const PostWrite = () => {
             value={post.rentPrice} 
             name={'rentPrice'} />
             </WriteWrapper>
-            <CustomEditor  value={post.rentPostContents} isError={false}  onChange={()=>{onChangePost}}/>
-            <Button text='이미지업로드'  onClick={()=>{}}/>
+            <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange}/>
+            <Button text='Save'  onClick={()=>{}}/>
         </>
      
     )

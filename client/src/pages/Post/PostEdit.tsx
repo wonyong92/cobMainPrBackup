@@ -1,14 +1,14 @@
-import { ChangeEvent, MouseEvent } from 'react';
-import { sendPost } from '../../Utils/ApiCall';
+import { ChangeEvent} from 'react';
+import { updatePost } from '../../Utils/ApiCall';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
 import TextInput from '../../UI/input/TextInput';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
-
+import { useLocation } from 'react-router-dom';
+import { useRef } from 'react';
+import { Editor } from '@toast-ui/react-editor';
 
   export interface PostData {
    
@@ -23,18 +23,22 @@ import { useNavigate } from 'react-router-dom';
   
   
     const PostEdit = () => {
+    const editorRef = useRef<Editor>(null);
     
     const navigate = useNavigate();
-    
-    const [post,setPost] = useState({
-      rentPostName: '',
-      rentPostContents: '',
-      rentPrice: 0,
-      category: '',
-      location: '',
-      writerId: 0,
-      
+    const location = useLocation();
+    const data = location.state.detail;
+    console.log(data)
+
+    const [post,setPost] = useState<PostData>({
+        category: data.category,
+        rentPostContents: data.rentPostContents,
+        rentPostName: data.rentPostName,
+        writerId: data.writerId,
+        rentPrice: data.rentPrice,
+        location: data.location,
     })
+
     const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value}= e.target;
     setPost({...post,[name]:value,})
@@ -42,15 +46,13 @@ import { useNavigate } from 'react-router-dom';
   
     
     const clickHandler = () => {
-      sendPost({
+      updatePost({
         category: post.category,
         rentPostContents: post.rentPostContents,
         rentPostName: post.rentPostName,
-        writerId: 0,
+        writerId: post.writerId,
         rentPrice: post.rentPrice,
         location: post.location,
-      
-        
       })
         
       .then((res) => {
@@ -59,6 +61,16 @@ import { useNavigate } from 'react-router-dom';
         
       }
       );
+    }
+
+    const handleEditorChange = () => {
+      const editorInstance = editorRef.current?.getInstance();
+      const markdown = editorInstance?.getMarkdown();
+      const html:any = editorInstance?.getHTML();
+      console.log(markdown);
+      console.log(html);
+      setPost({...post,rentPostContents:html,})
+  
     }
       
     
@@ -82,7 +94,7 @@ import { useNavigate } from 'react-router-dom';
               placeholder={'글제목을 입력해주세요'}
               onChange={onChangePost}
               type={'text'}
-              value={post.rentPostName} 
+              value={data.rentPostName} 
               name={'rentPostName'} />
               
               <span>지역</span>
@@ -90,7 +102,7 @@ import { useNavigate } from 'react-router-dom';
               placeholder={'지역을 입력해주세요'}
               onChange={onChangePost}
               type={'text'}
-              value={post.location} 
+              value={data.location} 
               name={'location'}/>
               
               <span>카테고리</span>
@@ -98,7 +110,7 @@ import { useNavigate } from 'react-router-dom';
               placeholder={'카테고리를 입력해주세요'}
               onChange={onChangePost}
               type={'text'}
-              value={post.category} 
+              value={data.category} 
               name={'category'} />
               
               <span>가격</span>
@@ -106,10 +118,13 @@ import { useNavigate } from 'react-router-dom';
               placeholder={'가격을 입력해주세요'}
               onChange={onChangePost}
               type={'text'}
-              value={post.rentPrice} 
+              value={data.rentPrice} 
               name={'rentPrice'} />
+
+              <span>렌트상태</span>
+              <Button text={'렌트중'} />
               </WriteWrapper>
-              <CustomEditor value={post.rentPostContents} isError={false}  onChange={()=>onChangePost}/>
+              <CustomEditor value={data.rentPostContents} onChange={handleEditorChange}/>
               <Button text='이미지업로드'  onClick={()=>{}}/>
           </>
        

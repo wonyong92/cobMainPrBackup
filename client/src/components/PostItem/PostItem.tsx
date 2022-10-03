@@ -27,6 +27,8 @@ const PostItem = ({data}:PostItemProps) => {
   const imgUrl= `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   
 
+
+
   return (
     <>
       

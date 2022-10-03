@@ -13,10 +13,10 @@ export const MSG_10 = '한글 이름을 2-10자 내로 입력해주세요';
 
 export const MSG_11 = '닉네임을 2-8자 내로 입력해주세요 ';
 export const MSG_12 = '중복된 닉네임 입니다';
-export const MSG_13 = '사용가능한 닉네임 입니다';
+export const MSG_13 = '사용가능한 닉네임 입니다 :)';
 export const MSG_14 = '다른 닉네임을 입력해주세요';
 
 export const MSG_15 = '유효한 형식의 이메일을 입력해주세요';
 export const MSG_16 = '중복된 이메일 입니다';
-export const MSG_17 = '사용가능한 이메일 입니다';
+export const MSG_17 = '사용가능한 이메일 입니다 :)';
 export const MSG_18 = '다른 이메일을 입력해주세요';

@@ -8,11 +8,13 @@ import { getPost} from '../../Utils/ApiCall';
 import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
 import CommentList from '../../components/Comment/CommentList';
 import CommentWrite from '../../components/Comment/CommentWrite';
+import { useParams } from 'react-router-dom';
 
 
 const PostDetail = () => {
+    const params = useParams<{id: string}>();
     const initialState = {
-    catergory: '',
+    category: '',
     image: '',
     location: '',
     rentPostContents: '',
@@ -23,13 +25,18 @@ const PostDetail = () => {
     updateDate: '',
     viewCount: 0,
     writeDate: '',
-    writerId: 0,}
+    writerId: 0,
+    deleteModal: false,
+    commentId: 0,
+    setDeleteModal: () => {},
 
+    }
+  
     const [post, setPost] = useState<PostItemDetailData>(initialState);
-   
+    
 
     useEffect(() => {
-        getPost().then((res) => {
+        getPost(Number(params.id)).then((res) => {
             console.log(res)
             setPost(res)
         })
@@ -37,7 +44,7 @@ const PostDetail = () => {
             console.log(err);
         });
     }, []);
-
+    
     return (
         <>
         
@@ -46,8 +53,8 @@ const PostDetail = () => {
             <Button text='채팅하기' type='beige' width='middle'/>
         </ContentContainer>
         <CommentCount>댓글2</CommentCount>
-        <CommentWrite/>
-        <CommentList/>
+        <CommentWrite postId={post.rentPostId}/>
+        <CommentList post={post}/>
         </>
     );
 }
