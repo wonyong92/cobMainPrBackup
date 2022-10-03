@@ -77,15 +77,14 @@ export const sendImage = async (image: any) => {
 }
 
 export const updatePost = async (post:any) => {
-    const params = useParams();
     try {
-        const res = await AxiosInstance.put(`rentPost/update?id=${`${params.id}`}`,
+        const res = await AxiosInstance.put(`rentPost/update`,
         {
-            title: post.rentPostName,
-            content: post.rentPostContents,
-            price: post.rentPrice,
-            category: post.category,
+            rentPostName: post.rentPostName,
+            rentPostContents: post.rentPostContents,
+            rentPrice: post.rentPrice,
             location: post.location,
+            postId: post.rentPostId,
         });
         console.log(res);
         console.log(res.data);
