@@ -12,9 +12,9 @@ const SearchFilter = ({ value, onChange, optionList }: Props) => {
   return (
     <Select value={value} onChange={onChange}>
       {optionList.map((el, idx) => (
-        <Option key={idx} value={el.value}>
+        <option key={idx} value={el.value}>
           {el.name}
-        </Option>
+        </option>
       ))}
     </Select>
   );
@@ -27,10 +27,8 @@ const Select = styled.select`
   color: #464646;
   background-color: #f9f9f9;
   height: 28px;
-  font-size: 14px;
+  font-size: 12px;
   @media screen and (max-width: 500px) {
-    height: 23px;
-    font-size: 12px;
+    height: 25px;
   }
 `;
-const Option = styled.option``;
