@@ -73,7 +73,7 @@ const PostDetailItem = ({data}:IPostItemDetailProps) => {
           
           {user.memberId===data.writerId ? 
           <TextButtonWrapper>
-          <TextButton text='수정' isGray={true} btnText={'수정'} onClick={editHandler}/>
+          <Link to={`/postedit/${data.rentPostId}`} state= {data} >수정</Link>
           <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={() =>{
             console.log('삭제버튼 클릭')
             setDeleteModal(true)}}/>

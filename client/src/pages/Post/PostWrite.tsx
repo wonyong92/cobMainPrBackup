@@ -7,7 +7,7 @@ import CustomEditor from '../../components/Editor/CustomEditor';
 import TextInput from '../../UI/input/TextInput';
 import { useState, useContext  } from 'react';
 import { Editor } from '@toast-ui/react-editor';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { UserContext } from '../../context/context';
 
@@ -21,6 +21,7 @@ export interface PostData {
   category: string;
   location: string;
   writerId: number | undefined;
+  rentPostId: number;
   
   
 
@@ -30,6 +31,7 @@ export interface PostData {
 
 const PostWrite = () => {
   const editorRef = useRef<Editor>();
+  const navigate =useNavigate();
   const {user}  =useContext(UserContext);
   const [post,setPost] = useState({
     rentPostName: '',
@@ -55,6 +57,7 @@ const PostWrite = () => {
       rentPrice: Number(post.rentPrice),
       location: post.location,
     })
+    navigate(`/postlist`)
   }
 
 const handleEditorChange = () => {

@@ -16,10 +16,11 @@ export interface CommentDataProps {
 }
 
 const CommentItem = ({data}:CommentDataProps) => {
-console.log(data)
+
     const { user } = useContext(UserContext);
     const [editComment, setEditComment] = useState(false);
     const [text, setText] = useState(data.commentContents);
+    
     const deleteCommentHandler =()=> {
     deleteComment(data.commentId);
    
@@ -31,6 +32,7 @@ console.log(data)
 
     const commentHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
+
         
 
 
@@ -38,7 +40,11 @@ console.log(data)
     }
 
     const updateCommentHandler = () => {
-        updateComment(data,data.commentId);
+        updateComment({
+            commentContents: text,
+            commentId: data.commentId,
+            writerId: data.writerId,
+        },data.commentId);
             
             
     }
@@ -56,9 +62,9 @@ console.log(data)
             <CommentItemContent>{data.commentContents}</CommentItemContent>
             {user.memberId === data.writerId ?
                 <CommentItemFooter>
-                    <TextButton text='수정' isGray={true} btnText={''} onClick={editCommentHandler}/>
+                    <TextButton text='수정' isGray={true} btnText={'수정'} onClick={editCommentHandler}/>
                     {editComment ? <><TextInput type='text' value={text} onChange={commentHandler} placeholder={''}/>
-                        <TextButton text='확인' isGray={true} btnText={'수정'}  onClick={updateCommentHandler}/></>
+                        <TextButton text='확인' isGray={true} btnText={'확인'}  onClick={updateCommentHandler}/></>
                      : null}
                     <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={deleteCommentHandler}/>
                 </CommentItemFooter>
