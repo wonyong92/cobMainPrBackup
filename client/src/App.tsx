@@ -22,6 +22,7 @@ import Search from './pages/Search/Search';
 import { IListItemData } from './types';
 import { SearchResultContext } from './context/context';
 
+
 const App = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);

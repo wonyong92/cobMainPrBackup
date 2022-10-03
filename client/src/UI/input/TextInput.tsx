@@ -2,12 +2,11 @@
 import styled from 'styled-components';
 
 interface Prop {
-  type: 'text';
-  value: string;
-  placeholder: string;
-  name?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyup?: (e: any) => void;
+    type: 'text';
+    value: string|number;
+    placeholder: string;
+    name?: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = ({ type, value, name, placeholder, onChange, onKeyup }: Prop) => {

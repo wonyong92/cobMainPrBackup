@@ -1,33 +1,94 @@
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
+import TextButton from '../../UI/button/TextButton';
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import DeleteModal from '../Modal/DeleteModal';
+import { UserContext } from '../../context/context';
 
-interface Props{
-  category: string,
-  rentPostContents: string,
-  rentPostId: number,
-  rentPostName: string,
-  updateDate: string,
-  viewCount: number,
-  writeDate: string,
-  writerId: number,
-  rentStatus: string,
-  price: string,
+
+export interface PostItemDetailData {
+  
+    category: string;
+    image: string;
+    location: string;
+    rentPostContents: string;
+    rentPostId: number;
+    rentPostName: string;
+    rentPrice: number;
+    rentStatus: boolean;
+    updateDate: string;
+    viewCount: number;
+    writeDate: string;
+    writerId: number;
+    deleteModal: boolean;
+    commentId: number;
+    setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+   
 }
 
-const PostDetailItem = ({}:Props) => {
-  const imgUrl: string = 'https://media.gettyimages.com/photos/equipment-and-accessories-for-mountain-hiking-in-the-wilderness-picture-id994672418?k=20&m=994672418&s=612x612&w=0&h=FVlwbAL_wHNxLLWQ07v0uG3cavvpaNbWhBJvrD2Vw90=';
+interface IPostItemDetailProps{
+  data:{ 
+    category: string;
+    image: string;
+    location: string;
+    rentPostContents: string;
+    rentPostId: number;
+    rentPostName: string;
+    rentPrice: number;
+    rentStatus: boolean;
+    updateDate: string;
+    viewCount: number;
+    writeDate: string;
+    writerId: number;
+    deleteModal: boolean;
+    commentId: number;
+    setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+    }
+}
+
+const PostDetailItem = ({data}:IPostItemDetailProps) => {
+  const imgUrl: string = `http://3.39.180.45:56178/rentPost/image/get?imageId=1`;
+  const {user}  =useContext(UserContext);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const navigate =useNavigate();
+
+  const editHandler = () => {
+    console.log(data.rentPostId)
+    navigate(`/postedit/${data.rentPostId}`)
+  }
+
   
   return (
     <>
         <ListWrapper>
         <Image src={imgUrl} />
         <DescriptionWrapper>
-          <Title>50년된 자전거</Title>
-          <Region>서울  조회</Region>
-          <Price>50000원</Price>
+          <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
+          <Content>{data.rentPostContents}</Content>
+          <Region>{data.location}  조회:{data.viewCount}</Region>
+          <Price>{data.rentPrice}원</Price>   
+          <ButtonWrapper> 
           <Button text='렌트가능' radius='deep' width='short'/>
+          
+          {user.memberId===data.writerId ? 
+          <TextButtonWrapper>
+          <Link to={`/postedit/${data.rentPostId}`} state= {data} >수정</Link>
+          <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={() =>{
+            console.log('삭제버튼 클릭')
+            setDeleteModal(true)}}/>
+          </TextButtonWrapper>
+          : null}
+           
+          </ButtonWrapper>
         </DescriptionWrapper>
       </ListWrapper>
+      {deleteModal ? (
+          <DeleteModal
+            setDeleteModal={setDeleteModal}
+            data={data}
+          />
+        ) : null}
     </>
   );
 };
@@ -43,6 +104,27 @@ const Image = styled.img`
     
     }
 `;
+
+const Content = styled.div`
+    font-size: 13px;
+    color: #868e96;
+    margin-bottom: 10px;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+`;
+
+const TextButtonWrapper = styled.div`
+    display: flex;
+    justify-content: reverse-row;
+    margin-top: 10px;
+`;
+
+
+
 
 const ListWrapper = styled.div`
     width: 100%;

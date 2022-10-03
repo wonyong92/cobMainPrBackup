@@ -1,33 +1,30 @@
-import styled from 'styled-components';
-import { useState } from 'react';
+ import CommentItem from './CommentItem';
+import { getComments } from '../../Utils/ApiCall';
+import { useState, useEffect } from 'react';
+import { PostItemDetailData } from '../PostItem/PostDetailItem';
 
-
-
-
-
-interface Props {
-    comment: Comment;
-    onDelete: (id: number) => void;
+interface CommentListProps {
+  post: PostItemDetailData;
 }
+const CommentList = ({post}:CommentListProps) => {
 
-const CommentList = () => {
+  const [comments, setComments] = useState([]);
 
-//     const [comments, setComments] = useState([]);
-
-//         <CommentItemWrapper>
-//             <CommentItemHeader>
-//                 <Link to={`/user/${user.id}`}>{user.nickname}</Link>
-//                 <span>{FormData(createdAt)}</span>
-//             </CommentItemHeader>
-//             <CommentItemContent>{comments}</CommentItemContent>
-//             {isOwner && (
-//                 <CommentItemFooter>
-//                     <button>수정</button>
-//                     <button onClick={() => onDelete(id)}>삭제</button>
-//                 </CommentItemFooter>
-//             )}
-//         </CommentItemWrapper>
-//     );
-};
+  useEffect (() => {
+    getComments(post.rentPostId).then((res) => {
+        console.log(res);
+        setComments(res.comments);
+    });
+}, [post.rentPostId]);
+console.log(comments);
+    return (
+      <>
+      {comments && comments.map((el, idx) => ( 
+        <CommentItem key={idx} data={el}/>
+      ))} 
+      </> 
+    );
+      }
+     
 
 export default CommentList;

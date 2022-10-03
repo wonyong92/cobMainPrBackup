@@ -1,26 +1,63 @@
-// import CommentList from '../../components/CommentList';
-import CommentPost from '../../components/Comment/CommentPost';
+
+
 import PostDetailItem from '../../components/PostItem/PostDetailItem';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
-import { Z_FIXED } from 'zlib';
+import { useState,useEffect } from 'react';
+import { getPost} from '../../Utils/ApiCall';
+import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
+import CommentList from '../../components/Comment/CommentList';
+import CommentWrite from '../../components/Comment/CommentWrite';
+import { useParams } from 'react-router-dom';
+
 
 const PostDetail = () => {
+    const params = useParams<{id: string}>();
+    const initialState = {
+    category: '',
+    image: '',
+    location: '',
+    rentPostContents: '',
+    rentPostId: 0,
+    rentPostName: '',
+    rentPrice: 0,
+    rentStatus: true,
+    updateDate: '',
+    viewCount: 0,
+    writeDate: '',
+    writerId: 0,
+    deleteModal: false,
+    commentId: 0,
+    setDeleteModal: () => {},
+
+    }
   
+    const [post, setPost] = useState<PostItemDetailData>(initialState);
+    
+
+    useEffect(() => {
+        getPost(Number(params.id)).then((res) => {
+            console.log(res)
+            setPost(res)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
     
     return (
         <>
-        <PostDetailItem category={''} rentPostContents={''} rentPostId={0} rentPostName={''} updateDate={''} viewCount={0} writeDate={''} writerId={0} rentStatus={''} price={''}/>
+        
+        <PostDetailItem data={post}/> 
         <ContentContainer>
             <Button text='채팅하기' type='beige' width='middle'/>
-            <div>안녕하세요 작년에 구매한 캠핑용품입니다.<br></br>레전드 브랜드 캠핑용품이구요,<br></br>하루에 5만원 총 15만원입니다. 제품구입하시면 300만원입니다. 자주 사용하시는게 아니시라면 구매비용을 절약하실수있습니다.<br></br>감사합니다.</div>
         </ContentContainer>
         <CommentCount>댓글2</CommentCount>
-        <CommentPost/>
-        {/* <CommentList/> */}
+        <CommentWrite postId={post.rentPostId}/>
+        <CommentList post={post}/>
         </>
     );
-    }
+}
 
     const ContentContainer = styled.div`
     display:flex;

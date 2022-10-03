@@ -1,59 +1,80 @@
 
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent} from 'react';
 import { sendPost } from '../../Utils/ApiCall';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
 import TextInput from '../../UI/input/TextInput';
-import { useState } from 'react';
+import { useState, useContext  } from 'react';
+import { Editor } from '@toast-ui/react-editor';
+import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
+import { UserContext } from '../../context/context';
+
+
+
+export interface PostData {
+  
+  rentPostName: string;
+  rentPostContents: string;
+  rentPrice: number;
+  category: string;
+  location: string;
+  writerId: number | undefined;
+  rentPostId: number;
+  
+  
+
+  }
 
 
 
 const PostWrite = () => {
-  interface Post {
-    title: string;
-    content: string;
-    price: string;
-    category: string;
-    location: string;
-    userId: string;
-    userName: string;
-    userImg: string
-    }
-  const [post,setPost] = useState<Post>({
-    title: '',
-    content: '',
-    price: '',
+  const editorRef = useRef<Editor>();
+  const navigate =useNavigate();
+  const {user}  =useContext(UserContext);
+  const [post,setPost] = useState({
+    rentPostName: '',
+    rentPostContents: '',
+    rentPrice: 0,
     category: '',
     location: '',
-    userId: '',
-    userName: '',
-    userImg: '',
-  })
+    writerId: user.memberId,
+    
+})
   const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
   const {name, value}= e.target;
   setPost({...post,[name]:value,})
   };
 
-  
-  const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const clickHandler = () => {
+   
     sendPost({
-      title: post.title,
-      content: post.content,
-      price: post.price,
       category: post.category,
+      rentPostContents: post.rentPostContents,
+      rentPostName: post.rentPostName,
+      writerId:user.memberId,
+      rentPrice: Number(post.rentPrice),
       location: post.location,
     })
-      
-    }
-    
-    
+    navigate(`/postlist`)
+  }
+
+const handleEditorChange = () => {
+  const editorInstance = editorRef.current?.getInstance();
   
+  console.log(editorInstance?.getMarkdown());
+  if(editorInstance){
+    setPost({...post, rentPostContents: editorInstance.getMarkdown()})
+  }
+}
+   
+
     return (
         <>
-            <h4>빌려주기 작성가이드</h4>
-            <Button text={'글저장'} onClick={(e: MouseEvent<HTMLButtonElement>)=> clickHandler(e)} />
+            <HeaderRow>빌려주기 작성가이드
+            <Button text='글저장' width='middle' onClick={clickHandler} />
+            </HeaderRow>
             <GuideWrapper>
               <li>사진을 올려주세요</li>
               <li>거래지역을 명시해주세요</li>
@@ -61,21 +82,24 @@ const PostWrite = () => {
               <li>글 작성과 이미지 업로드시, 타인의 지식재산권을 침해하지 않더록 유의해주세요</li>
               <li>사진 크기에 따른 업로드 제한</li>
             </GuideWrapper>
+            
             <WriteWrapper>
             <h4>필수 정보 입력</h4>
-            
             <span>글제목</span>
             <TextInput 
             placeholder={'글제목을 입력해주세요'}
             onChange={onChangePost}
             type={'text'}
-            value={post.title} name={'title'} />
+            value={post.rentPostName} 
+            name={'rentPostName'} />
+            
             <span>지역</span>
             <TextInput 
             placeholder={'지역을 입력해주세요'}
             onChange={onChangePost}
             type={'text'}
-            value={post.location} name={'location'}/>
+            value={post.location} 
+            name={'location'}/>
             
             <span>카테고리</span>
             <TextInput 
@@ -83,34 +107,49 @@ const PostWrite = () => {
             onChange={onChangePost}
             type={'text'}
             value={post.category} 
-            name={'catergory'} />
+            name={'category'} />
             
             <span>가격</span>
             <TextInput 
             placeholder={'가격을 입력해주세요'}
             onChange={onChangePost}
             type={'text'}
-            value={post.price} 
-            name={'price'} />
+            value={post.rentPrice} 
+            name={'rentPrice'} />
             </WriteWrapper>
-            
-            <h4>{post.content}</h4>
-            <CustomEditor value={''} isError={false}  onChange={()=>onChangePost} />
-        
+            <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange}/>
+            <Button text='Save'  onClick={()=>{}}/>
         </>
      
     )
 }
 
+const HeaderRow = styled.h4`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-left:20px;
+  `;
+
 const GuideWrapper = styled.ul`
   list-style:none;
-  padding-left:10px;
-  padding-bottom:10px;
+  padding-left:20px;
+  padding-bottom:20px;
+  border-bottom: 1px solid #e5e5e5;
 `;
 
 const WriteWrapper = styled.div`
 display: flex;
 flex-direction:column;
+margin-left: 20px;
+margin-bottom: 10px;
+margin-top: 20px;
+
+.button {
+  display: flex;
+  justify-content: center;
+}
 `;
 
 export default PostWrite;

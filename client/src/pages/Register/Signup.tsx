@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import InputDescript from '../../components/Descript/InputDescript';
 import PageDescript from '../../components/Descript/PageDescript';
 import SignupInput from '../../components/SignupInput/SignupInput';
-
 import ButtonSocial from '../../UI/button/ButtonSocial';
 import TextButton from '../../UI/button/TextButton';
 
