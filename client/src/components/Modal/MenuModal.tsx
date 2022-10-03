@@ -24,7 +24,7 @@ const MenuModal = ({ setMenuModal }: Props) => {
       });
       setSearchResultList(res.data.rentPosts);
       navigate('/search', {
-        state: { keyword: e.target.innerText },
+        state: { category: e.target.innerText },
       });
     } catch {
       alert('죄송합니다 잠시 후 다시 시도해주세요 :)');

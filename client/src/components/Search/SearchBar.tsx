@@ -24,12 +24,11 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
       handleSearchKeyword();
     }
   };
+
   const handleSearchKeyword = async () => {
     if (keyword !== '') {
       const data = {
-        page: 0,
-        size: 100,
-        sort: 'VIEW_COUNT',
+        sort: 'WRITE_DATE',
       };
       try {
         const res = await axios.post(`http://3.35.90.143:54130/rentPost/search?phrase=${keyword}`, data, {
@@ -45,7 +44,6 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
       }
     }
   };
-
   return (
     <Container>
       {pathCondition ? null : (
@@ -57,7 +55,7 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
             onKeyup={handleKeywordOnKeyUp}
             placeholder="검색어를 입력해주세요"
           />
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="magnify" onClick={handleSearchKeyword} />
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="magnify" onClick={() => handleSearchKeyword} />
         </>
       )}
     </Container>
