@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import DefaultInput from '../../UI/input/DefaultInput';
 import Button from '../../UI/button/Button';
 import React, { ChangeEvent, useState } from 'react';
-// import { trySignIn } from '../../Utils/apiCalls_mdy';
-import axios from 'axios';
-import { DecodeJWT } from '../../Utils/decodeJWT';
+import { trySignIn } from '../../Utils';
 import { UserContext } from '../../context/context';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,23 +25,13 @@ const LoginInput = () => {
     });
   };
 
-  const trySignIn = async () => {
+  const handleSubmitUserIdPW = async () => {
     if (!loginInfo.loginId || !loginInfo.password) {
       setErrorMsg('아이디와 비밀번호를 입력해주세요.');
       return;
     }
     try {
-      const res = await axios.post(`http://3.35.90.143:54130/login`, loginInfo, {
-        withCredentials: false,
-      });
-      // 토큰
-      const token = res.headers.authorization;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = token;
-      // 유저정보
-      const result = DecodeJWT(token);
-      delete result.sub;
-      delete result.exp;
+      const result = await trySignIn(loginInfo);
       setUser({ ...user, ...result });
       localStorage.setItem('userInfo', JSON.stringify(result));
       navigate('/');
@@ -51,13 +39,6 @@ const LoginInput = () => {
       setErrorMsg('아이디와 비밀번호를 확인해주세요.');
     }
   };
-  // const handleSubmitUserIdPW = () => {
-  //   if (!loginInfo.loginId || !loginInfo.password) {
-  //     setErrorMsg('아이디와 비밀번호를 입력해주세요.');
-  //     return;
-  //   }
-  //   trySignIn(loginInfo);
-  // };
   return (
     <LoginBox>
       <form>
@@ -76,7 +57,7 @@ const LoginInput = () => {
         />
       </form>
       <p>{errorMsg}</p>
-      <Button text={'로그인'} type={'beige'} onClick={trySignIn} />
+      <Button text={'로그인'} type={'beige'} onClick={handleSubmitUserIdPW} />
     </LoginBox>
   );
 };
