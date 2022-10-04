@@ -7,7 +7,6 @@ const UserCard = () => {
   const imageUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`;
   let date = user.createdAt;
   const createdAt = date?.slice(0, 10);
-  // const createdAt = `${date?.getFullYear()}년 ${date.getMonth()}월 ${date.getDate()}일`;
 
   return (
     <Container>
