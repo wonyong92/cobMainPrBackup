@@ -13,8 +13,6 @@ export interface CommentData {
   targetPostId: number;
   commentContents: string;
   commentId: number;
-  
-  
 }
 
 export interface CommentWriteProps {

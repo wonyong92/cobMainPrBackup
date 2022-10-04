@@ -18,6 +18,7 @@ const PostEdit = () => {
   const editorRef = useRef<Editor>();
   const navigate =useNavigate();
   const {user}  =useContext(UserContext);
+  const [btn, setBtn] = useState(data.rentStatus === false ? '렌트가능' : '렌트중');
   const [post,setPost] = useState({
     rentPostName: data.rentPostName,
     rentPostContents:data.rentPostContents,
@@ -35,13 +36,14 @@ const PostEdit = () => {
 
   const clickHandler = () => {
     updatePost({
-      category: post.category,
+    
       rentPostContents: post.rentPostContents,
       rentPostName: post.rentPostName,
       writerId:user.memberId,
       rentPrice: Number(post.rentPrice),
       location: post.location,
       rentPostId: data.rentPostId,
+      rentStatus: data.rentStatus,
     })
     navigate(`/postlist`)
   }
@@ -54,7 +56,10 @@ const handleEditorChange = () => {
     setPost({...post, rentPostContents: editorInstance.getMarkdown()})
   }
 }
-   
+
+const changeBtnName = () => {
+  data.rentStatus === 'false' ? setBtn('렌트가능') : setBtn('렌트중');
+}
 
     return (
         <>
@@ -102,6 +107,9 @@ const handleEditorChange = () => {
             type={'text'}
             value={post.rentPrice} 
             name={'rentPrice'} />
+
+            <span>렌트상태</span>
+            <Button text={btn} width='short' radius='deep' onClick={changeBtnName}/>
             </WriteWrapper>
             <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange}/>
             <Button text='Save'  onClick={()=>{}}/>

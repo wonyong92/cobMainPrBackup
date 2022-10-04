@@ -3,7 +3,7 @@ import { getComments } from '../../Utils/ApiCall';
 import { useState, useEffect } from 'react';
 import { PostItemDetailData } from '../PostItem/PostDetailItem';
 
-interface CommentListProps {
+export interface CommentListProps {
   post: PostItemDetailData;
 }
 const CommentList = ({post}:CommentListProps) => {

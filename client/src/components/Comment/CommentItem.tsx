@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
 import { CommentData } from './CommentWrite';
 import {ChangeEvent, useContext, useState } from 'react';
@@ -56,8 +56,8 @@ const CommentItem = ({data}:CommentDataProps) => {
     
         <CommentItemWrapper>
             <CommentItemHeader>
-                <Link to={`/user/${'user.id'}`}>{'user.nickname'}</Link>
-                <span>{'createdAt'}</span>
+                <Link to={`/user/${'user.id'}`}>{user.nickname}</Link>
+                <span>{user.createdAt}</span>
             </CommentItemHeader>
             <CommentItemContent>{data.commentContents}</CommentItemContent>
             {user.memberId === data.writerId ?
@@ -100,6 +100,7 @@ const CommentItemContent = styled.div`
 const CommentItemFooter = styled.div`
     display: flex;
     justify-content: flex-end;
+    padding:5px;
     margin-top: 0.5rem;
 `;
 
