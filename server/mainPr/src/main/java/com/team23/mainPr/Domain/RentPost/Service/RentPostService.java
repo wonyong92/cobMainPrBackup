@@ -1,9 +1,12 @@
 package com.team23.mainPr.Domain.RentPost.Service;
 
+import com.team23.mainPr.Domain.Comment.Entity.Comment;
+import com.team23.mainPr.Domain.Comment.Repository.CommentRepository;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
 import com.team23.mainPr.Domain.Picture.Repository.PictureRepository;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostPageRequestDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostSearchPageRequestDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryLocationResponseDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
@@ -56,6 +59,7 @@ public class RentPostService {
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
     private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
+    private final CommentRepository commentRepository;
 
     @Value("${multipart.upload.path}") String uploadPath;
 
@@ -69,12 +73,24 @@ public class RentPostService {
     }
 
     public RentPostResponseDto updateRentPost(@Valid UpdateRentPostDto dto, String token) {
-
         RentPost post = rentPostRepository.getReferenceById(dto.getPostId());
 
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(post.getWriterId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(post.getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
+
+        for (Integer pictureId : dto.getDeleteImages()) {
+            if (this.getPostImages(dto.getPostId()).contains(pictureId)) {
+                File file = new File(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(pictureId).getFileName());
+                if (!file.exists()) {
+                    throw new CustomException(ErrorData.FILE_NOT_FOUND);
+                }
+                if (!file.delete()) {
+                    throw new CustomException(ErrorData.FILE_DELETE_ERROR);
+                }
+                pictureRepository.deleteById(pictureId);
+            }
+        }
 
         RentPost updatedPost = dto.updateData(post, dto);
 
@@ -90,12 +106,20 @@ public class RentPostService {
      */
     public void deleteRentPost(Integer postId, String token) {
         for (Picture picture : pictureRepository.findByRentPostId(postId)) {
-            if (new File(System.getProperty("user.home") + uploadPath + picture.getFileName()).delete()) {
-                throw new CustomException(ErrorData.INTERNAL_SERVER_ERROR);
+            File file = new File(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(picture.getPictureId()).getFileName());
+            if (!file.exists()) {
+                throw new CustomException(ErrorData.FILE_NOT_FOUND);
             }
-
+            if (!file.delete()) {
+                throw new CustomException(ErrorData.FILE_DELETE_ERROR);
+            }
             pictureRepository.delete(picture);
         }
+
+        for (Comment comment : commentRepository.findAllByTargetPostId(postId)) {
+            commentRepository.delete(comment);
+        }
+
         rentPostRepository.deleteById(rentPostRepository.getReferenceById(postId).getRentPostId());
     }
 
@@ -136,11 +160,12 @@ public class RentPostService {
     public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category, String location) {
         Page<RentPost> result = rentPostRepository.findAllByRentStatusAndCategoryContainingAndLocationContaining(dto.getPageRequest(), rentStatus, category, location);
 
-        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(result.stream().map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost)).collect(Collectors.toList()), result.getPageable(), result.getTotalPages());
+        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(result.stream().map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost)).collect(Collectors.toList()), result.getPageable(), result.getTotalPages(), result.getTotalElements());
     }
 
-    public List<RentPostResponseDto> searchAll(String phrase, String category, RentPostPageRequestDto dto, Boolean rentStatus) {
-        return rentPostRepository.search(phrase, category, dto.getPageRequest(), rentStatus).stream().map(rentPostId -> rentPostMapper.RentPostToRentPostResponseDto(rentPostRepository.getReferenceById(rentPostId))).collect(Collectors.toList());
+    public PagedRentPostResponseDtos searchAll(String phrase, String category, RentPostSearchPageRequestDto dto, Boolean rentStatus) {
+        Page<RentPost> result = rentPostRepository.search(phrase, category, dto.getPageRequest(), rentStatus);
+        return rentPostMapper.PagedRentPostToRentPostPagedResponseDto(result.stream().map(rentPost -> rentPostMapper.RentPostToRentPostResponseDto(rentPost)).collect(Collectors.toList()), result.getPageable(), result.getTotalPages(), result.getTotalElements());
     }
 
     public List<RentPostResponseDto> ftSearchAll(String phrase) {

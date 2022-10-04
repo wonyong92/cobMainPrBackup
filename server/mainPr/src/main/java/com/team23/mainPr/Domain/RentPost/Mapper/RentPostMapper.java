@@ -15,7 +15,7 @@ public interface RentPostMapper {
 
     RentPost CreateRentPostEntityDtoToRentPost(CreateRentPostEntityDto dto);
 
-    default PagedRentPostResponseDtos PagedRentPostToRentPostPagedResponseDto(List<RentPostResponseDto> rentPostResponseDtos, Pageable pageinfo,Integer totalPages) {
-        return new PagedRentPostResponseDtos(rentPostResponseDtos, pageinfo,totalPages);
+    default PagedRentPostResponseDtos PagedRentPostToRentPostPagedResponseDto(List<RentPostResponseDto> rentPostResponseDtos, Pageable pageinfo,Integer totalPages,Long totalEntity) {
+        return new PagedRentPostResponseDtos(rentPostResponseDtos, pageinfo,totalPages,totalEntity);
     }
 }

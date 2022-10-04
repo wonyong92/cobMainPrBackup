@@ -1,5 +1,4 @@
-drop all objects;
--- back dev branch
+
 CREATE TABLE `MEMBER` (
   `MEMBER_ID` int PRIMARY KEY AUTO_INCREMENT,
   `LOGIN_ID` varchar(25) UNIQUE NOT NULL,
@@ -59,7 +58,7 @@ CREATE TABLE `rent_history` (
   `REQUESTER_ID` int,
   `MSG` varchar(200),
   `TARGET_POST_ID` int,
-  `created_time` datetime,
+  `CREATED_TIME` datetime,
   `UPDATE_TIME` datetime,
   `RELATE_RENT_HISTORY` int
 );

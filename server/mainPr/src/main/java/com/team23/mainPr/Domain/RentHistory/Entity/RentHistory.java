@@ -1,7 +1,6 @@
 package com.team23.mainPr.Domain.RentHistory.Entity;
 
 import java.time.ZonedDateTime;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,10 +28,8 @@ public class RentHistory {
     ZonedDateTime rentEndDate;
     Integer requesterId; // ref member
     String msg = "nothing";
-    Integer targetPostId; // ref rentPost
-    @Column(columnDefinition = "DATE")
+    Integer targetPostId;
     @CreationTimestamp ZonedDateTime createdTime;
-    @Column(columnDefinition = "DATE")
     @UpdateTimestamp ZonedDateTime updateTime;
     Integer relateRentHistory;
 }

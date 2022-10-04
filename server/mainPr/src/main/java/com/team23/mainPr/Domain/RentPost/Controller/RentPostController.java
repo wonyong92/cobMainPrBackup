@@ -2,12 +2,14 @@ package com.team23.mainPr.Domain.RentPost.Controller;
 
 import com.team23.mainPr.Domain.RentPost.Dto.Request.CreateRentPostEntityDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostPageRequestDto;
+import com.team23.mainPr.Domain.RentPost.Dto.Request.RentPostSearchPageRequestDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Request.UpdateRentPostDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryLocationResponseDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.CategoryResponseDto;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.PagedRentPostResponseDtos;
 import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
 import com.team23.mainPr.Domain.RentPost.Service.RentPostService;
+import com.team23.mainPr.Global.Interceptor.Login;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +40,7 @@ public class RentPostController {
     @Operation(description = "게시글 생성, 토큰을 이용하여 작성자 본인이 맞는지 확인.")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
+    @Login
     public RentPostResponseDto createRentPost(
         @RequestBody
         @Valid CreateRentPostEntityDto dto,
@@ -52,6 +55,7 @@ public class RentPostController {
      */
     @Operation(description = "게시글 수정, 토큰을 이용하여 작성자 본인이 맞는지 확인.")
     @PutMapping("/update")
+    @Login
     public RentPostResponseDto updateRentPost(
         @RequestBody
         @Valid UpdateRentPostDto updateRentPostDto,
@@ -66,6 +70,7 @@ public class RentPostController {
      */
     @Operation(description = "게시글 삭제, 토큰을 이용하여 작성자 본인이 맞는지 확인, 성공시 200 응답.")
     @DeleteMapping("/delete")
+    @Login
     public void deleteRentPost(
         @RequestParam Integer postId,
         @RequestHeader(value = "Authorization", required = false) String token) {
@@ -102,6 +107,7 @@ public class RentPostController {
      */
     @Operation(description = "게시글 이미지 등록, 토큰을 이용하여 해당 게시글 작성자인지 확인")
     @PostMapping("/images")
+    @Login
     public void postImages(
         @RequestParam(value = "image") List<MultipartFile> files,
         @RequestParam Integer postId,
@@ -125,19 +131,12 @@ public class RentPostController {
 
     @Operation(description = "검색 기능, 게시글 제목 검색, 카테고리 category -렌트상태 rentStatus 필터링 가능, sort - 최신순-조회수순 정렬 가능(내림차순)")
     @PostMapping("/search")
-    public List<RentPostResponseDto> search(
+    public PagedRentPostResponseDtos search(
         @RequestParam String phrase,
-        @RequestParam(defaultValue = "category") String category,
-        @RequestBody RentPostPageRequestDto dto,
-        @RequestParam(defaultValue = "false") Boolean rentStatus) {
+        @ModelAttribute RentPostSearchPageRequestDto dto,
+        @RequestParam(defaultValue = "false") Boolean rentStatus,
+        @RequestParam(defaultValue = "category") String category) {
         return rentPostService.searchAll(phrase.replace(" ", "|").trim(), category, dto, rentStatus);
-    }
-
-    @Operation(description = "H2의 FULL TEXT SEARCH 기능을 사용한 메소드 입니다. 속도 확인 후 기존의 search 메소드를 대체할수 있다고 판단되면 통합하도록 하겠습니다.")
-    @PostMapping("/ftSearch")
-    public List<RentPostResponseDto> ftSearch(
-        @RequestParam String phrase) {
-        return rentPostService.ftSearchAll(phrase);
     }
 
     @Operation(description = "카테고리, 지역 리스트 조회")

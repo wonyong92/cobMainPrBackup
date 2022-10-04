@@ -2,6 +2,8 @@ package com.team23.mainPr.Domain.RentPost.Dto.Request;
 
 import com.team23.mainPr.Domain.RentPost.Entity.RentPost;
 import io.swagger.annotations.ApiModel;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ public class UpdateRentPostDto {
     private Boolean rentStatus = false;
     private Integer rentPrice;
     private String location;
+    private List<Integer> deleteImages = new ArrayList<>();
 
     public RentPost updateData(RentPost rentPost, UpdateRentPostDto dto) {
 

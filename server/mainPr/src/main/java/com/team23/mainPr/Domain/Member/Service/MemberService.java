@@ -105,9 +105,9 @@ public class MemberService {
     public MemberProfileDto updateProfile(UpdateMemberDto dto, String token) {
 
         Member member = memberRepository.getReferenceById(dto.getMemberId());
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
         member.setNickname(dto.getNickname());
         memberRepository.flush();
         return memberMapper.MemberToMemberProfileDto(member);
@@ -154,6 +154,9 @@ public class MemberService {
     public void setProfilePicture(MultipartFile file, String token) throws IOException {
 
         Member member = memberRepository.getReferenceById(memberIdExtractorFromJwt.getMemberId(token));
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
 
         if (!file.isEmpty()) {
             String uuid = UUID.randomUUID().toString();
@@ -195,6 +198,9 @@ public class MemberService {
 
     public void updatePassword(UpdatePasswordDto dto, String token) {
         Member member = memberRepository.getReferenceById(memberIdExtractorFromJwt.getMemberId(token));
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(member.getMemberId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
         member.setPassword(dto.getNewPassword());
         memberRepository.flush();
     }

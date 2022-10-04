@@ -10,7 +10,10 @@ import com.team23.mainPr.Domain.Comment.Entity.Comment;
 import com.team23.mainPr.Domain.Comment.Mapper.CommentMapper;
 import com.team23.mainPr.Domain.Comment.Repository.CommentRepository;
 import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
+import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
 import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
+import com.team23.mainPr.Global.CustomException.CustomException;
+import com.team23.mainPr.Global.CustomException.ErrorData;
 import com.team23.mainPr.Global.DefaultTimeZone;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +31,17 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
     private final LoginRepository loginRepository;
+    private final RentPostRepository rentPostRepository;
 
     public CommentEntityResponseDto createCommentEntity(CreateCommentEntityDto dto, String token) {
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+        if(!rentPostRepository.findById(dto.getTargetPostId()).isPresent()){
+            throw new CustomException(ErrorData.NOT_EXIST_RENT_POST);
+        }
+        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
+            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+        }
         Comment newComment = commentMapper.CreateCommentEntityToCommentEntity(dto);
-        //        newComment.setWriterId(memberIdExtractorFromJwt.getMemberId(token));
+        newComment.setWriterId(memberIdExtractorFromJwt.getMemberId(token));
         Comment result = commentRepository.getReferenceById(commentRepository.save(newComment).getCommentId());
         return commentMapper.CommentEntityToCommentResponsDto(result);
     }
@@ -45,13 +52,13 @@ public class CommentService {
     }
 
     public CommentEntityResponseDto updateCommentEntity(UpdateCommentEntityDto dto, String token) {
-        //        if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+                if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
+                    throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+                }
         Comment findComment = commentRepository.getReferenceById(dto.getCommentId());
-        //        if (!findComment.getWriterId().equals(memberIdExtractorFromJwt.getMemberId(token))) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+                if (!findComment.getWriterId().equals(memberIdExtractorFromJwt.getMemberId(token))) {
+                    throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+                }
         findComment.setCommentContents(dto.getCommentContents());
         commentRepository.flush();
 
@@ -60,9 +67,9 @@ public class CommentService {
 
     public String deleteCommentEntity(Integer commentId, String token) {
         Comment findComment = commentRepository.getReferenceById(commentId);
-        //        if (!findComment.getWriterId().equals(memberIdExtractorFromJwt.getMemberId(token))) {
-        //            throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
-        //        }
+                if (!findComment.getWriterId().equals(memberIdExtractorFromJwt.getMemberId(token))) {
+                    throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
+                }
         commentRepository.delete(findComment);
         return SUCCESS.getMsg();
     }

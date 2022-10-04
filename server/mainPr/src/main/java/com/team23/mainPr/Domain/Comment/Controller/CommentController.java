@@ -5,6 +5,7 @@ import com.team23.mainPr.Domain.Comment.Dto.Request.UpdateCommentEntityDto;
 import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDto;
 import com.team23.mainPr.Domain.Comment.Dto.Response.CommentEntityResponseDtos;
 import com.team23.mainPr.Domain.Comment.Service.CommentService;
+import com.team23.mainPr.Global.Interceptor.Login;
 import io.swagger.v3.oas.annotations.Operation;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -29,6 +30,7 @@ public class CommentController {
     @Operation(description = "댓글 생성, 토큰으로 작성자와 요청값의 작성자 확인")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
+    @Login
     public CommentEntityResponseDto postComment(
         @RequestBody
         @Valid CreateCommentEntityDto dto,
@@ -46,6 +48,7 @@ public class CommentController {
 
     @Operation(description = "댓글 수정, 토큰으로 작성자와 요청값의 작성자 확인")
     @PostMapping("/update")
+    @Login
     public CommentEntityResponseDto updateComment(
         @RequestBody
         @Valid UpdateCommentEntityDto dto,
@@ -55,6 +58,7 @@ public class CommentController {
 
     @Operation(description = "댓글 삭제, 토큰으로 작성자와 요청값의 작성자 확인")
     @PostMapping("/delete")
+    @Login
     public String deleteCommentEntity(
         @RequestParam
         @Min(value = 1, message = "commentId must be above 1") Integer commentId,

@@ -60,6 +60,7 @@ public class MemberController {
 
     @Operation(description = "회원 정보 확인, 토큰을 이용하여 본인 확인.")
     @GetMapping
+    @Login
     public MemberResponseDto getMember(
 
         @RequestHeader(value = "Authorization", required = false) String token) {
@@ -76,6 +77,7 @@ public class MemberController {
 
     @Operation(description = "프로필 정보 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
     @PutMapping("profile")
+    @Login
     public MemberProfileDto updateProfile(
         @RequestBody
         @Valid UpdateMemberDto updateMemberDto,
@@ -85,6 +87,7 @@ public class MemberController {
 
     @Operation(description = "비밀번호 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
     @PutMapping("password")
+    @Login
     public void updatePassword(
         @RequestBody
         @Valid UpdatePasswordDto dto,
@@ -94,6 +97,7 @@ public class MemberController {
 
     @Operation(description = "회원 탈퇴, 토큰을 이용하여 본인 정보인지 확인.")
     @DeleteMapping("/delete")
+    @Login
     public void deleteMember(
         @RequestHeader(value = "Authorization", required = false) String token) {
         memberService.deleteMember(token);
@@ -138,6 +142,7 @@ public class MemberController {
 
     @Operation(description = "프로필 이미지 변경, 토큰을 이용하여 본인인지 확인.")
     @PostMapping("/profileImage/post")
+    @Login
     public void upload(
         @RequestParam MultipartFile file,
 
@@ -154,6 +159,7 @@ public class MemberController {
 
     @Operation(description = "유저가 작성한 게시글 목록 확인")
     @GetMapping("/rentPosts")
+    @Login
     public List<RentPostResponseDto> getRentPosts(
         @RequestHeader(value = "Authorization", required = false) String token) {
         return memberService.getRentPostMember(token);
