@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 interface Prop {
   type: 'text';
-  value: string;
+  value: string | number;
   placeholder: string;
   name?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyup?: (e: any) => void;
 }
 

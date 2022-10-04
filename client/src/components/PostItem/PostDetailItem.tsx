@@ -73,7 +73,7 @@ const PostDetailItem = ({data}:IPostItemDetailProps) => {
           
           {user.memberId===data.writerId ? 
           <TextButtonWrapper>
-          <Link to={`/postedit/${data.rentPostId}`} state= {data} >수정</Link>
+          <Link className='editbutton' to={`/postedit/${data.rentPostId}`} state= {data} >수정</Link>
           <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={() =>{
             console.log('삭제버튼 클릭')
             setDeleteModal(true)}}/>
@@ -121,6 +121,9 @@ const TextButtonWrapper = styled.div`
     display: flex;
     justify-content: reverse-row;
     margin-top: 10px;
+.editbutton {
+    text-decoration: none;
+  }
 `;
 
 

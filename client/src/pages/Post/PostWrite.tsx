@@ -1,4 +1,3 @@
-
 import { ChangeEvent} from 'react';
 import { sendPost } from '../../Utils/ApiCall';
 import styled from 'styled-components';
@@ -145,7 +144,6 @@ flex-direction:column;
 margin-left: 20px;
 margin-bottom: 10px;
 margin-top: 20px;
-
 .button {
   display: flex;
   justify-content: center;

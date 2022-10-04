@@ -4,18 +4,19 @@ import styled from 'styled-components';
 
 export interface PostItemData {
   
-    catergory: string;
-    image: string;
-    location: string;
-    rentPostContents: string;
-    rentPostId: number;
-    rentPostName: string;
-    rentPrice: number;
-    rentStatus: boolean;
-    updateDate: string;
-    viewCount: number;
-    writeDate: string;
-    writerId: number;
+  catergory: string | undefined;
+  image: string | undefined;
+  location: string | undefined;
+  rentPostContents: string | undefined;
+  rentPostId: number | undefined;
+  rentPostName: string | undefined;
+  rentPostImages: number[] | undefined;
+  rentPrice: number | undefined;
+  rentStatus: boolean | undefined;
+  updateDate: string | undefined;
+  viewCount: number | undefined;
+  writeDate: string | undefined;
+  writerId: number | undefined;
   
 }
 export interface PostItemProps {
@@ -23,17 +24,18 @@ export interface PostItemProps {
   
 }
 
+
 const PostItem = ({data}:PostItemProps) => {
   const imgUrl= `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   
-
+  console.log(data.image)
 
 
   return (
     <>
       
       <ListWrapper>
-        <Image src={imgUrl} />
+        <Image src={data.image} />
         <DescriptionWrapper>
           <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
           <Region>{data.location}</Region>
