@@ -61,9 +61,9 @@ export const sendPost = async (post: any) => {
     }
   };
 
-export const sendImage = async (image: any) => {
+export const sendImage = async (image: any,postId:number) => {
     try {
-        const res = await AxiosInstance.post(`rentPost/images/?id=${`1`}`,
+        const res = await AxiosInstance.post(`rentPost/images/?postId=${postId}`,
         {
             image: image,
         });
@@ -134,7 +134,7 @@ export const sendComment = async (comment: CommentData) => {
     }
 }
 
-export const updateComment = async (comment:CommentData,commentId:number) => {
+export const updateComment = async (comment:any,commentId:number) => {
     try {
         const res = await AxiosInstance.post(`comment/update?id=${commentId}`,
         {
