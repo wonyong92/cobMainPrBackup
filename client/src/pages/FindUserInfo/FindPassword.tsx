@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ChangeEvent, useState } from 'react';
-import axios from 'axios';
 import FindUserInfo from '../../components/FindUserInfo/FindUserInfo';
+import { findUserPassword } from '../../Utils';
 
 export interface IFindId {
   email: string;
@@ -25,14 +25,8 @@ const FindPassword = () => {
     });
   };
   const foundPassword = async () => {
-    if (!userInfo.email || !userInfo.name || !userInfo.loginId) {
-      setErrorMsg('아이디와 이메일, 이름을 입력해주세요.');
-      return;
-    }
+    const res = await findUserPassword(userInfo);
     try {
-      const res = await axios.post(`http://3.35.90.143:54130/member/findPassword`, userInfo, {
-        withCredentials: false,
-      });
       return res.data;
     } catch {
       setErrorMsg('올바른 정보를 입력해주세요.');
@@ -44,9 +38,15 @@ const FindPassword = () => {
     });
   };
   const getPassword = async () => {
+    if (!userInfo.email || !userInfo.name || !userInfo.loginId) {
+      setErrorMsg('아이디와 이메일, 이름을 입력해주세요.');
+      return;
+    }
     const result = await foundPassword();
-    {
-      result ? moveToGuide(result) : null;
+    if (result) {
+      moveToGuide(result);
+    } else {
+      return;
     }
   };
   return (

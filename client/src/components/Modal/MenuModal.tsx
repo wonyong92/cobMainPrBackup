@@ -2,7 +2,7 @@ import { ModalBackDrop, Container, Top, Bottom, Item } from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { category } from '../../constants';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { SearchResultContext } from '../../context/context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -19,9 +19,12 @@ const MenuModal = ({ setMenuModal }: Props) => {
 
   const getCategoryPosts = async (e: any) => {
     try {
-      const res = await axios.get(`http://3.35.90.143:54130/rentPost/posts?category=${e.target.innerText}`, {
-        withCredentials: false,
-      });
+      const res = await axios.get(
+        `http://3.35.90.143:54130/rentPost/posts?category=${e.target.innerText}&rentStatus=false&sort=writeDate&size=10&page=0`,
+        {
+          withCredentials: false,
+        },
+      );
       setSearchResultList(res.data.rentPosts);
       navigate('/search', {
         state: { category: e.target.innerText },
