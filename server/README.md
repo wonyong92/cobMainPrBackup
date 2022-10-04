@@ -136,3 +136,5 @@
   - refactor : 코드 리팩토링(고려요소)
   - test : 테스트 관련 코드
   - etc : 사소한 수정(주석 같은)
+
+![image](https://user-images.githubusercontent.com/80381715/193764695-91bb8b25-8601-40c8-b97c-09e57949c6da.png)
