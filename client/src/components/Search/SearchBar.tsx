@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import axios from 'axios';
 import TextInput from '../../UI/input/TextInput';
 import { ChangeEvent, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { searchkeyword } from '../../Utils';
 
 interface Props {
   keyword?: string;
@@ -26,21 +26,16 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
   };
 
   const handleSearchKeyword = async () => {
-    if (keyword !== '') {
-      const data = {
-        sort: 'WRITE_DATE',
-      };
+    if (keyword) {
+      const result = await searchkeyword(keyword);
       try {
-        const res = await axios.post(`http://3.35.90.143:54130/rentPost/search?phrase=${keyword}`, data, {
-          withCredentials: false,
-        });
-        setSearchResultList(res.data);
+        setSearchResultList(result);
         navigate('/search', {
           state: { keyword: keyword },
         });
         setKeyword && setKeyword('');
       } catch {
-        alert('죄송합니다. 잠시후 다시 시도해주세요 :)');
+        alert('요청하신 정보를 불러올 수 없습니다. 잠시후 다시 시도해주세요 ㅜ_ㅜ');
       }
     }
   };

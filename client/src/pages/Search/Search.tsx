@@ -1,25 +1,25 @@
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
 import ListItem from '../../components/PostItem/ListItem';
 import SearchFilter from '../../components/Search/SearchFilter';
 import PageDescript from '../../components/Descript/PageDescript';
-import axios from 'axios';
 import useDidMountEffect from '../../hooks/useDidMountEffect';
 import PageNation from '../../components/Pagenation/PageNation';
 import { sortOptionList, rentSortOptionList } from '../../constants';
+import { handleFilterForCategorySearch, handleFilterForKeywordSearch } from '../../Utils';
 
 const Search = () => {
   const location = useLocation();
   const keyword: string | undefined = location?.state.keyword;
   const category: string | undefined = location?.state.category;
   const { searchResultList, setSearchResultList } = useContext(SearchResultContext);
-  const [sortType, setSortType] = useState('WRITE_DATE');
+  const [sortType, setSortType] = useState('writeDate');
   const [rentSortType, setRentSortType] = useState('false');
-  const [page, setPage] = useState(1);
-  const [totalPost, setTotalPost] = useState(1);
-  const totalPage = Math.ceil(totalPost / 6);
+  const [page, setPage] = useState(0);
+  const [totalPost, setTotalPost] = useState(0);
+  const totalPage = Math.ceil(totalPost / 10);
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
@@ -27,46 +27,41 @@ const Search = () => {
   const handleFilterChange = (e: any) => {
     setRentSortType(e.target.value);
   };
-  const handleSearchKeyword = async () => {
-    const data = {
-      sort: sortType,
-      page: page - 1,
-      size: 5,
-    };
-    try {
-      const res = await axios.post(
-        `http://3.35.90.143:54130/rentPost/search?phrase=${keyword}&rentStatus=${rentSortType}`,
-        data,
-        {
-          withCredentials: false,
-        },
-      );
-      setTotalPost(res.data.length);
-      setSearchResultList(res.data);
-    } catch {
-      alert('죄송합니다. 잠시후 다시 시도해주세요 :)');
+  const searchForKeyword = async () => {
+    if (keyword) {
+      const result = await handleFilterForKeywordSearch(sortType, page, keyword, rentSortType);
+      try {
+        if (result) {
+          console.log(result);
+          setTotalPost(result.data.length);
+          setSearchResultList(result.data);
+        }
+      } catch {
+        alert('죄송합니다. 잠시후 다시 시도해주세요 :)');
+      }
     }
   };
-  const handleCategoryKeyword = async () => {
-    try {
-      const res = await axios.get(
-        `http://3.35.90.143:54130/rentPost/posts?category=${category}&rentStatus=${rentSortType}&sort=${sortType}&page=${page}`,
-        {
-          withCredentials: false,
-        },
-      );
-      setSearchResultList(res.data.rentPosts);
-    } catch {
-      alert('죄송합니다 잠시 후 다시 시도해주세요 :)');
+  const searchFortCategoryKeyword = async () => {
+    if (category) {
+      const result = await handleFilterForCategorySearch(sortType, page, category, rentSortType);
+      if (result) {
+        try {
+          console.log(result);
+          setTotalPost(result.data.totalPages);
+          setSearchResultList(result.data.rentPosts);
+        } catch {
+          alert('죄송합니다 잠시 후 다시 시도해주세요 :)');
+        }
+      }
     }
   };
   useDidMountEffect(() => {
     if (keyword !== undefined) {
-      handleSearchKeyword();
+      searchForKeyword();
     } else {
-      handleCategoryKeyword();
+      searchFortCategoryKeyword();
     }
-  }, [rentSortType, sortType, setPage]);
+  }, [rentSortType, sortType, setPage, page]);
   const increasePage = () => {
     setPage(page + 1);
   };
@@ -102,11 +97,13 @@ const Search = () => {
 export default Search;
 const Container = styled.div`
   margin-top: 10px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  width: 70%;
+  /* align-items: center; */
+  /* width: 70%; */
   @media screen and (max-width: 500px) {
-    width: 95%;
+    /* width: 95%; */
   }
 `;
 const Top = styled.div`
