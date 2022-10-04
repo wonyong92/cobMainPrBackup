@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FindUserInfo from '../../components/FindUserInfo/FindUserInfo';
+import { findUserId } from '../../Utils';
 
 export interface IFindId {
   email: string;
@@ -20,16 +20,10 @@ const FindId = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const foundId = async () => {
-    if (!userInfo.email || !userInfo.name) {
-      setErrorMsg('이메일과 이름을 입력해주세요.');
-      return;
-    }
+  const sendUserInfo = async () => {
+    const result = await findUserId(userInfo);
     try {
-      const res = await axios.post(`http://3.35.90.143:54130/member/findId`, userInfo, {
-        withCredentials: false,
-      });
-      return res.data;
+      return result;
     } catch {
       setErrorMsg('아이디 찾기에 실패했습니다.');
     }
@@ -39,21 +33,22 @@ const FindId = () => {
       state: { loginId: result },
     });
   };
-  const getId = async () => {
-    const result = await foundId();
+  const getUserId = async () => {
+    if (!userInfo.email || !userInfo.name) {
+      setErrorMsg('이메일과 이름을 입력해주세요.');
+      return;
+    }
+    const result = await sendUserInfo();
     if (result) {
       moveToGuide(result);
+    } else {
+      return;
     }
   };
 
   return (
     <>
-      <FindUserInfo
-        {...userInfo}
-        onChange={handleUserInfoChange}
-        errorMsg={errorMsg}
-        onClick={getId}
-      />
+      <FindUserInfo {...userInfo} onChange={handleUserInfoChange} errorMsg={errorMsg} onClick={getUserId} />
     </>
   );
 };

@@ -1,6 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DefaultInput from '../../UI/input/DefaultInput';
+import {
+  trySignUp,
+  checkDuplicatedLoginId,
+  checkDuplicatedNickname,
+  checkDuplicatedEmail,
+} from '../../Utils';
 import Button from '../../UI/button/Button';
 import {
   ID_REGEXP,
@@ -27,7 +33,6 @@ import {
   MSG_17,
   MSG_18,
 } from '../../constants';
-import axios from 'axios';
 import { Signup } from '../../types/user';
 import { Container, BtnWrapper } from './style';
 
@@ -124,52 +129,46 @@ const SignupInput = () => {
     return EMAIL_REGEXP.test(str);
   };
   // 중복체크
-  const checkUserID = () => {
+  const checkUserID = async () => {
     if (isValidId(userInfo.loginId)) {
-      axios
-        .get(`http://3.35.90.143:54130/member/checkExistId?id=${userInfo.loginId}`, {
-          withCredentials: false,
-        })
-        .then((res) => {
-          res.data === 'not exist'
+      try {
+        const result = await checkDuplicatedLoginId(userInfo.loginId);
+        {
+          result === 'not exist'
             ? setMessage({ ...message, ['loginId']: MSG_03 })
             : setMessage({ ...message, ['loginId']: MSG_04 });
-        })
-        .catch(() => {
-          setMessage({ ...message, ['loginId']: MSG_05 });
-        });
+        }
+      } catch {
+        setMessage({ ...message, ['loginId']: MSG_05 });
+      }
     }
   };
-  const checkNickname = () => {
+  const checkNickname = async () => {
     if (isValidNickname(userInfo.nickname)) {
-      axios
-        .get(`http://3.35.90.143:54130/member/checkExistNickname?nickname=${userInfo.nickname}`, {
-          withCredentials: false,
-        })
-        .then((res) => {
-          res.data === 'not exist'
+      try {
+        const result = await checkDuplicatedNickname(userInfo.nickname);
+        {
+          result === 'not exist'
             ? setMessage({ ...message, ['nickname']: MSG_13 })
             : setMessage({ ...message, ['nickname']: MSG_12 });
-        })
-        .catch(() => {
-          setMessage({ ...message, ['nickname']: MSG_14 });
-        });
+        }
+      } catch {
+        setMessage({ ...message, ['nickname']: MSG_14 });
+      }
     }
   };
-  const checkEmail = () => {
+  const checkEmail = async () => {
     if (isValidEmail(userInfo.email)) {
-      axios
-        .get(`http://3.35.90.143:54130/member/checkExistEmail?email=${userInfo.email}`, {
-          withCredentials: false,
-        })
-        .then((res) => {
-          res.data === 'not exist'
+      try {
+        const result = await checkDuplicatedEmail(userInfo.email);
+        {
+          result === 'not exist'
             ? setMessage({ ...message, ['email']: MSG_17 })
             : setMessage({ ...message, ['email']: MSG_16 });
-        })
-        .catch(() => {
-          setMessage({ ...message, ['email']: MSG_18 });
-        });
+        }
+      } catch {
+        setMessage({ ...message, ['email']: MSG_18 });
+      }
     }
   };
   // 회원가입 요청
@@ -181,21 +180,14 @@ const SignupInput = () => {
       isValidNickname(userInfo.nickname) &&
       isValidEmail(userInfo.email)
     ) {
-      delete userInfo.rePassword;
-      userInfo.profileImageId = 0;
-      await axios
-        .post(`http://3.35.90.143:54130/member/post`, userInfo, {
-          withCredentials: false,
-        })
-        .then(() => {
-          navigate('/login', { replace: true });
-        })
-        .catch((err) => {
-          alert('잘못된 요청입니다!');
-          console.log(err);
-        });
-    } else {
-      return;
+      try {
+        const result = await trySignUp(userInfo);
+        {
+          result === 201 ? navigate('/login', { replace: true }) : null;
+        }
+      } catch {
+        alert('죄송합니다. 잠시 후 다시 시도해주세요');
+      }
     }
   };
   return (

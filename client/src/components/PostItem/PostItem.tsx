@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-
 export interface PostItemData {
-  
   catergory: string | undefined;
   image: string | undefined;
   location: string | undefined;
@@ -17,23 +15,16 @@ export interface PostItemData {
   viewCount: number | undefined;
   writeDate: string | undefined;
   writerId: number | undefined;
-  
 }
 export interface PostItemProps {
-  data:PostItemData;
-  
+  data: PostItemData;
 }
 
-
-const PostItem = ({data}:PostItemProps) => {
-  const imgUrl= `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
-  
-  console.log(data.image)
-
+const PostItem = ({ data }: PostItemProps) => {
+  const imgUrl = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
 
   return (
     <>
-      
       <ListWrapper>
         <Image src={data.image} />
         <DescriptionWrapper>
@@ -41,7 +32,7 @@ const PostItem = ({data}:PostItemProps) => {
           <Region>{data.location}</Region>
           <Price>{data.rentPrice}</Price>
           <div style={{ color: '#868e96', fontSize: '13px' }}>
-            <span>❤️</span> <span>조회:{data.viewCount}</span>
+            <span>조회:{data.viewCount}</span>
           </div>
         </DescriptionWrapper>
       </ListWrapper>
@@ -58,8 +49,6 @@ const PostItem = ({data}:PostItemProps) => {
 //   like: '3',
 //   view: '5',
 // };
-
-
 
 const ListWrapper = styled.div`
   display: flex;

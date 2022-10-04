@@ -2,14 +2,15 @@ import { useParams } from 'react-router-dom';
 import AxiosInstance from './AxiosInstance';
 import { PostData } from '../pages/Post/PostWrite'; 
 import { CommentData } from '../components/Comment/CommentWrite';
+import { blob } from 'stream/consumers';
 
 
 
 //POST
-export const getPosts = async() => {
-    
+export const getPosts = async(sortType?:string) => {
+    console.log(sortType);
     try {
-        const res = await AxiosInstance.get(`rentPost/posts`);
+        const res = await AxiosInstance.get(`rentPost/posts?sort=${sortType}`);
         console.log(res);
         return res.data;
         
@@ -61,12 +62,10 @@ export const sendPost = async (post: any) => {
     }
   };
 
-export const sendImage = async (image: any,postId:number) => {
+export const sendImage = async (image: FormData,postId:number) => {
     try {
         const res = await AxiosInstance.post(`rentPost/images/?postId=${postId}`,
-        {
-            image: image,
-        });
+        image)
         console.log(res);
         console.log(res.data);
         const data = res.data

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { UserContext } from '../../context/context';
-import axios from 'axios';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import imageCompression from 'browser-image-compression';
+import { changeProfileImage } from '../../Utils';
 
 const ProfileImg = () => {
   const { user } = useContext(UserContext);
@@ -39,13 +39,13 @@ const ProfileImg = () => {
           Authorization: token,
         },
       };
-
+      const res = await changeProfileImage(formData, config);
       try {
-        await axios.post(`http://3.35.90.143:54130/member/profileImage/post`, formData, config);
-      } catch (err) {
-        console.log(err);
-
-        // alert('이미지 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ');
+        if (res === 200) {
+          alert('이미지 변경에 성공했습니다 :) ');
+        }
+      } catch {
+        alert('이미지 변경에 실패했습니다. 다시 시도해주세요 ㅜ_ㅜ');
       }
     }
   };
@@ -61,12 +61,7 @@ const ProfileImg = () => {
           onChange={(e) => handleImgChange(e)}
           style={{ display: 'none' }}
         />
-        <Button
-          onClick={(e) => handleChangeBtnClick(e)}
-          type={'white'}
-          width={'short'}
-          text={'변경'}
-        />
+        <Button onClick={(e) => handleChangeBtnClick(e)} type={'white'} width={'short'} text={'변경'} />
       </ImgWrapper>
     </Container>
   );

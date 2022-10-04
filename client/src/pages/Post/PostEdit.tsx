@@ -18,7 +18,7 @@ const PostEdit = () => {
   const editorRef = useRef<Editor>();
   const navigate =useNavigate();
   const {user}  =useContext(UserContext);
-  const [btn, setBtn] = useState(data.rentStatus);
+  const [btn, setBtn] = useState(data.rentStatus === false ? '렌트가능' : '렌트중');
   const [post,setPost] = useState({
     rentPostName: data.rentPostName,
     rentPostContents:data.rentPostContents,
@@ -59,9 +59,6 @@ const handleEditorChange = () => {
 
 const changeBtnName = () => {
   data.rentStatus === 'false' ? setBtn('렌트가능') : setBtn('렌트중');
-  
-
-  
 }
 
     return (

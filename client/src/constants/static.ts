@@ -54,3 +54,12 @@ export const location = [
   { lid: 10, name: '경남' },
   { lid: 11, name: '제주' },
 ];
+
+export const sortOptionList = [
+  { value: 'writeDate', name: '최신순' },
+  { value: 'viewCount', name: '인기순' },
+];
+export const rentSortOptionList = [
+  { value: 'false', name: '렌트가능' },
+  { value: 'true', name: '렌트중' },
+];

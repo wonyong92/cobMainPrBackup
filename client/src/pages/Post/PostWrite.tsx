@@ -9,6 +9,7 @@ import { Editor } from '@toast-ui/react-editor';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { UserContext } from '../../context/context';
+import DropLocation from '../../components/DropMenu/DropLocation';
 
 
 
@@ -93,12 +94,13 @@ const handleEditorChange = () => {
             name={'rentPostName'} />
             
             <span>지역</span>
-            <TextInput 
+            {/* <TextInput 
             placeholder={'지역을 입력해주세요'}
             onChange={onChangePost}
             type={'text'}
             value={post.location} 
-            name={'location'}/>
+            name={'location'}/> */}
+            <DropLocation/>
             
             <span>카테고리</span>
             <TextInput 
@@ -116,7 +118,7 @@ const handleEditorChange = () => {
             value={post.rentPrice} 
             name={'rentPrice'} />
             </WriteWrapper>
-            <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange}/>
+            <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange} />
             <Button text='Save'  onClick={()=>{}}/>
         </>
      
