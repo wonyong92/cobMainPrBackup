@@ -7,6 +7,7 @@ export const trySignIn = async (loginInfo: {}) => {
   });
   try {
     const token = res.headers.authorization; // 토큰
+    AxiosInstance.defaults.headers.common['Authorization'] = token;
     localStorage.setItem('token', token);
     const result = DecodeJWT(token); // 유저정보
     delete result.sub;
