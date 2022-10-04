@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/context';
 import TextButton from '../../UI/button/TextButton';
 import { useNavigate } from 'react-router-dom';
+import { config } from '../../config/config';
 interface PropsType {
   userModal: boolean;
   setUserModal: (state: boolean) => void;
@@ -13,7 +14,7 @@ interface PropsType {
 const UserModal = ({ setUserModal }: PropsType) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-  const imageUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`;
+  const imageUrl = `${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`;
   const closeModal = () => {
     setUserModal(false);
   };

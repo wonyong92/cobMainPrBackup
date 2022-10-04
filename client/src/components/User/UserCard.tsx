@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { UserContext } from '../../context/context';
-
+import { config } from '../../config/config';
 const UserCard = () => {
   const { user } = useContext(UserContext);
-  const imageUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`;
+  const imageUrl = `${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`;
   let date = user.createdAt;
   const createdAt = date?.slice(0, 10);
 
