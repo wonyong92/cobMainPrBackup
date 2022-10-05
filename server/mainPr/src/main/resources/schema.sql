@@ -42,7 +42,7 @@ create table `comment` (
 create table `login` (
   `login_id` int primary key auto_increment,
   `member_id` int,
-  `token` text ,
+  `token` varchar(1000) ,
   `last_login_date` datetime,
   `logout_date` datetime,
   `logouted` boolean default false
