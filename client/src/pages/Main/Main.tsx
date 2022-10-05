@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 const Main = () => {
     
     const [posts, setPosts] = useState<PostItemData[]>([]);
- 
+    const [sortType, setSortType] = useState('writeDate');
+
     useEffect(() => {
-        getPosts().then((res) => {
+        getPosts(sortType).then((res) => {
+            setSortType(res.rentPosts);
             // console.log(res)
         //     let arr = res.rentPosts;
         //     arr=arr.map((el:any)=>el.rentPostId);

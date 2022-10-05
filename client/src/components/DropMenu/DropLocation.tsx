@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import {location} from '../../constants';
 
 interface DropProps {
-   
+   name: string;
 }
 
 const DropLocation = () => {
@@ -15,11 +15,12 @@ const DropLocation = () => {
     }, []);
   
     const onSelectItem = useCallback((e:any) => {
-      const targetId = e.target.id;
+      const targetId = e.target;
+      console.log(e.target.id)
   
-      if (targetId === "item_name") {
+      if (targetId === 'item_name') {
         setItem(e.target.parentElement.innertText);
-      } else if (targetId === "item") {
+      } else if (targetId === 'item') {
         setItem(e.target.innertText);
       }
   
@@ -41,8 +42,8 @@ const DropLocation = () => {
         </DropdownBody>
         <DropdownMenu isActive={isActive}>
           {location.map((item) => (
-            <DropdownItemContainer id="item" key={item.lid} onClick={onSelectItem}>
-              <ItemName id="item_name">{item.name}</ItemName>
+            <DropdownItemContainer id='item' key={item.lid} onClick={onSelectItem}>
+              <ItemName id='item_name'>{item.name}</ItemName>
             </DropdownItemContainer>
           ))}
         </DropdownMenu>
