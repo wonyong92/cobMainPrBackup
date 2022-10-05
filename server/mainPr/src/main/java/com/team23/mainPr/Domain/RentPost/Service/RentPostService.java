@@ -106,7 +106,7 @@ public class RentPostService {
      */
     public void deleteRentPost(Integer postId, String token) {
         for (Picture picture : pictureRepository.findByRentPostId(postId)) {
-            File file = new File(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(picture.getPictureId()).getFileName());
+            File file = new File(System.getProperty("user.home")+"/" + uploadPath + pictureRepository.getReferenceById(picture.getPictureId()).getFileName());
             if (!file.exists()) {
                 throw new CustomException(ErrorData.FILE_NOT_FOUND);
             }
