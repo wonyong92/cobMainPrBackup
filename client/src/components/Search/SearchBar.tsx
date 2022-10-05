@@ -27,11 +27,21 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
 
   const handleSearchKeyword = async () => {
     if (keyword) {
-      const result = await searchkeyword(keyword);
+      const data = {
+        sort: 'writeDate',
+        size: 10,
+        page: 1,
+      };
+      const result = await searchkeyword(keyword, data);
       try {
-        setSearchResultList(result);
-        navigate('/search', {
-          state: { keyword: keyword },
+        setSearchResultList(result?.data.rentPosts);
+        console.log('서치바결과임');
+        navigate('/search/keyword', {
+          state: {
+            keyword: keyword,
+            totalPages: result?.data.totalPages,
+            totalPostCount: result?.data.totalEntity,
+          },
         });
         setKeyword && setKeyword('');
       } catch {
@@ -50,7 +60,7 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
             onKeyup={handleKeywordOnKeyUp}
             placeholder="검색어를 입력해주세요"
           />
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="magnify" onClick={() => handleSearchKeyword} />
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="magnify" onClick={handleSearchKeyword} />
         </>
       )}
     </Container>
@@ -65,7 +75,7 @@ export const Container = styled.div`
     margin-top: 10px;
     min-width: 330px;
     text-indent: 5px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .magnify {
     position: relative;
