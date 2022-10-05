@@ -21,7 +21,9 @@ public interface RentPostRepository extends JpaRepository<RentPost, Integer> {
 
     Page<RentPost> findAllByRentStatusAndCategoryContainingAndLocationContaining(Pageable pageable, Boolean rentStatus, String category, String location);
 
-    @Query(value = " select * from rent_post as p where regexp_like(p.rent_post_name,  ?1 , 'i') and regexp_like(p.category,  ?2 , 'i') and p.rent_status = ?3 ", nativeQuery = true)
+    @Query(value = " select * from rent_post as p where regexp_like(p.rent_post_name,  ?1 , 'i') and regexp_like(p.category,  ?2 , 'i') and p.rent_status = ?3 ",
+        countQuery = "select count(*)  from rent_post as p where regexp_like(p.rent_post_name,  ?1 , 'i') and regexp_like(p.category,  ?2 , 'i') and p.rent_status = ?3 ",
+        nativeQuery = true)
         // native query only use order parameter
     Page<RentPost> search(String phrase, String category, Pageable p, Boolean rentStatus);
 
