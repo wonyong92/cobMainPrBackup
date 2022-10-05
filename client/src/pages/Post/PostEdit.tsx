@@ -11,14 +11,17 @@ import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { UserContext } from '../../context/context';
 import { useLocation } from 'react-router-dom';
+import DropMenu from '../../components/DropMenu/DropMenu';
+import { category, location } from '../../constants';
 
-const PostEdit = () => {
-  const location = useLocation();
-  const data= location.state;
+
+const PostEdit = ({formData}:any) => {
+  const local = useLocation();
+  const data= local.state;
   const editorRef = useRef<Editor>();
   const navigate =useNavigate();
   const {user}  =useContext(UserContext);
-  const [btn, setBtn] = useState(data.rentStatus);
+  const [btn, setBtn] = useState(data.rentStatus===false? '렌트가능' : '렌트중');
   const [post,setPost] = useState({
     rentPostName: data.rentPostName,
     rentPostContents:data.rentPostContents,
@@ -27,6 +30,7 @@ const PostEdit = () => {
     location: data.location,
     writerId: user.memberId,
     rentPostId: data.rentPostId,
+    rentStatus: data.rentStatus,
     
 })
   const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +63,15 @@ const handleEditorChange = () => {
 }
 
 const changeBtnName = () => {
-  data.rentStatus === 'false' ? setBtn('렌트가능') : setBtn('렌트중');
-}
+  if(btn === '렌트가능'){
+    setBtn('렌트중')
+  }
+  else{
+    setBtn('렌트가능')
+  
 
+}
+}
     return (
         <>
             <HeaderRow>빌려주기 작성가이드
@@ -86,20 +96,11 @@ const changeBtnName = () => {
             name={'rentPostName'} />
             
             <span>지역</span>
-            <TextInput 
-            placeholder={'지역을 입력해주세요'}
-            onChange={onChangePost}
-            type={'text'}
-            value={post.location} 
-            name={'location'}/>
+            <DropMenu props={location} />
+            
             
             <span>카테고리</span>
-            <TextInput 
-            placeholder={'카테고리를 입력해주세요'}
-            onChange={onChangePost}
-            type={'text'}
-            value={post.category} 
-            name={'category'} />
+            <DropMenu props={category} />
             
             <span>가격</span>
             <TextInput 
@@ -110,7 +111,7 @@ const changeBtnName = () => {
             name={'rentPrice'} />
 
             <span>렌트상태</span>
-            <Button text={btn} width='short' radius='deep' onClick={changeBtnName}/>
+            <Button text={btn} width='short' radius='deep' onClick={changeBtnName} value={post.rentStatus}/>
             </WriteWrapper>
             <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange} sendImage={sendImage} props={undefined} />
             <Button text='Save'  onClick={()=>{}}/>
