@@ -48,17 +48,27 @@ const ListItem = ({ data, isMyPost }: Props) => {
 export default ListItem;
 const ListItemContainer = styled.div`
   display: flex;
+  flex-basis: 33%;
   padding-top: 10px;
   padding-bottom: 10px;
+  padding-right: 10px;
+  margin: 2px;
   border-bottom: #efeded 0.5px solid;
+  @media screen and (max-width: 500px) {
+    display: flex;
+    margin: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+  }
 `;
-const ImgWrapper = styled.div`
+export const ImgWrapper = styled.div`
   display: flex;
   margin-right: 10px;
   cursor: pointer;
   img {
-    width: 110px;
-    height: 110px;
+    width: 160px;
+    height: 160px;
     border-radius: 5px;
   }
   @media screen and (max-width: 500px) {
@@ -72,19 +82,20 @@ const ImgWrapper = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
 `;
-const FirstRow = styled.div`
-  font-size: 18px;
+export const FirstRow = styled.div`
+  font-size: 20px;
   font-weight: 500;
   cursor: pointer;
-  margin-bottom: 20px;
+  min-height: 80px;
   @media screen and (max-width: 500px) {
     font-size: 15px;
+    min-height: 20px;
   }
 `;
-const SecondRow = styled.div`
+export const SecondRow = styled.div`
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: 15px;
   color: #aba8a8;
   span {
     margin-right: 5px;
@@ -93,33 +104,32 @@ const SecondRow = styled.div`
     font-size: 12px;
   }
 `;
-const ThirdRow = styled.div`
-  font-size: 18px;
+export const ThirdRow = styled.div`
+  font-size: 20px;
   font-weight: 700;
   color: #464646;
   @media screen and (max-width: 500px) {
     font-size: 14px;
   }
 `;
-const FourthRow = styled.div`
+export const FourthRow = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 2px;
-  font-size: 12px;
-
+  font-size: 14px;
   color: #727272;
-
   #tag {
     background-color: #95d1cc;
     color: white;
     padding: 4px 12px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
   }
   @media screen and (max-width: 500px) {
+    font-size: 12px;
     #tag {
       padding: 3px 8px;
       font-size: 11px;

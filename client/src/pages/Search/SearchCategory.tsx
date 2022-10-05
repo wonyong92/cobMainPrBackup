@@ -82,7 +82,7 @@ const SearchCategory = () => {
 };
 export default SearchCategory;
 const Container = styled.div`
-  width: 60%;
+  width: 70%;
   @media screen and (max-width: 500px) {
     width: 90%;
   }
@@ -109,4 +109,11 @@ const FilterWrapper = styled.div`
   align-items: center;
   width: 130px;
 `;
-const Bottom = styled.div``;
+const Bottom = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  @media screen and (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;

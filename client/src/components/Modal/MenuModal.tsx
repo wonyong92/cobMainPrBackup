@@ -45,7 +45,7 @@ const MenuModal = ({ setMenuModal, menuModal }: Props) => {
         </Top>
         <Bottom modalOpen={modalOpen}>
           {category.map((el: any) => (
-            <Item key={el.cid}>
+            <Item key={el.id}>
               <div onClick={(e) => getCategoryPosts(e)}>{el.name}</div>
             </Item>
           ))}
