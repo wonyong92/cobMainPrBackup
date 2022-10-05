@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import ListItem from '../../components/PostItem/ListItem';
 import PageNation from '../../components/Pagenation/PageNation';
 import { sortOptionList, rentSortOptionList } from '../../constants';
@@ -6,19 +5,19 @@ import { handleFilterForCategorySearch } from '../../Utils';
 import SearchFilter from '../../components/Search/SearchFilter';
 import PageDescript from '../../components/Descript/PageDescript';
 import { useContext, useEffect, useState } from 'react';
-import useDidMountEffect from '../../hooks/useDidMountEffect';
 import { useLocation } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
+import { Container, Top, Title, FilterWrapper, Bottom } from './style';
 const SearchCategory = () => {
   const location = useLocation();
   const category: string | undefined = location?.state.category;
   const totalPostCount: number = location?.state.totalPostCount;
   const totalPages: number = location?.state.totalPages;
   const { searchResultList, setSearchResultList } = useContext(SearchResultContext);
-  const [sortType, setSortType] = useState('writeDate');
-  const [rentSortType, setRentSortType] = useState('false');
   const [page, setPage] = useState(0);
   const [totalPost, setTotalPost] = useState(totalPostCount);
+  const [rentSortType, setRentSortType] = useState('false');
+  const [sortType, setSortType] = useState('writeDate');
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
   };
@@ -48,7 +47,7 @@ const SearchCategory = () => {
   //필터
   useEffect(() => {
     searchFortCategoryKeyword();
-  }, [rentSortType, sortType, setPage, page]);
+  }, [rentSortType, sortType, setPage, page, category]);
   return (
     <Container>
       <Top>
@@ -81,39 +80,3 @@ const SearchCategory = () => {
   );
 };
 export default SearchCategory;
-const Container = styled.div`
-  width: 70%;
-  @media screen and (max-width: 500px) {
-    width: 90%;
-  }
-`;
-const Top = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-const Title = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  span {
-    color: #464646;
-    font-weight: 400;
-    margin-left: 5px;
-    font-size: 13px;
-  }
-`;
-const FilterWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 130px;
-`;
-const Bottom = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  @media screen and (max-width: 500px) {
-    display: flex;
-    flex-direction: column;
-  }
-`;

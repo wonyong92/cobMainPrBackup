@@ -41,7 +41,7 @@ export const handleFilterForKeywordSearch = async (keyword: string, rentSortType
 //카테고리검색
 export const searchCategoryKeyword = async (targetCategory: string) => {
   const res = await AxiosInstance.get(
-    `rentPost/posts?category=${targetCategory}&rentStatus=false&sort=writeDate&size=10&page=0`,
+    `rentPost/posts?category=${targetCategory}&rentStatus=false&sort=writeDate&size=12&page=0`,
   );
   try {
     return res;
@@ -57,7 +57,7 @@ export const handleFilterForCategorySearch = async (
   rentSortType: string,
 ) => {
   const res = await AxiosInstance.get(
-    `rentPost/posts?category=${category}&rentStatus=${rentSortType}&sort=${sortType}&size=10&page=${page}`,
+    `rentPost/posts?category=${category}&rentStatus=${rentSortType}&sort=${sortType}&size=12&page=${page}`,
   );
   try {
     return res;
