@@ -23,12 +23,8 @@ public class PictureService {
         if (!f.exists()) {
             throw new CustomException(ErrorData.FILE_NOT_FOUND);
         }
-        if(!pictureRepository.getReferenceById(1).getFileName().equals("defaultProfileImage.png"))
-        {
             Picture defaultImage = new Picture();
             defaultImage.setFileName("defaultProfileImage.png");
             pictureRepository.save(defaultImage);
-        }
-
     }
 }
