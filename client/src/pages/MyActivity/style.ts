@@ -4,6 +4,9 @@ export const Container = styled.div`
   flex-direction: column;
   width: 980px;
   margin-top: 15px;
+  .errorMsg {
+    font-size: 13px;
+  }
   @media screen and (max-width: 500px) {
     width: 95%;
   }

@@ -1,37 +1,32 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../../context/context';
 import { Container, Info, CheckBox, BtnWrapper } from './deleteaccount-style';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { deleteUserAccount } from '../../Utils';
 const DeleteIdAccount = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  const token = localStorage.getItem('token');
   const [isChecked, setIsChecked] = useState(false);
-  const deleteAccount = async () => {
-    if (token) {
-      try {
-        const res = await axios.delete(`http://3.35.90.143:54130/member/delete`, {
-          headers: { Authorization: token },
+  const handleDeleteAccount = async () => {
+    const result = await deleteUserAccount();
+    try {
+      if (result === 200) {
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('token');
+        setUser({
+          memberId: 0,
+          loginId: '',
+          email: '',
+          name: '',
+          nickname: '',
+          createdAt: '',
+          profileImageId: 0,
         });
-        if (res.status === 200) {
-          localStorage.removeItem('userInfo');
-          localStorage.removeItem('token');
-          setUser({
-            memberId: 0,
-            loginId: '',
-            email: '',
-            name: '',
-            nickname: '',
-            createdAt: '',
-            profileImageId: 0,
-          });
-          alert('회원탈퇴가 정상적으로 완료되었습니다 :)');
-          navigate('/', { replace: true });
-        }
-      } catch {
-        alert('에러가 발생했습니다. 잠시 후 다시 시도해주세요 ㅜ_ㅜ');
+        alert('회원탈퇴가 정상적으로 완료되었습니다 :)');
+        navigate('/', { replace: true });
       }
+    } catch {
+      alert('회원탈퇴 요청을 실패했습니다. 잠시 후 다시 시도해주세요 ㅜ_ㅜ');
     }
   };
   return (
@@ -53,7 +48,7 @@ const DeleteIdAccount = () => {
         <button
           className={isChecked ? 'active' : ''}
           disabled={isChecked ? false : true}
-          onClick={deleteAccount}
+          onClick={handleDeleteAccount}
         >
           회원탈퇴
         </button>

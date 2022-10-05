@@ -2,7 +2,7 @@ import { DecodeJWT } from '../decodeJWT';
 import AxiosInstance from '../AxiosInstance';
 //로그인
 export const trySignIn = async (loginInfo: {}) => {
-  const res = await AxiosInstance.post(`http://3.35.90.143:54130/login`, loginInfo, {
+  const res = await AxiosInstance.post(`login`, loginInfo, {
     withCredentials: false,
   });
   try {
@@ -19,7 +19,7 @@ export const trySignIn = async (loginInfo: {}) => {
 };
 //회원가입
 export const trySignUp = async (userInfo: {}) => {
-  const res = await AxiosInstance.post(`http://3.35.90.143:54130/member/post`, userInfo, {
+  const res = await AxiosInstance.post(`member/post`, userInfo, {
     withCredentials: false,
   });
   try {
@@ -30,7 +30,7 @@ export const trySignUp = async (userInfo: {}) => {
 };
 // 중복체크
 export const checkDuplicatedLoginId = async (loginId: string) => {
-  const res = await AxiosInstance.get(`http://3.35.90.143:54130/member/checkExistId?id=${loginId}`, {
+  const res = await AxiosInstance.get(`member/checkExistId?id=${loginId}`, {
     withCredentials: false,
   });
   try {
@@ -40,12 +40,9 @@ export const checkDuplicatedLoginId = async (loginId: string) => {
   }
 };
 export const checkDuplicatedNickname = async (nickname: string | undefined) => {
-  const res = await AxiosInstance.get(
-    `http://3.35.90.143:54130/member/checkExistNickname?nickname=${nickname}`,
-    {
-      withCredentials: false,
-    },
-  );
+  const res = await AxiosInstance.get(`member/checkExistNickname?nickname=${nickname}`, {
+    withCredentials: false,
+  });
   try {
     return res.data;
   } catch {
@@ -53,7 +50,7 @@ export const checkDuplicatedNickname = async (nickname: string | undefined) => {
   }
 };
 export const checkDuplicatedEmail = async (email: string) => {
-  const res = await AxiosInstance.get(`http://3.35.90.143:54130/member/checkExistEmail?email=${email}`, {
+  const res = await AxiosInstance.get(`member/checkExistEmail?email=${email}`, {
     withCredentials: false,
   });
   try {
@@ -64,7 +61,7 @@ export const checkDuplicatedEmail = async (email: string) => {
 };
 // id찾기
 export const findUserId = async (userInfo: {}) => {
-  const res = await AxiosInstance.post(`http://3.35.90.143:54130/member/findId`, userInfo, {
+  const res = await AxiosInstance.post(`member/findId`, userInfo, {
     withCredentials: false,
   });
   try {
@@ -75,7 +72,7 @@ export const findUserId = async (userInfo: {}) => {
 };
 // pw찾기
 export const findUserPassword = async (userInfo: {}) => {
-  const res = await AxiosInstance.post(`http://3.35.90.143:54130/member/findPassword`, userInfo, {
+  const res = await AxiosInstance.post(`member/findPassword`, userInfo, {
     withCredentials: false,
   });
   try {

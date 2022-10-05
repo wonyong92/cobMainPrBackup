@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import imageCompression from 'browser-image-compression';
 import { changeProfileImage } from '../../Utils';
-
+import { config } from '../../config/config';
 const ProfileImg = () => {
   const { user } = useContext(UserContext);
   const token = localStorage.getItem('token');
   const imgInput = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState('');
   useEffect(() => {
-    setImageUrl(`http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`);
+    setImageUrl(`${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`);
   }, [user]);
 
   const handleChangeBtnClick = (e: any) => {
@@ -21,6 +21,7 @@ const ProfileImg = () => {
   const compressImg = async (e: any) => {
     e.preventDefault();
     setImageUrl(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0]);
     const imgFile = e.target.files[0];
     const options = {
       maxSizeMB: 2,

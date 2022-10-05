@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import axios from 'axios';
 import TextInput from '../../UI/input/TextInput';
 import { ChangeEvent, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { searchkeyword } from '../../Utils';
 
 interface Props {
   keyword?: string;
@@ -26,21 +26,26 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
   };
 
   const handleSearchKeyword = async () => {
-    if (keyword !== '') {
+    if (keyword) {
       const data = {
-        sort: 'WRITE_DATE',
+        sort: 'writeDate',
+        size: 10,
+        page: 1,
       };
+      const result = await searchkeyword(keyword, data);
       try {
-        const res = await axios.post(`http://3.35.90.143:54130/rentPost/search?phrase=${keyword}`, data, {
-          withCredentials: false,
-        });
-        setSearchResultList(res.data);
-        navigate('/search', {
-          state: { keyword: keyword },
+        setSearchResultList(result?.data.rentPosts);
+        console.log('서치바결과임');
+        navigate('/search/keyword', {
+          state: {
+            keyword: keyword,
+            totalPages: result?.data.totalPages,
+            totalPostCount: result?.data.totalEntity,
+          },
         });
         setKeyword && setKeyword('');
       } catch {
-        alert('죄송합니다. 잠시후 다시 시도해주세요 :)');
+        alert('요청하신 정보를 불러올 수 없습니다. 잠시후 다시 시도해주세요 ㅜ_ㅜ');
       }
     }
   };
@@ -55,7 +60,7 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
             onKeyup={handleKeywordOnKeyUp}
             placeholder="검색어를 입력해주세요"
           />
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="magnify" onClick={() => handleSearchKeyword} />
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="magnify" onClick={handleSearchKeyword} />
         </>
       )}
     </Container>
@@ -70,7 +75,7 @@ export const Container = styled.div`
     margin-top: 10px;
     min-width: 330px;
     text-indent: 5px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .magnify {
     position: relative;

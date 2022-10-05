@@ -5,11 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 interface PropsType {
-  userModal: boolean;
   setUserModal: (state: boolean) => void;
   memberId: any;
 }
-const DesktopRightSide = ({ userModal, setUserModal, memberId }: PropsType) => {
+const DesktopRightSide = ({ setUserModal, memberId }: PropsType) => {
   const navigate = useNavigate();
   return (
     <DesktopTopRight>
