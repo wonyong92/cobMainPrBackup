@@ -1,19 +1,21 @@
 import { getPosts }  from '../../Utils/ApiCall';
 import PostItem from '../../components/PostItem/PostItem';
-import { useState, useEffect, useContext} from 'react';
+import { useState, useEffect} from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList} from '../../constants';
-import { SearchResultContext } from '../../context/context';
+// import { SearchResultContext } from '../../context/context';
 
 
 const PostList = () => {
-    const { searchResultList, setSearchResultList } = useContext(SearchResultContext);
-    const [sortType, setSortType] = useState('WRITE_DATE');
+    // const { searchResultList, setSearchResultList } = useContext(SearchResultContext);
+    const [posts, setPosts] = useState([]);
+    const [sortType, setSortType] = useState('writeDate');
     
     useEffect(() => {
         getPosts(sortType).then((res) => {
-            setSearchResultList(res.rentPosts);
+            console.log(res.rentPosts);
+            setPosts(res.rentPosts);
         });
     }, [sortType]);
 
@@ -29,7 +31,7 @@ return (
         <HeadRow>
         <h2>인기리스트</h2>
         </HeadRow>
-        {searchResultList.map((el) => <PostItem data={el} key={el.rentPostId} />
+        {posts.map((el:any) => <PostItem data={el} key={el.rentPostId} />
                        
         )}
     </>

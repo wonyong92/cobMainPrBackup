@@ -6,6 +6,10 @@ import { Editor } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 import styled from 'styled-components';
 import { sendImage } from '../../Utils/ApiCall';
+import { useState } from 'react';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 
 
@@ -16,6 +20,8 @@ export interface EditorProp {
   current?: any;
   onChange: () => void;
   ref?: any;
+  sendImage: (image: FormData, postId: number) => Promise<any>;
+  props: any;
   
   
 }
@@ -25,12 +31,18 @@ const CustomEditor = ({
   value,
   editorRef,
   onChange,
+  props,
   
 }: EditorProp) => {
+const [imageUrl, setImageUrl] = useState<string>('');
+
   
   return (
     <>
+    <FontAwesomeIcon icon={faCamera} className="icon" />
       <EditorBorder>
+      
+        <Image src={imageUrl} />
         <Editor
           initialValue={value}
           height={height}
@@ -46,10 +58,11 @@ const CustomEditor = ({
           ]}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              console.log(blob);  // File {name: '카레유.png', ... }
+              console.log(blob);  
               let formData = new FormData();
               formData.append('image', blob);
-              await sendImage(formData,28);
+              setImageUrl(URL.createObjectURL(blob));
+              props.sendImage(formData, 28);
               callback(`http://3.35.90.143:54130/rentPost/image/get?imageId=28`, 'alt text');
               
               
@@ -91,5 +104,13 @@ const ErrorMsg = styled.p`
   margin-top: 10px;
   color: hsl(358, 62%, 52%);
   font-size: 12px;
+`;
+
+const Image = styled.img`
+  width:100px;
+  height:100px;
+  display:flex;
+  justify-content:space-between; 
+
 `;
 export default CustomEditor;

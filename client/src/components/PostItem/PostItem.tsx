@@ -26,7 +26,7 @@ const PostItem = ({ data }: PostItemProps) => {
   return (
     <>
       <ListWrapper>
-        <Image src={data.image} />
+        <Image src={imgUrl} />
         <DescriptionWrapper>
           <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
           <Region>{data.location}</Region>

@@ -7,7 +7,6 @@ import { deleteComment, updateComment } from '../../Utils/ApiCall';
 import { UserContext } from '../../context/context';
 import TextInput from '../../UI/input/TextInput';
 
-    
 
 
 export interface CommentDataProps {
@@ -50,13 +49,14 @@ const CommentItem = ({data}:CommentDataProps) => {
     }
 
 
-
+ const imgUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`
    return (
         <>
     
         <CommentItemWrapper>
+        <Image alt="practice" src={imgUrl} />
+                <Link to={`/mypage`}>{user.nickname}</Link>
             <CommentItemHeader>
-                <Link to={`/user/${'user.id'}`}>{user.nickname}</Link>
                 <span>{user.createdAt}</span>
             </CommentItemHeader>
             <CommentItemContent>{data.commentContents}</CommentItemContent>
@@ -104,6 +104,14 @@ const CommentItemFooter = styled.div`
     margin-top: 0.5rem;
 `;
 
+const Image = styled.img`
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    padding-right: 0;
+
+`;
 
 export default CommentItem;
 

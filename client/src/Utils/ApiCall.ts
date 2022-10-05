@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import AxiosInstance from './AxiosInstance';
 import { PostData } from '../pages/Post/PostWrite'; 
 import { CommentData } from '../components/Comment/CommentWrite';
-import { blob } from 'stream/consumers';
+
 
 
 
