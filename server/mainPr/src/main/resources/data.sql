@@ -1,43 +1,43 @@
---CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";
---CALL FT_INIT();
---CALL FT_DROP_INDEX('PUBLIC', 'RENT_POST');
---CALL FT_CREATE_INDEX('PUBLIC', 'RENT_POST', 'RENT_POST_NAME');
+--create alias if not exists ft_init for "org.h2.fulltext.fulltext.init";
+--call ft_init();
+--call ft_drop_index('public', 'rent_post');
+--call ft_create_index('public', 'rent_post', 'rent_post_name');
 
-INSERT INTO CATEGORY(NAME) VALUES('인기리스트');
+insert into category(name) values('인기리스트');
 
-INSERT INTO CATEGORY(NAME) VALUES('수입명품');
+insert into category(name) values('수입명품');
 
-INSERT INTO CATEGORY(NAME) VALUES('캠핑용품');
+insert into category(name) values('캠핑용품');
 
-INSERT INTO CATEGORY(NAME) VALUES('카메라/캠코더');
+insert into category(name) values('카메라/캠코더');
 
-INSERT INTO CATEGORY(NAME) VALUES('음향/음반');
+insert into category(name) values('음향/음반');
 
-INSERT INTO CATEGORY(NAME) VALUES('리빙/생활');
+insert into category(name) values('리빙/생활');
 
-INSERT INTO CATEGORY(NAME) VALUES('레져/여행');
+insert into category(name) values('레져/여행');
 
-INSERT INTO CATEGORY(NAME) VALUES('유아동');
+insert into category(name) values('유아동');
 
-INSERT INTO CATEGORY(NAME) VALUES('뷰티');
+insert into category(name) values('뷰티');
 
-INSERT INTO CATEGORY(NAME) VALUES('게임');
+insert into category(name) values('게임');
 
-INSERT INTO CATEGORY(NAME) VALUES('도서/문구');
+insert into category(name) values('도서/문구');
 
-INSERT INTO CATEGORY(NAME) VALUES('반려동물');
+insert into category(name) values('반려동물');
 
 
-INSERT INTO LOCATION(NAME) VALUES('서울');
-INSERT INTO LOCATION(NAME) VALUES('인천');
-INSERT INTO LOCATION(NAME) VALUES('경기');
-INSERT INTO LOCATION(NAME) VALUES('강원');
-INSERT INTO LOCATION(NAME) VALUES('대전');
-INSERT INTO LOCATION(NAME) VALUES('세종');
-INSERT INTO LOCATION(NAME) VALUES('전북');
-INSERT INTO LOCATION(NAME) VALUES('전남');
-INSERT INTO LOCATION(NAME) VALUES('부산');
-INSERT INTO LOCATION(NAME) VALUES('경북');
-INSERT INTO LOCATION(NAME) VALUES('경남');
-INSERT INTO LOCATION(NAME) VALUES('제주');
+insert into location(name) values('서울');
+insert into location(name) values('인천');
+insert into location(name) values('경기');
+insert into location(name) values('강원');
+insert into location(name) values('대전');
+insert into location(name) values('세종');
+insert into location(name) values('전북');
+insert into location(name) values('전남');
+insert into location(name) values('부산');
+insert into location(name) values('경북');
+insert into location(name) values('경남');
+insert into location(name) values('제주');
 
