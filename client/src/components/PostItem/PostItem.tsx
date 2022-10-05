@@ -23,8 +23,6 @@ export interface PostItemProps {
 const PostItem = ({ data }: PostItemProps) => {
   const imgUrl = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
 
-  console.log(data.image);
-
   return (
     <>
       <ListWrapper>
@@ -34,7 +32,7 @@ const PostItem = ({ data }: PostItemProps) => {
           <Region>{data.location}</Region>
           <Price>{data.rentPrice}</Price>
           <div style={{ color: '#868e96', fontSize: '13px' }}>
-            <span>❤️</span> <span>조회:{data.viewCount}</span>
+            <span>조회:{data.viewCount}</span>
           </div>
         </DescriptionWrapper>
       </ListWrapper>

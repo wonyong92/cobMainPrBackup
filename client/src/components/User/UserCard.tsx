@@ -50,7 +50,6 @@ const InfoWrppaer = styled.div`
     font-size: 13px;
     color: #464646;
   }
-
   @media screen and (max-width: 500px) {
     .nickname {
       font-size: 13px;

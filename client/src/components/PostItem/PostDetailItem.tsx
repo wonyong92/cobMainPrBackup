@@ -48,7 +48,7 @@ interface IPostItemDetailProps{
 }
 
 const PostDetailItem = ({data}:IPostItemDetailProps) => {
-  const imgUrl: string = `http://3.39.180.45:56178/rentPost/image/get?imageId=1`;
+  const imgUrl: string = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   const {user}  =useContext(UserContext);
   const [deleteModal, setDeleteModal] = useState(false);
   const navigate =useNavigate();
@@ -69,11 +69,11 @@ const PostDetailItem = ({data}:IPostItemDetailProps) => {
           <Region>{data.location}  조회:{data.viewCount}</Region>
           <Price>{data.rentPrice}원</Price>   
           <ButtonWrapper> 
-          <Button text='렌트가능' radius='deep' width='short'/>
+          <Button text={data.rentStatus === false ? '렌트가능' : '렌트중'} radius='deep' width='short'/>
           
           {user.memberId===data.writerId ? 
           <TextButtonWrapper>
-          <Link to={`/postedit/${data.rentPostId}`} state= {data} >수정</Link>
+          <Link className='editbutton' to={`/postedit/${data.rentPostId}`} state= {data} >수정</Link>
           <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={() =>{
             console.log('삭제버튼 클릭')
             setDeleteModal(true)}}/>
@@ -121,6 +121,9 @@ const TextButtonWrapper = styled.div`
     display: flex;
     justify-content: reverse-row;
     margin-top: 10px;
+.editbutton {
+    text-decoration: none;
+  }
 `;
 
 

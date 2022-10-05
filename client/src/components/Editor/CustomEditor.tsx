@@ -5,6 +5,7 @@ import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { Editor } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 import styled from 'styled-components';
+import { sendImage } from '../../Utils/ApiCall';
 
 
 
@@ -15,6 +16,7 @@ export interface EditorProp {
   current?: any;
   onChange: () => void;
   ref?: any;
+  
   
 }
 
@@ -40,7 +42,29 @@ const CustomEditor = ({
             ['hr', 'quote'],
             ['ul', 'ol', 'task', 'indent', 'outdent'],
             ['table', 'image', 'link'],
+            
           ]}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              console.log(blob);  // File {name: '카레유.png', ... }
+              let formData = new FormData();
+              formData.append('image', blob);
+              await sendImage(formData,28);
+              callback(`http://3.35.90.143:54130/rentPost/image/get?imageId=28`, 'alt text');
+              
+              
+  
+              // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
+              // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
+              
+            // 2. 첨부된 이미지를 화면에 표시(경로는 임의로 넣었다.)
+              // callback('http://localhost:5000/img/카레유.png', '카레유');
+  
+              
+
+            }
+          }}
+  
           autofocus={false}
           ref={editorRef}
           onChange={onChange}
