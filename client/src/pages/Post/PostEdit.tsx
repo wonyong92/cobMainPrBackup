@@ -19,8 +19,8 @@ const PostEdit = ({formData}:any) => {
   const local = useLocation();
   const data= local.state;
   const editorRef = useRef<Editor>();
-  const navigate =useNavigate();
-  const {user}  =useContext(UserContext);
+  const navigate = useNavigate();
+  const {user} = useContext(UserContext);
   const [btn, setBtn] = useState(data.rentStatus===false? '렌트가능' : '렌트중');
   const [post,setPost] = useState({
     rentPostName: data.rentPostName,
