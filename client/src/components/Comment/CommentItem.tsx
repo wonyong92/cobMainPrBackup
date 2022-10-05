@@ -20,7 +20,6 @@ const CommentItem = ({data}:CommentDataProps) => {
     const { user } = useContext(UserContext);
     const [editComment, setEditComment] = useState(false);
     const [text, setText] = useState(data.commentContents);
-    const navigate = useNavigate();
     
     const deleteCommentHandler =()=> {
     deleteComment(data.commentId);
