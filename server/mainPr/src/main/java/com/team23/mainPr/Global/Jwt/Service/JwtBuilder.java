@@ -29,6 +29,7 @@ public class JwtBuilder {
             .withClaim("email",member.getEmail())
             .withClaim("profileImageId",member.getProfileImageId())
             .withClaim("createdAt",member.getCreatedAt().toString())
+            .withIssuer("auth0")
             .sign(Algorithm.HMAC512(key));
     }
 }
