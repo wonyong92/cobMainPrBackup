@@ -65,7 +65,7 @@ const Section = styled.div`
 const ItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 70%;
+  width: 80%;
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;
