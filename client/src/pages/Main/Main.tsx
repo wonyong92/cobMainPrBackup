@@ -89,28 +89,28 @@ const WelcomePage = styled.article`
   flex-direction: column;
   white-space: nowrap;
   .title1 {
-    padding-left: 190px;
+    padding-left: 150px;
     @media screen and (max-width: 500px) {
       font-size: 18px;
       padding-left: 18px;
     }
   }
   .subtitle1 {
-    padding-left: 190px;
+    padding-left: 150px;
     @media screen and (max-width: 500px) {
       font-size: 15px;
       padding-left: 18px;
     }
   }
   .title2 {
-    padding-left: 1400px;
+    padding-left: 950px;
     @media screen and (max-width: 500px) {
       padding-left: 190px;
       font-size: 18px;
     }
   }
   .subtitle2 {
-    padding-left: 1400px;
+    padding-left: 950px;
     @media screen and (max-width: 500px) {
       padding-left: 190px;
       font-size: 15px;
