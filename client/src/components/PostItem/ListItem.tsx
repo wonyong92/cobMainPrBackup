@@ -82,6 +82,7 @@ export const ImgWrapper = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
 `;
+
 export const FirstRow = styled.div`
   font-size: 20px;
   font-weight: 500;
@@ -104,6 +105,7 @@ export const SecondRow = styled.div`
     font-size: 12px;
   }
 `;
+
 export const ThirdRow = styled.div`
   font-size: 20px;
   font-weight: 700;
