@@ -49,7 +49,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   // const imgUrl: string = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
   const imgUrl: string = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQBF20H_iscXjbpbSQTRpnQukKDuYfT3Y7dQ&usqp=CAU`;
   const { user } = useContext(UserContext);
-  const wirterImageUrl = `${config.apiUrl}member/profileImage/get?memberId=${data.writerId}`;
+  const writerImageUrl = `${config.apiUrl}/member/profileImage/get?memberId=${data.writerId}`;
   const [deleteModal, setDeleteModal] = useState(false);
   const navigate = useNavigate();
   const price = data.rentPrice?.toLocaleString();
@@ -82,16 +82,16 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
             <Button text={data.rentStatus === false ? '렌트가능' : '렌트중'} radius="deep" width="short" />
             <WriterInfo>
               <ImgWrapper>
-                <img src={wirterImageUrl} className="writerImage" />
+                <img src={writerImageUrl} className="writerImage" />
               </ImgWrapper>
-              <div className="nickname">글쓴이닉네임</div>
+              <div className="nickname">{user.nickname}</div>
             </WriterInfo>
           </FourthRow>
           <ButtonWrapper>
             <TextButtonWrapper>
               {user.memberId === data.writerId ? (
                 <>
-                  <Link to={`/postedit/${data.rentPostId}`} state={{ data: data }}>
+                  <Link className='editbutton' to={`/postedit/${data.rentPostId}`} state={{ data: data }}>
                     수정
                   </Link>
                   <TextButton isGray={true} btnText={'삭제'} onClick={() => setDeleteModal(true)} />
@@ -174,6 +174,8 @@ const TextButtonWrapper = styled.div`
   margin-top: 5px;
   .editbutton {
     text-decoration: none;
+    font-size: 14px;
+    color: #727272;
   }
 `;
 
