@@ -6,12 +6,12 @@ export const MyHeader = styled.header`
   justify-content: space-around;
   border-bottom: 0.5px solid #f5f5f5;
   margin-top: 5px;
+  margin-bottom: 10px;
   @media screen and (max-width: 500px) {
+    width: 100%;
     flex-direction: column;
     display: flex;
     align-items: center;
-    margin-top: 5px;
-    border-bottom: 0.5px solid #f5f5f5;
   }
 `;
 export const Top = styled.div`
@@ -35,15 +35,15 @@ export const LogoWrapper = styled.div`
   cursor: pointer;
   white-space: nowrap;
   .title {
-    font-size: 22px;
+    font-size: 23px;
     font-weight: 500;
-    padding-top: 5px;
-    margin-right: 10px;
+    padding-bottom: 4px;
+    margin-right: 12px;
   }
   @media screen and (max-width: 500px) {
     .title {
       font-size: 18px;
-      padding-top: 3px;
+      padding-bottom: 1px;
     }
   }
 `;
@@ -71,13 +71,12 @@ export const Icons = styled.div`
   display: none;
   @media screen and (max-width: 500px) {
     display: inline-block;
-    margin-right: 10px;
     .icon {
       cursor: pointer;
       color: #95d1cc;
       width: 25px;
-      height: 20px;
-      margin-left: 10px;
+      height: 18px;
+      margin-left: 7px;
     }
   }
 `;

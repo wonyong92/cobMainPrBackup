@@ -8,11 +8,15 @@ export const NicknameWrapper = styled.div`
     margin-bottom: 10px;
   }
   input {
-    width: 300px;
+    width: 330px;
     height: 35px;
-    border: 1px solid #4a4747;
+    border: 1px solid #a2a0a0;
     border-radius: 3px;
     text-indent: 5px;
+  }
+  input:focus {
+    outline: 2px solid #95d1cc;
+    border: none;
   }
   @media screen and (max-width: 500px) {
     padding-bottom: 30px;

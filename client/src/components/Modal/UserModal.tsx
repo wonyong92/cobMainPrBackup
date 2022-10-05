@@ -78,17 +78,18 @@ export const Container = styled.div<{ modalOpen: boolean }>`
   flex-direction: column;
   align-items: center;
   position: absolute;
+  padding: 15px;
   top: 10px;
-  right: 260px;
+  right: 255px;
   width: 300px;
-  height: 240px;
+  height: 215px;
   background-color: white;
   z-index: 1;
-  box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 5px 5px;
+  box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
   @media screen and (max-width: 500px) {
     top: 10px;
     width: 340px;
-    left: 70px;
+    left: 75px;
   }
 `;
 const ToBottom = keyframes`
@@ -112,8 +113,12 @@ export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  margin-top: 10px;
+  width: 95%;
+  .icon {
+    font-size: 16px;
+    cursor: pointer;
+    padding-bottom: 2px;
+  }
 `;
 export const Middle = styled.div`
   display: flex;
@@ -125,10 +130,11 @@ export const Middle = styled.div`
   border-bottom: 0.5px solid #f0ecec;
 `;
 export const ImgWrapper = styled.div`
-  padding: 10px;
+  padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 5px;
   img {
     width: 40px;
     height: 40px;
@@ -149,7 +155,7 @@ export const Bottom = styled.div`
   justify-content: space-between;
   height: 80px;
   width: 90%;
-  margin-top: 20px;
+  margin-top: 10px;
   button {
     color: #464646;
     font-size: 14px;

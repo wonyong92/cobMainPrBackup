@@ -16,11 +16,10 @@ const DeleteSocialAccount = () => {
 export default DeleteSocialAccount;
 
 const Container = styled.div`
-  margin-bottom: 40px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding-bottom: 50px;
+
   .title {
     font-size: 16px;
     font-weight: 600;
@@ -28,7 +27,7 @@ const Container = styled.div`
     margin-bottom: 10px;
   }
   @media screen and (max-width: 500px) {
-    padding-bottom: 0px;
+    min-height: 140px;
   }
 `;
 const BtnWrapper = styled.div`
@@ -39,9 +38,9 @@ const BtnWrapper = styled.div`
     top: 2px;
   }
   button {
-    height: 50px;
+    height: 45px;
     padding-left: 40px;
-    padding-right: 20px;
+    padding-right: 30px;
     border-radius: 5px;
     border: #aba8a8 1px solid;
     font-size: 13px;

@@ -9,7 +9,7 @@ interface Props {
 const ListItem = ({ data, isMyPost }: Props) => {
   const navigate = useNavigate();
   const imgUrl =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1ef0TiffQnfbIs_BKW4XXHEHDXL2GnZy0ew&usqp=CAU';
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQBF20H_iscXjbpbSQTRpnQukKDuYfT3Y7dQ&usqp=CAU';
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
@@ -71,12 +71,9 @@ const ImgWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   width: 100%;
-  @media screen and (max-width: 500px) {
-    width: 235px;
-  }
 `;
 const FirstRow = styled.div`
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 500;
   cursor: pointer;
   margin-bottom: 20px;
@@ -87,7 +84,7 @@ const FirstRow = styled.div`
 const SecondRow = styled.div`
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 13px;
   color: #aba8a8;
   span {
     margin-right: 5px;
@@ -97,8 +94,7 @@ const SecondRow = styled.div`
   }
 `;
 const ThirdRow = styled.div`
-  margin-top: 3px;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: #464646;
   @media screen and (max-width: 500px) {
@@ -110,7 +106,7 @@ const FourthRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 3px;
+  margin-top: 2px;
   font-size: 12px;
 
   color: #727272;
@@ -118,25 +114,17 @@ const FourthRow = styled.div`
   #tag {
     background-color: #95d1cc;
     color: white;
-    padding: 5px 12px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-size: 12px;
-  }
-  button {
-    height: 25px;
-    width: 70px;
-    font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
   }
   @media screen and (max-width: 500px) {
-    width: 235px;
-    font-size: 11px;
     #tag {
-      padding: 4px 10px;
+      padding: 3px 8px;
       font-size: 11px;
     }
     button {
-      font-size: 11px;
       width: 50px;
       height: 25px;
     }

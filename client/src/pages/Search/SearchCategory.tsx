@@ -82,23 +82,20 @@ const SearchCategory = () => {
 };
 export default SearchCategory;
 const Container = styled.div`
-  margin-top: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-
+  width: 60%;
   @media screen and (max-width: 500px) {
+    width: 90%;
   }
 `;
 const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 const Title = styled.div`
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 16px;
   span {
     color: #464646;
     font-weight: 400;
