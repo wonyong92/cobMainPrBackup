@@ -12,7 +12,7 @@ const PostDetail = () => {
   const params = useParams<{ id: string }>();
   const initialState = {
     category: '',
-    image: '',
+    rentPostImages: [0],
     location: '',
     rentPostContents: '',
     rentPostId: 0,
@@ -53,7 +53,7 @@ const PostDetail = () => {
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  min-height: 1000px;
   @media screen and (max-width: 500px) {
     width: 95%;
   }
@@ -81,14 +81,10 @@ const ContentContainer = styled.div`
 
 const CommentCount = styled.div`
   width: 100%;
-  height: 30px;
-  padding: 0 1rem;
-  margin: 0 auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding: 10px;
   font-size: 15px;
   line-height: 1.5;
-  color: #babcbe;
+  color: #464646;
   word-break: break-all;
 `;
 
