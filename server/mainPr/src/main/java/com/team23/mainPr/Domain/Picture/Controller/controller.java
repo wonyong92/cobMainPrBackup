@@ -19,7 +19,7 @@ public class controller {
     @Operation(description = "디폴트 프로필 이미지 등록 - 사용자용 api 아님")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void download() {
+    public void download() throws Exception {
         pictureService.setDefaultImage();
     }
 }
