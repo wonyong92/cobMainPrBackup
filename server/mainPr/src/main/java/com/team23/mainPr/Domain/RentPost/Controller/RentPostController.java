@@ -109,10 +109,10 @@ public class RentPostController {
     @PostMapping("/images")
     @Login
     public void postImages(
-        @RequestParam(value = "image") List<MultipartFile> files,
+        @RequestParam List<MultipartFile> image,
         @RequestParam Integer postId,
         @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
-        rentPostService.postImages(files, postId, token);
+        rentPostService.postImages(image, postId, token);
     }
 
     @Operation(description = "게시글 이미지 조회 - 이미지 식별 번호만 리턴 - 실제 이미지 조회는 해당 api의 식별번호들을 이용하여 /image/get api를 통해 렌더링.")
