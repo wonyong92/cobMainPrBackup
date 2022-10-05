@@ -9,17 +9,17 @@ spring:
         web-allow-others: true
   datasource:
     url: ${database.url}
-    driverClassName: org.h2.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     username: ${database.username}
     password: ${database.password}
   jpa:
-    defer-datasource-initialization: true
-#    hibernate:
-#      ddl-auto: validate
-    database-platform: org.hibernate.dialect.H2Dialect
+    #defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         show_sql: true
         format_sql: true
   mvc:
@@ -27,7 +27,7 @@ spring:
       matching-strategy: ant_path_matcher
   sql:
     init:
-      mode: always
+      mode: never
 
 timeZone:
   location:
