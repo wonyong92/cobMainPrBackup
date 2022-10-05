@@ -6,6 +6,7 @@ import {ChangeEvent, useContext, useState } from 'react';
 import { deleteComment, updateComment } from '../../Utils/ApiCall';
 import { UserContext } from '../../context/context';
 import TextInput from '../../UI/input/TextInput';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -19,6 +20,7 @@ const CommentItem = ({data}:CommentDataProps) => {
     const { user } = useContext(UserContext);
     const [editComment, setEditComment] = useState(false);
     const [text, setText] = useState(data.commentContents);
+    const navigate = useNavigate();
     
     const deleteCommentHandler =()=> {
     deleteComment(data.commentId);
@@ -44,6 +46,7 @@ const CommentItem = ({data}:CommentDataProps) => {
             commentId: data.commentId,
             writerId: data.writerId,
         },data.commentId);
+        window.location.reload();
             
             
     }
@@ -55,7 +58,7 @@ const CommentItem = ({data}:CommentDataProps) => {
     
         <CommentItemWrapper>
         <Image alt="practice" src={imgUrl} />
-                <Link to={`/mypage`}>{user.nickname}</Link>
+            <Link to={`/mypage`}>{user.nickname}</Link>
             <CommentItemHeader>
                 <span>{user.createdAt}</span>
             </CommentItemHeader>
@@ -63,10 +66,12 @@ const CommentItem = ({data}:CommentDataProps) => {
             {user.memberId === data.writerId ?
                 <CommentItemFooter>
                     <TextButton text='수정' isGray={true} btnText={'수정'} onClick={editCommentHandler}/>
-                    {editComment ? <><TextInput type='text' value={text} onChange={commentHandler} placeholder={''}/>
-                        <TextButton text='확인' isGray={true} btnText={'확인'}  onClick={updateCommentHandler}/></>
-                     : null}
                     <TextButton text='삭제' isGray={true} btnText={'삭제'} onClick={deleteCommentHandler}/>
+                    
+                    {editComment ? <><TextInput type='text' value={text} onChange={commentHandler} placeholder={''}/>
+                    <TextButton text='확인' isGray={true} btnText={'확인'}  onClick={updateCommentHandler}/></>
+                     : null}
+                    
                 </CommentItemFooter>
              : null}
         </CommentItemWrapper>
@@ -102,9 +107,13 @@ const CommentItemFooter = styled.div`
     justify-content: flex-end;
     padding:5px;
     margin-top: 0.5rem;
+    button {
+        margin-right: 0.5rem;
+    }
+
 `;
 
-const Image = styled.img`
+export const Image = styled.img`
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -115,15 +124,4 @@ const Image = styled.img`
 
 export default CommentItem;
 
-// const onDelete = () => {
-    //     deleteComment('id').then((res) => {
-    //         setComments(res.data);
-    //         console.log(res);
-    //     });
-        
-    // };
-    //  const onUpdate = () => {
-    //     updateComment().then((res) => {
-    //         console.log(res);
-    //     });
-    // };
+

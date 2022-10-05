@@ -74,7 +74,6 @@ const ListWrapper = styled.div`
   padding-bottom: 10px;
   padding-right: 10px;
   flex-basis: 33%;
-
   @media screen and (max-width: 500px) {
     width: 90%;
     margin: 0px;
