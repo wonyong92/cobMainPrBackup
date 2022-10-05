@@ -21,7 +21,7 @@ public class MainPrApplication {
     public CommandLineRunner test(RentPostRepository rentPostRepository) {
 
         return args -> {
-            rentPostRepository.ftInit();
+            //rentPostRepository.ftInit();
             pictureService.setDefaultImage();
         };
     }
