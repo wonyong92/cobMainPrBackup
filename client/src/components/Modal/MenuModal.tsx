@@ -8,11 +8,13 @@ import { useNavigate } from 'react-router-dom';
 import { searchCategoryKeyword } from '../../Utils';
 
 interface Props {
+  menuModal?: boolean;
   setMenuModal?: (state: boolean) => void;
 }
-const MenuModal = ({ setMenuModal }: Props) => {
+const MenuModal = ({ setMenuModal, menuModal }: Props) => {
   const navigate = useNavigate();
   const { setSearchResultList } = useContext(SearchResultContext);
+  const modalOpen: boolean = menuModal ? true : false;
   const closeModal = () => {
     setMenuModal && setMenuModal(false);
   };
@@ -21,25 +23,27 @@ const MenuModal = ({ setMenuModal }: Props) => {
     const result = await searchCategoryKeyword(e.target.innerText);
     if (result) {
       try {
-        console.log(result);
         setSearchResultList(result.data.rentPosts);
-        navigate('/search', {
-          state: { category: e.target.innerText },
+        navigate('/search/category', {
+          state: {
+            category: e.target.innerText,
+            totalPages: result.data.totalPages,
+            totalPostCount: result.data.totalEntity,
+          },
         });
       } catch {
         alert('죄송합니다 잠시 후 다시 시도해주세요 :)');
       }
     }
   };
-
   return (
     <ModalBackDrop onClick={closeModal}>
-      <Container>
+      <Container modalOpen={modalOpen}>
         <Top>
           <div className="title">카테고리</div>
           <FontAwesomeIcon icon={faX} onClick={closeModal} className="icon" />
         </Top>
-        <Bottom>
+        <Bottom modalOpen={modalOpen}>
           {category.map((el: any) => (
             <Item key={el.cid}>
               <div onClick={(e) => getCategoryPosts(e)}>{el.name}</div>

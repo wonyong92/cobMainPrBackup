@@ -1,4 +1,4 @@
-import { MyHeader, Top, LogoWrapper, LogoSVG, Icons } from './style';
+import { MyHeader, Top, TopLeft, LogoSVG, Icons, LogoWrapper, CategoryWrapper } from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -18,13 +18,17 @@ const Header = () => {
   return (
     <MyHeader>
       <Top>
-        <LogoWrapper menuModal={menuModal} onClick={() => navigate(`/`)}>
-          <LogoSVG />
-          <div className="title">빌리지뭐</div>
-          <div className="category" onClick={() => setMenuModal(true)}>
-            카테고리
-          </div>
-        </LogoWrapper>
+        <TopLeft>
+          <LogoWrapper onClick={() => navigate(`/`)}>
+            <LogoSVG />
+            <div className="title">빌리지뭐</div>
+          </LogoWrapper>
+          <CategoryWrapper menuModal={menuModal}>
+            <div className="category" onClick={() => setMenuModal(true)}>
+              카테고리
+            </div>
+          </CategoryWrapper>
+        </TopLeft>
         <Icons>
           <FontAwesomeIcon
             className="icon"
@@ -40,8 +44,8 @@ const Header = () => {
         </Icons>
       </Top>
       <SearchBar keyword={keyword} setKeyword={setKeyword} />
-      <DesktopRightSide userModal={userModal} setUserModal={setUserModal} memberId={user.memberId} />
-      {menuModal ? <MenuModal setMenuModal={setMenuModal} /> : null}
+      <DesktopRightSide setUserModal={setUserModal} memberId={user.memberId} />
+      {menuModal ? <MenuModal menuModal={menuModal} setMenuModal={setMenuModal} /> : null}
       {user.memberId && userModal ? <UserModal userModal={userModal} setUserModal={setUserModal} /> : null}
     </MyHeader>
   );
