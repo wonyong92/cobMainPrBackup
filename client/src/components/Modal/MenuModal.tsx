@@ -20,19 +20,23 @@ const MenuModal = ({ setMenuModal, menuModal }: Props) => {
   };
 
   const getCategoryPosts = async (e: any) => {
-    const result = await searchCategoryKeyword(e.target.innerText);
-    if (result) {
-      try {
-        setSearchResultList(result.data.rentPosts);
-        navigate('/search/category', {
-          state: {
-            category: e.target.innerText,
-            totalPages: result.data.totalPages,
-            totalPostCount: result.data.totalEntity,
-          },
-        });
-      } catch {
-        alert('죄송합니다 잠시 후 다시 시도해주세요 :)');
+    if (e.target.innerText === '인기리스트') {
+      navigate('/postlist');
+    } else {
+      const result = await searchCategoryKeyword(e.target.innerText);
+      if (result) {
+        try {
+          setSearchResultList(result.data.rentPosts);
+          navigate('/search/category', {
+            state: {
+              category: e.target.innerText,
+              totalPages: result.data.totalPages,
+              totalPostCount: result.data.totalEntity,
+            },
+          });
+        } catch {
+          alert('죄송합니다 잠시 후 다시 시도해주세요 :)');
+        }
       }
     }
   };
