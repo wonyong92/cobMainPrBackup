@@ -1,6 +1,6 @@
 
 import { ChangeEvent} from 'react';
-import { updatePost } from '../../Utils/ApiCall';
+import { updatePost, sendImage } from '../../Utils/ApiCall';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
@@ -35,16 +35,17 @@ const PostEdit = () => {
   };
 
   const clickHandler = () => {
+
+   
     updatePost({
-    
+      category: post.category,
       rentPostContents: post.rentPostContents,
       rentPostName: post.rentPostName,
       writerId:user.memberId,
       rentPrice: Number(post.rentPrice),
       location: post.location,
-      rentPostId: data.rentPostId,
-      rentStatus: data.rentStatus,
     })
+    sendImage(formData, 28);
     navigate(`/postlist`)
   }
 
@@ -111,7 +112,7 @@ const changeBtnName = () => {
             <span>렌트상태</span>
             <Button text={btn} width='short' radius='deep' onClick={changeBtnName}/>
             </WriteWrapper>
-            <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange}/>
+            <CustomEditor editorRef={editorRef} value={post.rentPostContents} onChange={handleEditorChange} sendImage={sendImage} props={undefined} />
             <Button text='Save'  onClick={()=>{}}/>
         </>
      
