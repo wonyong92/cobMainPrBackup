@@ -5,6 +5,7 @@ interface Prop {
   type: 'red' | 'beige' | 'white' | 'default';
   width: 'middle' | 'short' | 'default';
   radius: 'deep' | 'default';
+  value?: string | number;
 
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
