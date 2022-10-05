@@ -91,7 +91,9 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
             <TextButtonWrapper>
               {user.memberId === data.writerId ? (
                 <>
-                  <TextButton isGray={true} btnText={'수정'} onClick={editHandler} />
+                  <Link to={`/postedit/${data.rentPostId}`} state={{ data: data }}>
+                    수정
+                  </Link>
                   <TextButton isGray={true} btnText={'삭제'} onClick={() => setDeleteModal(true)} />
                 </>
               ) : (
