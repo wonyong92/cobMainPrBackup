@@ -2,29 +2,29 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  width: 980px;
-  margin-top: 15px;
+  width: 60%;
+  min-height: 1000px;
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
+    min-height: 500px;
+    padding: 0px 15px;
   }
 `;
 export const Top = styled.div`
-  width: 190px;
-  min-height: 500px;
-  margin-bottom: 10px;
+  width: 260px;
   border-right: 1px solid #efefef;
+  padding-right: 15px;
   .title {
     color: #171715;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
   }
   @media screen and (max-width: 500px) {
-    width: 95%;
+    width: 100%;
     border-bottom: 1px solid #efefef;
     border-right: none;
-    min-height: 100px;
   }
 `;
 export const Btns = styled.div`

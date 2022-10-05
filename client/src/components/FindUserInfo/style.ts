@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 export const Container = styled.div`
-  margin-top: 80px;
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   label {
     font-size: 13px;
     color: #464646;
@@ -20,7 +23,7 @@ export const Container = styled.div`
 export const FindBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 70%;
   margin-top: 30px;
   margin-bottom: 30px;
   @media screen and (max-width: 500px) {
@@ -29,8 +32,9 @@ export const FindBox = styled.div`
 `;
 export const BtnWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  button {
-    margin: 0 10px;
+  justify-content: space-between;
+  width: 70%;
+  @media screen and (max-width: 500px) {
+    width: 85%;
   }
 `;
