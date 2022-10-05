@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../config/config';
+const token = localStorage.getItem('token');
 
 const AxiosInstance = axios.create({
   baseURL: config.apiUrl,
@@ -8,5 +9,7 @@ const AxiosInstance = axios.create({
   },
   withCredentials: false,
 });
-
+{
+  token ? (AxiosInstance.defaults.headers.common['Authorization'] = token) : null;
+}
 export default AxiosInstance;
