@@ -7,7 +7,7 @@ import TextInput from '../../UI/input/TextInput';
 import { sendComment } from '../../Utils/ApiCall';
 import { UserContext } from '../../context/context';
 import { useContext } from 'react';
-
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 export interface CommentData {
   writerId: number | undefined;
   targetPostId: number;
@@ -43,11 +43,11 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
     window.location.reload();
   };
 
-  const imgUrl = `${config.apiUrl}/member/profileImage/get?memberId=${user.memberId}`;
+  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
   return (
     <>
       <CommentWrapper>
-        <Image alt="practice" src={imgUrl} />
+        {user.memberId ? <Image alt="practice" src={imgUrl} /> : null}
         <TextInput
           type={'text'}
           placeholder={'댓글을 입력하세요'}
@@ -71,7 +71,7 @@ const CommentWrapper = styled.div`
     white-space: nowrap;
   }
   input {
-    width: 600px;
+    width: 800px;
     height: 33px;
     border-radius: 0px;
   }
