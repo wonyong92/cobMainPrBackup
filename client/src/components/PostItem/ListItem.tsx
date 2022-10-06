@@ -61,6 +61,7 @@ export default ListItem;
 const ListItemContainer = styled.div`
   display: flex;
   flex-basis: 33%;
+  /* width: 33%; */
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
@@ -91,7 +92,6 @@ export const ImgWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  width: 100%;
   white-space: nowrap;
 `;
 

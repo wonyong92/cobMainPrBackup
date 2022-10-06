@@ -30,7 +30,7 @@ export const FilterWrapper = styled.div`
 export const ListBottom = styled.div`
   display: flex;
   flex-wrap: wrap;
-
+  /* width: 80%; */
   min-height: 700px;
   @media screen and (max-width: 500px) {
     display: flex;
