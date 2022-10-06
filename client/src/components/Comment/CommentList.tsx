@@ -1,4 +1,4 @@
- import CommentItem from './CommentItem';
+import CommentItem from './CommentItem';
 import { getComments } from '../../Utils/ApiCall';
 import { useState, useEffect } from 'react';
 import { PostItemDetailData } from '../PostItem/PostDetailItem';

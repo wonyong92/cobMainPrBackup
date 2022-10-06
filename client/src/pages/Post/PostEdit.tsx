@@ -11,7 +11,7 @@ import {
 } from './PostWrite';
 import { ChangeEvent } from 'react';
 import { updatePost, sendImage } from '../../Utils/ApiCall';
-import styled from 'styled-components';
+import { config } from '../../config/config';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
 import TextInput from '../../UI/input/TextInput';
@@ -26,14 +26,17 @@ import { category, location } from '../../constants';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const PostEdit = ({ formData }: any) => {
+const PostEdit = () => {
   const local = useLocation();
-  const data = local.state;
+  const data = local.state.data;
   const editorRef = useRef<Editor>();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>(
+    `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`,
+  );
   const [imageFile, setImageFile] = useState<FormData>();
+  const copyCategory = category.slice(1);
   const [btn, setBtn] = useState(data.rentStatus === false ? '렌트가능' : '렌트중');
   const [selectedLocation, setSelectedLocation] = useState('');
   const handleLocationChange = (e: any) => {
@@ -50,9 +53,11 @@ const PostEdit = ({ formData }: any) => {
     category: data.category,
     location: data.location,
     writerId: user.memberId,
+    rentPostImages: data.rentPostImages[0],
     rentPostId: data.rentPostId,
     rentStatus: data.rentStatus,
   });
+
   const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPost({ ...post, [name]: value });
@@ -64,22 +69,23 @@ const PostEdit = ({ formData }: any) => {
     // }
     post.category = selectedCategory;
     post.location = selectedLocation;
-    try {
-      const result = await updatePost({
-        deleteImages: [0],
-        rentPostId: post.rentPostId,
-        location: post.location,
-        rentPostContents: post.rentPostContents,
-        rentPostName: post.rentPostName,
-        rentPrice: Number(post.rentPrice),
-        rentStatus: post.rentStatus,
-      });
-      console.log(result);
-      if (imageFile) {
-        sendImage(imageFile, result.rentPostId);
-      }
-      navigate(`/postlist`);
-    } catch {}
+    // try {
+    const result = await updatePost({
+      deleteImages: [0],
+      rentPostId: post.rentPostId,
+      location: post.location,
+      rentPostContents: post.rentPostContents,
+      rentPostName: post.rentPostName,
+      rentPrice: Number(post.rentPrice),
+      rentStatus: post.rentStatus,
+    });
+    // console.log(result);
+    if (imageFile) {
+      sendImage(imageFile, post.rentPostId);
+      // }
+      navigate(`/`);
+      // } catch {}
+    }
   };
 
   const handleEditorChange = () => {
@@ -129,13 +135,10 @@ const PostEdit = ({ formData }: any) => {
             value={post.rentPostName}
             name={'rentPostName'}
           />
-
           <span>지역</span>
           <DropMenu props={location} onChange={handleLocationChange} state={selectedLocation} />
-
           <span>카테고리</span>
-          <DropMenu props={category} onChange={handleCategoryChange} state={selectedCategory} />
-
+          <DropMenu props={copyCategory} onChange={handleCategoryChange} state={selectedCategory} />
           <span>가격</span>
           <TextInput
             placeholder={'가격을 입력해주세요'}
@@ -145,7 +148,7 @@ const PostEdit = ({ formData }: any) => {
             name={'rentPrice'}
           />
           <span>렌트상태</span>
-          <Button text={btn} width="short" radius="deep" onClick={changeBtnName} value={post.rentStatus} />
+          <Button text={btn} width="short" radius="deep" onClick={changeBtnName} />
         </WriteWrapper>
         <ImgUploadeWrapper>
           {imageUrl ? (

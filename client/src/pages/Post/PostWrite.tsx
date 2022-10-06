@@ -31,6 +31,7 @@ const PostWrite = ({ formData }: any) => {
   const [imageFile, setImageFile] = useState<FormData>();
   const { user } = useContext(UserContext);
   const [imageUrl, setImageUrl] = useState<string>('');
+  const copyCategory = category.slice(1);
   const [post, setPost] = useState({
     rentPostName: '',
     rentPostContents: '',
@@ -45,11 +46,11 @@ const PostWrite = ({ formData }: any) => {
   };
 
   const clickHandler = async () => {
+    post.category = selectedCategory;
+    post.location = selectedLocation;
     if (!post.rentPostName || !post.category || !post.location || !post.rentPostContents || !post.rentPrice) {
       return;
     }
-    post.category = selectedCategory;
-    post.location = selectedLocation;
     try {
       const result = await sendPost({
         category: post.category,
@@ -63,7 +64,7 @@ const PostWrite = ({ formData }: any) => {
       if (imageFile) {
         sendImage(imageFile, result.rentPostId);
       }
-      navigate(`/postlist`);
+      navigate(`/`);
     } catch {}
   };
 
@@ -91,7 +92,7 @@ const PostWrite = ({ formData }: any) => {
       <Top>
         <TopLeft>
           <HeaderRow>
-            <h4>빌려주기 작성가이드</h4>
+            <div>빌려주기 작성가이드</div>
             <Button text="글 작성완료" width="short" onClick={clickHandler} />
           </HeaderRow>
           <GuideWrapper>
@@ -105,7 +106,7 @@ const PostWrite = ({ formData }: any) => {
       </Top>
       <Middle>
         <WriteWrapper>
-          <h4>필수 정보 입력</h4>
+          <div className="title">필수 정보 입력</div>
           <span>글제목</span>
           <TextInput
             placeholder={'글제목을 입력해주세요'}
@@ -117,7 +118,7 @@ const PostWrite = ({ formData }: any) => {
           <span>지역</span>
           <DropMenu props={location} onChange={handleLocationChange} state={selectedLocation} />
           <span>카테고리</span>
-          <DropMenu props={category} onChange={handleCategoryChange} state={selectedCategory} />
+          <DropMenu props={copyCategory} onChange={handleCategoryChange} state={selectedCategory} />
           <span>가격</span>
           <TextInput
             placeholder={'가격을 입력해주세요'}
@@ -206,6 +207,9 @@ export const WriteWrapper = styled.div`
   margin-left: 20px;
   margin-bottom: 10px;
   margin-top: 20px;
+  .title {
+    font-weight: 600;
+  }
   input {
     width: 550px;
     border-radius: 5px;
@@ -233,7 +237,6 @@ export const ImgUploadeWrapper = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
-
   img {
     width: 200px;
     height: 200px;
