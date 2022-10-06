@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export interface PostData {
   rentPostName: string;
   rentPostContents: string;
-  rentPrice: number;
+  rentPrice: number | undefined;
   category: string;
   location: string;
   writerId: number | undefined;
@@ -36,7 +36,7 @@ const PostWrite = ({ formData }: any) => {
   const [post, setPost] = useState({
     rentPostName: '',
     rentPostContents: '',
-    rentPrice: 0,
+    rentPrice: undefined,
     category: '',
     location: '',
     writerId: user.memberId,
@@ -90,23 +90,23 @@ const PostWrite = ({ formData }: any) => {
     <>
       <Top>
         <TopLeft>
-          <HeaderRow>
-            <div>빌려주기 작성가이드</div>
-            <Button text="글 작성완료" width="short" onClick={clickHandler} />
-          </HeaderRow>
-          <GuideWrapper>
+          {/* <HeaderRow> */}
+          {/* <div>빌려주기 작성가이드</div> */}
+          <Button text="완료" width="short" onClick={clickHandler} />
+          {/* </HeaderRow> */}
+          {/* <GuideWrapper>
             <li>1. 사진을 올려주세요</li>
             <li>2. 거래지역을 명시해주세요</li>
             <li>3. 제품의 사용기간, 상태를 작성해주세요</li>
             <li>4. 글 작성과 이미지 업로드시, 타인의 지식재산권을 침해하지 않도록 유의해주세요</li>
             <li>5. 사진 크기에 따른 업로드 제한</li>
-          </GuideWrapper>
+          </GuideWrapper> */}
         </TopLeft>
       </Top>
       <Middle>
         <WriteWrapper>
-          <div className="title">필수 정보 입력</div>
-          <span>글제목</span>
+          {/* <div className="title">필수 정보 입력</div> */}
+          {/* <span>글제목</span> */}
           <TextInput
             placeholder={'글제목을 입력해주세요'}
             onChange={onChangePost}
@@ -118,7 +118,7 @@ const PostWrite = ({ formData }: any) => {
           <DropMenu props={location} onChange={handleLocationChange} state={selectedLocation} />
           <span>카테고리</span>
           <DropMenu props={copyCategory} onChange={handleCategoryChange} state={selectedCategory} />
-          <span>가격</span>
+          {/* <span>가격</span> */}
           <TextInput
             placeholder={'가격을 입력해주세요'}
             onChange={onChangePost}
@@ -130,13 +130,13 @@ const PostWrite = ({ formData }: any) => {
         <ImgUploadeWrapper>
           {imageUrl ? (
             <ImgWrapper>
-              <div>사진 미리보기</div>
+              {/* <div>사진 미리보기</div> */}
               <img onClick={deleteImage} src={imageUrl} />
             </ImgWrapper>
           ) : (
             <IconWrapper>
               <FontAwesomeIcon icon={faCamera} className="icon" />
-              <span>사진 미리보기</span>
+              <span>사진</span>
             </IconWrapper>
           )}
         </ImgUploadeWrapper>
@@ -155,33 +155,35 @@ const PostWrite = ({ formData }: any) => {
   );
 };
 export const Top = styled.div`
+  width: 950px;
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
   button {
     border-radius: 10%;
     width: 100px;
     height: 40px;
     font-size: 14px;
-    box-shadow: 5px 5px black;
-    transition: 0.3s;
     white-space: nowrap;
   }
   @media screen and (max-width: 500px) {
+    width: 90%;
     font-size: 16px;
     button {
-      width: 80px;
+      width: 60px;
       height: 35px;
-      font-size: 12px;
-      box-shadow: 3px 3px black;
+      font-size: 13px;
     }
   }
 `;
-export const TopLeft = styled.div``;
+export const TopLeft = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 export const HeaderRow = styled.h4`
   display: flex;
   justify-content: space-between;
   margin-right: 20px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
   margin-left: 20px;
 `;
 
@@ -189,12 +191,13 @@ export const GuideWrapper = styled.ul`
   list-style: none;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
   border-bottom: 1px solid #e5e5e5;
 `;
 export const Middle = styled.div`
   display: flex;
   align-items: center;
+
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;
@@ -203,28 +206,33 @@ export const Middle = styled.div`
 export const WriteWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  margin-top: 20px;
+  align-items: flex-start;
+  margin-bottom: 15px;
   .title {
     font-weight: 600;
   }
   input {
     width: 550px;
     border-radius: 5px;
+    height: 50px;
+    background-color: white;
+    border-bottom: 1px solid #ececec;
   }
-  .button {
-    display: flex;
-    justify-content: center;
+  button {
+    margin-top: 10px;
+  }
+  span {
+    padding-top: 5px;
+    padding-left: 10px;
+    font-size: 14px;
   }
   @media screen and (max-width: 500px) {
     margin: 0px;
-    padding-top: 10px;
-    align-items: center;
+
     input {
       width: 330px;
+      height: 50px;
     }
-    h4,
     span {
       width: 100%;
       text-align: left;
@@ -233,13 +241,15 @@ export const WriteWrapper = styled.div`
 `;
 export const ImgUploadeWrapper = styled.div`
   border: none;
+  margin-left: 30px;
   margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 
   img {
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 110px;
     border-radius: 3px;
   }
   @media screen and (max-width: 500px) {
@@ -247,8 +257,8 @@ export const ImgUploadeWrapper = styled.div`
     align-items: flex-start;
     width: 370px;
     img {
-      width: 160px;
-      height: 160px;
+      width: 80px;
+      height: 80px;
     }
   }
 `;
@@ -265,10 +275,19 @@ export const Bottom = styled.div`
   display: flex;
 `;
 export const IconWrapper = styled.div`
-  padding: 100px;
+  border: 1px solid #ececec;
+  padding: 44px 37px;
   cursor: pointer;
   @media screen and (max-width: 500px) {
-    padding: 100px;
+    width: 25%;
+    padding: 26px 16px;
+    margin-left: 10px;
+    margin-top: 5px;
+    align-items: center;
+    span {
+      white-space: nowrap;
+      padding-left: 5px;
+    }
   }
 `;
 export default PostWrite;
