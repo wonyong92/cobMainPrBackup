@@ -22,7 +22,7 @@ const PostList = () => {
     });
   }, [sortType]);
 
-  const setObservatingTarget = useIntersectionObserver(fetchPosts());
+  const setObservatingTarget = useIntersectionObserver(fetchPosts);
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
