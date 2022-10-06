@@ -1,3 +1,4 @@
+// page-postEdit
 import {
   Top,
   TopLeft,
@@ -37,7 +38,7 @@ const PostEdit = () => {
   );
   const [imageFile, setImageFile] = useState<FormData>();
   const copyCategory = category.slice(1);
-  const [btn, setBtn] = useState(data.rentStatus === false ? '렌트가능' : '렌트중');
+  const [btn, setBtn] = useState(data.rentStatus ? '렌트중' : '렌트가능');
   const [selectedLocation, setSelectedLocation] = useState('');
   const handleLocationChange = (e: any) => {
     setSelectedLocation(e.target.value);
@@ -63,29 +64,28 @@ const PostEdit = () => {
     setPost({ ...post, [name]: value });
   };
 
-  const clickHandler = async () => {
+  const clickHandler = () => {
+    post.category = selectedCategory;
+    post.location = selectedLocation;
     // if (!post.rentPostName || !post.category || !post.location || !post.rentPostContents || !post.rentPrice) {
     //   return;
     // }
-    post.category = selectedCategory;
-    post.location = selectedLocation;
-    // try {
-    const result = await updatePost({
-      deleteImages: [0],
+    console.log(post.rentStatus);
+    updatePost({
+      deleteImages: [],
       rentPostId: post.rentPostId,
       location: post.location,
+      category: post.category,
       rentPostContents: post.rentPostContents,
       rentPostName: post.rentPostName,
       rentPrice: Number(post.rentPrice),
       rentStatus: post.rentStatus,
     });
-    // console.log(result);
     if (imageFile) {
       sendImage(imageFile, post.rentPostId);
-      // }
-      navigate(`/`);
-      // } catch {}
     }
+    navigate(`/postdetail/${post.rentPostId}`);
+    window.location.reload();
   };
 
   const handleEditorChange = () => {
@@ -98,10 +98,12 @@ const PostEdit = () => {
   };
 
   const changeBtnName = () => {
-    if (btn === '렌트가능') {
+    if (!post.rentStatus) {
       setBtn('렌트중');
+      setPost({ ...post, rentStatus: true });
     } else {
       setBtn('렌트가능');
+      setPost({ ...post, rentStatus: false });
     }
   };
   const deleteImage = () => {
@@ -112,7 +114,7 @@ const PostEdit = () => {
       <Top>
         <TopLeft>
           <HeaderRow>
-            <h4>빌려주기 작성가이드</h4>
+            <div>빌려주기 작성가이드</div>
             <Button text="수정완료" width="middle" onClick={clickHandler} />
           </HeaderRow>
           <GuideWrapper>
@@ -126,7 +128,7 @@ const PostEdit = () => {
       </Top>
       <Middle>
         <WriteWrapper>
-          <h4>필수 정보 입력</h4>
+          <div>필수 정보 입력</div>
           <span>글제목</span>
           <TextInput
             placeholder={'글제목을 입력해주세요'}
@@ -148,7 +150,9 @@ const PostEdit = () => {
             name={'rentPrice'}
           />
           <span>렌트상태</span>
-          <Button text={btn} width="short" radius="deep" onClick={changeBtnName} />
+          <div onClick={changeBtnName}>
+            <Button text={post.rentStatus ? '렌트중' : '렌트가능'} width="short" radius="deep" />
+          </div>
         </WriteWrapper>
         <ImgUploadeWrapper>
           {imageUrl ? (
@@ -170,6 +174,7 @@ const PostEdit = () => {
         onChange={handleEditorChange}
         sendImage={sendImage}
         setImageFile={setImageFile}
+        setImageUrl={setImageUrl}
       />
     </>
   );

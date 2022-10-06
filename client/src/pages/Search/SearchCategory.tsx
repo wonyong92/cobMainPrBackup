@@ -7,7 +7,7 @@ import PageDescript from '../../components/Descript/PageDescript';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
-import { Container, Top, Title, FilterWrapper, Bottom } from './style';
+import { Container, Top, Title, FilterWrapper, Bottom, ListBottom } from './style';
 const SearchCategory = () => {
   const location = useLocation();
   const category: string | undefined = location?.state.category;
@@ -18,6 +18,7 @@ const SearchCategory = () => {
   const [totalPost, setTotalPost] = useState(totalPostCount);
   const [rentSortType, setRentSortType] = useState('false');
   const [sortType, setSortType] = useState('writeDate');
+
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
   };
@@ -30,7 +31,6 @@ const SearchCategory = () => {
   const decreasePage = () => {
     setPage(page - 1);
   };
-  //필터변경시 api요청
   const searchFortCategoryKeyword = async () => {
     if (category) {
       const result = await handleFilterForCategorySearch(sortType, page, category, rentSortType);
@@ -66,16 +66,18 @@ const SearchCategory = () => {
         increasePage={increasePage}
         decreasePage={decreasePage}
       />
-      <Bottom>
-        {searchResultList && searchResultList.length === 0 ? (
+      {searchResultList && searchResultList.length === 0 ? (
+        <Bottom>
           <PageDescript
             title="검색결과가 없습니다 ㅜ_ㅜ"
             descript="현재 페이지에 해당하는 게시글이 존재하지 않습니다. 입력하신 단어의 철자가 정확한지 확인해 주세요 :)"
           />
-        ) : (
-          searchResultList && searchResultList.map((el) => <ListItem data={el} key={el.rentPostId} />)
-        )}
-      </Bottom>
+        </Bottom>
+      ) : (
+        <ListBottom>
+          {searchResultList && searchResultList.map((el) => <ListItem data={el} key={el.rentPostId} />)}
+        </ListBottom>
+      )}
     </Container>
   );
 };

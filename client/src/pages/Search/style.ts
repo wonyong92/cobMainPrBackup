@@ -27,12 +27,25 @@ export const FilterWrapper = styled.div`
   align-items: center;
   width: 130px;
 `;
-export const Bottom = styled.div`
+export const ListBottom = styled.div`
   display: flex;
   flex-wrap: wrap;
+
   min-height: 700px;
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;
+    min-height: 400px;
+  }
+`;
+export const Bottom = styled.div`
+  display: flex;
+  justify-content: center;
+
+  min-height: 700px;
+  @media screen and (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
   }
 `;

@@ -16,12 +16,11 @@ const ProfileImg = () => {
 
   const handleChangeBtnClick = (e: any) => {
     e.preventDefault();
-    imgInput.current?.click(); // ? Undefined일 수 있다.
+    imgInput.current?.click();
   };
   const compressImg = async (e: any) => {
     e.preventDefault();
     setImageUrl(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0]);
     const imgFile = e.target.files[0];
     const options = {
       maxSizeMB: 2,

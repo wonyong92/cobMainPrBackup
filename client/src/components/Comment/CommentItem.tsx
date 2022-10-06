@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
 import { CommentData } from './CommentWrite';
 import { ChangeEvent, useContext, useState } from 'react';
@@ -6,7 +7,7 @@ import { deleteComment, updateComment } from '../../Utils/ApiCall';
 import { UserContext } from '../../context/context';
 import TextInput from '../../UI/input/TextInput';
 import { useNavigate } from 'react-router-dom';
-
+import { config } from '../../config/config';
 export interface CommentDataProps {
   data: CommentData;
 }
@@ -15,6 +16,7 @@ const CommentItem = ({ data }: CommentDataProps) => {
   const { user } = useContext(UserContext);
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
+  const navigate = useNavigate();
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 11);
   const deleteCommentHandler = () => {
     deleteComment(data.commentId);
@@ -41,7 +43,7 @@ const CommentItem = ({ data }: CommentDataProps) => {
     window.location.reload();
   };
 
-  const imgUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`;
+  const imgUrl = `${config.apiUrl}/member/profileImage/get?memberId=${user.memberId}`;
   return (
     <>
       <CommentItemWrapper>
@@ -123,4 +125,3 @@ export const Image = styled.img`
 `;
 
 export default CommentItem;
-

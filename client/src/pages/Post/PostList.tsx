@@ -8,14 +8,13 @@ import { ItemContainer } from '../Main/Main';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 
 interface Props {
-  ref?:  React.MutableRefObject<HTMLDivElement>;
+  ref?: React.MutableRefObject<HTMLDivElement>;
 }
 
 const PostList = () => {
-
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
-  
+
   const fetchPosts = useCallback(async () => {
     getPosts(sortType).then((res) => {
       //   console.log(res.rentPosts);

@@ -1,15 +1,27 @@
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import { IListItemData } from '../../types';
+import { config } from '../../config/config';
+import { useEffect, useState } from 'react';
 interface Props {
   data: IListItemData;
   isMyPost?: boolean;
 }
 const ListItem = ({ data, isMyPost }: Props) => {
   const navigate = useNavigate();
-  const imgUrl =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQBF20H_iscXjbpbSQTRpnQukKDuYfT3Y7dQ&usqp=CAU';
+  const [targetImage, setTargetImage] = useState();
+  useEffect(() => {
+    const getImages = async () => {
+      const result = await axios.get(`${config.apiUrl}rentPost/images/get?postId=${data.rentPostId}`);
+      setTargetImage(result.data[0]);
+    };
+    getImages();
+  }, []);
+  const imgUrl: string | undefined =
+    targetImage && `${config.apiUrl}rentPost/image/get?imageId=${targetImage}`;
+
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);

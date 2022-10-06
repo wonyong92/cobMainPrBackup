@@ -22,7 +22,7 @@ export const SearchResultContext = createContext<ISearchResultContext>({
       location: '',
       rentPostContents: '',
       rentPostId: 0,
-      rentPostImages: [],
+      rentPostImages: [0],
       rentPostName: '',
       rentPrice: 0,
       rentStatus: true,

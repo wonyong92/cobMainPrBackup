@@ -1,3 +1,4 @@
+import { config } from '../../config/config';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ChangeEvent, MouseEvent } from 'react';
@@ -41,7 +42,8 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
     sendComment(comment);
     window.location.reload();
   };
-  const imgUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`;
+
+  const imgUrl = `${config.apiUrl}/member/profileImage/get?memberId=${user.memberId}`;
   return (
     <>
       <CommentWrapper>

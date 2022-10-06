@@ -19,6 +19,7 @@ const SearchKeyword = () => {
   const [rentSortType, setRentSortType] = useState('false');
   const [page, setPage] = useState(0);
   const [totalPost, setTotalPost] = useState(totalPostCount);
+
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
   };
@@ -33,16 +34,9 @@ const SearchKeyword = () => {
   };
   const searchForKeyword = async () => {
     if (keyword) {
-      const data = {
-        page: page - 1,
-        size: 10,
-        sort: sortType,
-      };
-      const result = await handleFilterForKeywordSearch(keyword, rentSortType, data);
+      const result = await handleFilterForKeywordSearch(keyword, sortType, rentSortType, page);
       try {
         if (result) {
-          // console.log('키워드페이지결과임');
-          // console.log(result);
           setTotalPost(result.data.totalEntity);
           setSearchResultList(result.data.rentPosts);
         }

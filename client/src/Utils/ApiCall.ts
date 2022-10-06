@@ -7,7 +7,7 @@ import { CommentData } from '../components/Comment/CommentWrite';
 export const getPosts = async (sortType?: string) => {
   try {
     const res = await AxiosInstance.get(`rentPost/posts?sort=${sortType}`);
-    console.log(res);
+    // console.log(res);
     return res.data;
   } catch (error) {
     console.log('error', error);
@@ -52,6 +52,7 @@ export const sendPost = async (post: any) => {
 };
 
 export const sendImage = async (image: FormData, postId: number) => {
+  console.log(image, postId);
   try {
     const res = await AxiosInstance.post(`rentPost/images/?postId=${postId}`, image);
     // console.log(res);
@@ -64,13 +65,15 @@ export const sendImage = async (image: FormData, postId: number) => {
 };
 
 export const updatePost = async (post: any) => {
+  console.log(post);
   try {
     post.location = `location${post.location}`;
     post.category = `category${post.category}`;
     const res = await AxiosInstance.put(`rentPost/update`, {
-      delelteImages: [0],
+      delelteImages: post.deleteImages,
       location: post.location,
-      rentPostId: post.rentPostId,
+      category: post.category,
+      postId: post.rentPostId,
       rentPostContents: post.rentPostContents,
       rentPostName: post.rentPostName,
       rentPrice: post.rentPrice,
@@ -78,8 +81,8 @@ export const updatePost = async (post: any) => {
     });
     console.log(res);
     // console.log(res.data);
-    const data = res.data;
-    return data;
+    // const data = res.data;
+    // return data;
   } catch (error) {
     console.log('error', error);
   }
@@ -88,8 +91,8 @@ export const updatePost = async (post: any) => {
 export const deletePost = async (id: any) => {
   try {
     const res = await AxiosInstance.delete(`rentPost/delete/?postId=${id}`);
-    console.log(res);
-    console.log(res.data);
+    // console.log(res);
+    // console.log(res.data);
     const data = res.data;
     return data;
   } catch (error) {
@@ -101,25 +104,25 @@ export const deletePost = async (id: any) => {
 export const getComments = async (postId: number) => {
   try {
     const res = await AxiosInstance.get(`comment/getComments?postId=${postId}`);
-    console.log(res);
-    console.log(res.data);
+    // console.log(res);
+    // console.log(res.data);
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
 export const sendComment = async (comment: CommentData) => {
-  console.log(comment);
+  // console.log(comment);
   try {
     const res = await AxiosInstance.post(`comment/post`, comment);
-    console.log(res);
-    console.log(res.data);
+    // console.log(res);
+    // console.log(res.data);
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
@@ -131,12 +134,12 @@ export const updateComment = async (comment: any, commentId: number) => {
       commentContents: comment.commentContents,
     });
 
-    console.log(res);
-    console.log(res.data);
+    // console.log(res);
+    // console.log(res.data);
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
@@ -144,11 +147,11 @@ export const deleteComment = async (commentId: number) => {
   try {
     const res = await AxiosInstance.post(`comment/delete?commentId=${commentId}`);
 
-    console.log(res);
-    console.log(res.data);
+    // console.log(res);
+    // console.log(res.data);
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
