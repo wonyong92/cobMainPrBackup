@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import DeleteModal from '../Modal/DeleteModal';
 import { UserContext } from '../../context/context';
-// import { ImgWrapper } from './ListItem';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { config } from '../../config/config';
 import axios from 'axios';
 export interface PostItemDetailData {
@@ -47,7 +48,9 @@ interface IPostItemDetailProps {
 }
 
 const PostDetailItem = ({ data }: IPostItemDetailProps) => {
-  const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
+  // const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
+  const [count, setCount] = useState(1);
+  const [imageURL, setImageURL] = useState('');
   const { user } = useContext(UserContext);
   const writerImageUrl = `${config.apiUrl}member/profileImage/get?memberId=${data.writerId}`;
   const [deleteModal, setDeleteModal] = useState(false);
@@ -65,15 +68,44 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
       } catch {}
     };
     getWriterInfo();
+    setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`);
   }, [data]);
   const editHandler = () => {
     navigate(`/postedit/${data.rentPostId}`);
+  };
+  //증가
+  const increaseCount = () => {
+    setCount(count + 1);
+  };
+  const getNextImage = () => {
+    console.log(count);
+    if (count >= data.rentPostImages.length - 1) {
+      setCount(0);
+    } else {
+      increaseCount();
+      setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[count]}`);
+    }
+  };
+  //감소
+  const decreaseCount = () => {
+    setCount(count - 1);
+  };
+  const getPrevImage = () => {
+    console.log(count);
+    if (count <= 0) {
+      setCount(data.rentPostImages.length);
+    } else {
+      decreaseCount();
+      setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[count]}`);
+    }
   };
   return (
     <>
       <ListWrapper>
         <ImgWrapper>
-          <GoodsImage src={imgUrl} />
+          {/* <FontAwesomeIcon icon={faAngleLeft} onClick={getPrevImage} className="icon" /> */}
+          {/* <FontAwesomeIcon icon={faAngleRight} onClick={getNextImage} className="icon" /> */}
+          <GoodsImage src={imageURL} />
         </ImgWrapper>
         <DescriptionWrapper>
           <Title>{data.rentPostName}</Title>
@@ -124,6 +156,9 @@ const ImgWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .icon {
+    cursor: pointer;
+  }
 `;
 const GoodsImage = styled.img`
   width: 300px;

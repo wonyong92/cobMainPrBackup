@@ -33,7 +33,7 @@ const PostDetail = () => {
   useEffect(() => {
     getPost(Number(params.id))
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setPost(res);
       })
       .catch((err) => {

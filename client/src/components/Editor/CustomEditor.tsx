@@ -5,6 +5,7 @@ import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { Editor } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 import styled from 'styled-components';
+import imageCompression from 'browser-image-compression';
 
 export interface EditorProp {
   height?: string;
@@ -27,6 +28,17 @@ const CustomEditor = ({
   setImageFile,
   setImageUrl,
 }: EditorProp) => {
+  const getCompressedFile = async (blob: any) => {
+    const uploadedFile = new File([blob], 'theBlob', {
+      lastModified: new Date().getTime(),
+      type: blob.type,
+    });
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 170,
+    };
+    return await imageCompression(uploadedFile, options);
+  };
   return (
     <>
       <EditorBorder>
@@ -43,10 +55,10 @@ const CustomEditor = ({
             ['table', 'image', 'link'],
           ]}
           hooks={{
-            addImageBlobHook: async (blob, callback) => {
-              console.log(blob);
+            addImageBlobHook: async (blob) => {
+              const compressedFile = await getCompressedFile(blob);
               let formData = new FormData();
-              formData.append('image', blob);
+              formData.append('image', compressedFile);
               setImageFile && setImageFile(formData);
               setImageUrl && setImageUrl(URL.createObjectURL(blob)); //미리보기
               // props.sendImage(formData, 28);
