@@ -90,9 +90,9 @@ const ListWrapper = styled.div`
   flex-basis: 33%;
   @media screen and (max-width: 500px) {
     width: 90%;
-    margin: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-right: 0px;
   }
 `;

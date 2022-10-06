@@ -67,9 +67,9 @@ const ListItemContainer = styled.div`
   border-bottom: #efeded 0.5px solid;
   @media screen and (max-width: 500px) {
     display: flex;
-    margin: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-right: 0px;
   }
 `;
