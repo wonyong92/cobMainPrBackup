@@ -27,7 +27,7 @@ const PostList = () => {
     <>
       <Top>
         <HeadRow>
-          <div>인기리스트</div>
+          <div>오늘은 뭐 빌리지?</div>
         </HeadRow>
         <SearchFilter value={sortType} onChange={handleSortChange} optionList={sortOptionList} />
       </Top>
@@ -43,8 +43,8 @@ const PostList = () => {
 const HeadRow = styled.div`
   width: 80%;
   text-align: left;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 600;
 `;
 const Top = styled.div`
   display: flex;
