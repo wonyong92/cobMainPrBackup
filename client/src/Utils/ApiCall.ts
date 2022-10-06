@@ -10,30 +10,30 @@ export const getPosts = async (sortType?: string) => {
     // console.log(res);
     return res.data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
 export const getPost = async (postId: number) => {
   try {
     const res = await AxiosInstance.post(`rentPost?postId=${postId}`);
-    console.log(res);
+    // console.log(res);
     return res.data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
 export const getImage = async () => {
   const params = useParams();
   try {
-    const res = await AxiosInstance.get(`http://3.35.90.143:54130/rentPost/images/get?postId=${params.id}`);
+    const res = await AxiosInstance.get(`rentPost/images/get?postId=${params.id}`);
     // console.log(res);
     // console.log(res.data);
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
@@ -47,12 +47,12 @@ export const sendPost = async (post: any) => {
     // console.log(res);
     return res.data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
 export const sendImage = async (image: FormData, postId: number) => {
-  console.log(image, postId);
+  // console.log(image, postId);
   try {
     const res = await AxiosInstance.post(`rentPost/images/?postId=${postId}`, image);
     // console.log(res);
@@ -60,12 +60,12 @@ export const sendImage = async (image: FormData, postId: number) => {
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
 export const updatePost = async (post: any) => {
-  console.log(post);
+  // console.log(post);
   try {
     post.location = `location${post.location}`;
     post.category = `category${post.category}`;
@@ -79,12 +79,12 @@ export const updatePost = async (post: any) => {
       rentPrice: post.rentPrice,
       rentStatus: post.rentStatus,
     });
-    console.log(res);
+    // console.log(res);
     // console.log(res.data);
     // const data = res.data;
     // return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 
@@ -96,7 +96,7 @@ export const deletePost = async (id: any) => {
     const data = res.data;
     return data;
   } catch (error) {
-    console.log('error', error);
+    // console.log('error', error);
   }
 };
 

@@ -37,7 +37,7 @@ const PostDetail = () => {
         setPost(res);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
