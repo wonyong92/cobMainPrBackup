@@ -32,20 +32,25 @@ const Main = () => {
     <>
       <Section>
         <WelcomePage>
-          <Title className="title1">
-            개인 간 렌탈 플랫폼<br></br> 빌리지뭐
-          </Title>
-          <SubTitle className="subtitle1">
-            살까 말까 고민 된다면<br></br> 지금 여기서 빌리고 써보세요 :)
-          </SubTitle>
+          <div className="titleWrapper1">
+            <Title className="title1">
+              개인 간 렌탈 플랫폼<br></br> 빌리지뭐
+            </Title>
+            <SubTitle className="subtitle1">
+              살까 말까 고민 된다면<br></br> 지금 여기서 빌리고 써보세요 :)
+            </SubTitle>
+          </div>
         </WelcomePage>
+
         <WelcomePage style={{ backgroundColor: '#FFFCFE' }}>
-          <Title className="title2">
-            사지말고<br></br> 빌려보세요
-          </Title>
-          <SubTitle className="subtitle2">
-            현명한 소비습관의 시작,<br></br> 지금 경험해보세요!
-          </SubTitle>
+          <div className="titleWrapper2">
+            <Title className="title2">
+              사지말고<br></br> 빌려보세요
+            </Title>
+            <SubTitle className="subtitle2">
+              현명한 소비습관의 시작,<br></br> 지금 경험해보세요!
+            </SubTitle>
+          </div>
         </WelcomePage>
       </Section>
       <HeadRow>
@@ -62,7 +67,7 @@ const Section = styled.div`
     width: 100%;
   }
 `;
-const ItemContainer = styled.div`
+export const ItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 80%;
@@ -73,13 +78,15 @@ const ItemContainer = styled.div`
     align-items: center;
   }
 `;
-const HeadRow = styled.div`
+export const HeadRow = styled.div`
   text-align: left;
   width: 80%;
-  padding-left: 40px;
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 14px;
+  @media screen and (max-width: 500px) {
+    width: 90%;
+  }
 `;
 
 const WelcomePage = styled.article`
@@ -88,31 +95,37 @@ const WelcomePage = styled.article`
   display: flex;
   flex-direction: column;
   white-space: nowrap;
+  padding: 0 2rem;
+  .titleWrapper1 {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .title1 {
-    padding-left: 150px;
     @media screen and (max-width: 500px) {
       font-size: 18px;
-      padding-left: 18px;
     }
   }
   .subtitle1 {
-    padding-left: 150px;
     @media screen and (max-width: 500px) {
       font-size: 15px;
-      padding-left: 18px;
     }
   }
+  .titleWrapper2 {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+  }
   .title2 {
-    padding-left: 950px;
+    margin-right: 74px;
     @media screen and (max-width: 500px) {
-      padding-left: 190px;
       font-size: 18px;
     }
   }
   .subtitle2 {
-    padding-left: 950px;
     @media screen and (max-width: 500px) {
-      padding-left: 190px;
       font-size: 15px;
     }
   }

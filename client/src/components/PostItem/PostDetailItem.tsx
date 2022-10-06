@@ -9,7 +9,7 @@ import { UserContext } from '../../context/context';
 import { config } from '../../config/config';
 export interface PostItemDetailData {
   category: string;
-  image: string;
+  rentPostImages: number[];
   location: string;
   rentPostContents: string;
   rentPostId: number;
@@ -28,7 +28,7 @@ export interface PostItemDetailData {
 interface IPostItemDetailProps {
   data: {
     category: string;
-    image: string;
+    rentPostImages: number[];
     location: string;
     rentPostContents: string;
     rentPostId: number;
@@ -46,8 +46,7 @@ interface IPostItemDetailProps {
 }
 
 const PostDetailItem = ({ data }: IPostItemDetailProps) => {
-  // const imgUrl: string = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
-  const imgUrl: string = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQBF20H_iscXjbpbSQTRpnQukKDuYfT3Y7dQ&usqp=CAU`;
+  const imgUrl: string = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostImages[0]}`;
   const { user } = useContext(UserContext);
   const writerImageUrl = `${config.apiUrl}/member/profileImage/get?memberId=${data.writerId}`;
   const [deleteModal, setDeleteModal] = useState(false);
@@ -55,10 +54,9 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const category = data.category?.slice(8);
-  // const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
+  const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
 
   const editHandler = () => {
-    // console.log(data.rentPostId);
     navigate(`/postedit/${data.rentPostId}`);
   };
   return (
@@ -70,11 +68,13 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
         <DescriptionWrapper>
           <Title>{data.rentPostName}</Title>
           <InfoWrapper>
-            <span>{category}</span>
             <PostInfo>
               <span>{location}</span>
-              <span>조회{data.viewCount}</span>
-              {/* <span>{createdAt}</span> */}
+              <span>{category}</span>
+            </PostInfo>
+            <PostInfo>
+              <span>{createdAt}</span>
+              <span>조회 {data.viewCount}</span>
             </PostInfo>
           </InfoWrapper>
           <Price>{price}원</Price>
@@ -91,7 +91,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
             <TextButtonWrapper>
               {user.memberId === data.writerId ? (
                 <>
-                  <Link className='editbutton' to={`/postedit/${data.rentPostId}`} state={{ data: data }}>
+                  <Link className="editbutton" to={`/postedit/${data.rentPostId}`} state={{ data: data }}>
                     수정
                   </Link>
                   <TextButton isGray={true} btnText={'삭제'} onClick={() => setDeleteModal(true)} />
@@ -122,6 +122,8 @@ const GoodsImage = styled.img`
 const ContentWrapper = styled.div`
   padding: 10px;
   margin-bottom: 10px;
+  margin-top: 10px;
+  border-top: 1px solid #ececec;
 `;
 const Content = styled.div`
   font-size: 15px;
@@ -157,6 +159,9 @@ const FourthRow = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 3px 10px;
+  button {
+    height: 28px;
+  }
 `;
 const ButtonWrapper = styled.div`
   display: flex;
@@ -206,9 +211,10 @@ const DescriptionWrapper = styled.div`
 
 const Title = styled.div`
   padding: 10px;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 1.5;
+  margin-bottom: 20px;
 
   @media screen and (max-width: 500px) {
     font-size: 18px;

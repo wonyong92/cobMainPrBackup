@@ -30,12 +30,13 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
       const data = {
         sort: 'writeDate',
         size: 10,
-        page: 1,
+        page: 0,
       };
       const result = await searchkeyword(keyword, data);
       try {
         setSearchResultList(result?.data.rentPosts);
         console.log('서치바결과임');
+        console.log(result);
         navigate('/search/keyword', {
           state: {
             keyword: keyword,

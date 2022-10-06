@@ -52,7 +52,6 @@ const ListItemContainer = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
-  margin: 2px;
   border-bottom: #efeded 0.5px solid;
   @media screen and (max-width: 500px) {
     display: flex;
@@ -81,6 +80,7 @@ export const ImgWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   width: 100%;
+  white-space: nowrap;
 `;
 
 export const FirstRow = styled.div`

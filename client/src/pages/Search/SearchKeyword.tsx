@@ -1,14 +1,14 @@
-import styled from 'styled-components';
 import ListItem from '../../components/PostItem/ListItem';
 import PageNation from '../../components/Pagenation/PageNation';
 import { sortOptionList, rentSortOptionList } from '../../constants';
-import { handleFilterForKeywordSearch, searchkeyword } from '../../Utils';
+import { handleFilterForKeywordSearch } from '../../Utils';
 import SearchFilter from '../../components/Search/SearchFilter';
 import PageDescript from '../../components/Descript/PageDescript';
 import { useContext, useEffect, useState } from 'react';
-import useDidMountEffect from '../../hooks/useDidMountEffect';
+import { Container, Top, Title, FilterWrapper, Bottom } from './style';
 import { useLocation } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
+
 const SearchKeyword = () => {
   const location = useLocation();
   const keyword: string | undefined = location?.state.keyword;
@@ -53,7 +53,7 @@ const SearchKeyword = () => {
   };
   useEffect(() => {
     searchForKeyword();
-  }, [rentSortType, sortType, setPage, page]);
+  }, [rentSortType, sortType, setPage, page, keyword]);
   return (
     <Container>
       <Top>
@@ -86,32 +86,3 @@ const SearchKeyword = () => {
   );
 };
 export default SearchKeyword;
-const Container = styled.div`
-  width: 60%;
-  @media screen and (max-width: 500px) {
-    width: 90%;
-  }
-`;
-const Top = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-const Title = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  span {
-    color: #464646;
-    font-weight: 400;
-    margin-left: 5px;
-    font-size: 13px;
-  }
-`;
-const FilterWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 130px;
-`;
-const Bottom = styled.div``;

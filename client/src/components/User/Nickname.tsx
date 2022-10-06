@@ -52,16 +52,12 @@ const Nickname = () => {
         nickname,
       };
       const result = await changeNickname(data);
-      try {
-        setNickname(result.nickname);
-        setUser({ ...user, nickname: result.nickname });
-        setMessage({
-          ...message,
-          ['nickname']: `닉네임이 ${result.nickname} (으)로 변경되었습니다 :)`,
-        });
-      } catch {
-        setMessage({ ...message, ['nickname']: `죄송합니다 잠시 후 다시 시도해주세요` });
-      }
+      setNickname(result.nickname);
+      setUser({ ...user, nickname: result.nickname });
+      setMessage({
+        ...message,
+        ['nickname']: `닉네임이 ${result.nickname} (으)로 변경되었습니다 :)`,
+      });
     } else {
       return;
     }
