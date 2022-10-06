@@ -1,5 +1,6 @@
+//page-postwrite
 import { ChangeEvent } from 'react';
-import { getImage, sendImage, sendPost } from '../../Utils/ApiCall';
+import { sendImage, sendPost } from '../../Utils/ApiCall';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
@@ -70,8 +71,6 @@ const PostWrite = ({ formData }: any) => {
 
   const handleEditorChange = () => {
     const editorInstance = editorRef.current?.getInstance();
-
-    console.log(editorInstance?.getMarkdown());
     if (editorInstance) {
       setPost({ ...post, rentPostContents: editorInstance.getMarkdown() });
     }
@@ -237,6 +236,7 @@ export const ImgUploadeWrapper = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
+
   img {
     width: 200px;
     height: 200px;

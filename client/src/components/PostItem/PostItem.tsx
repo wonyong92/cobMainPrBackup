@@ -1,5 +1,9 @@
+//cocmponeten - psotItem.tsx
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { config } from '../../config/config';
+import { useEffect, useState } from 'react';
 import { ImgWrapper, FirstRow, SecondRow, ThirdRow, FourthRow } from './ListItem';
 export interface PostItemData {
   catergory: string | undefined;
@@ -15,8 +19,7 @@ export interface PostItemData {
   viewCount: number | undefined;
   writeDate: string | undefined;
   writerId: number | undefined;
-  ref?: React.LegacyRef<HTMLDivElement> | undefined
-
+  ref?: React.LegacyRef<HTMLDivElement> | undefined;
 }
 export interface PostItemProps {
   data: PostItemData;
@@ -24,8 +27,17 @@ export interface PostItemProps {
 
 const PostItem = ({ data }: PostItemProps) => {
   const navigate = useNavigate();
-  // const imgUrl = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
-  const imgUrl = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEW0uk7P3QtLpiwy0qj67ip9tTAISocr4Ihg&usqp=CAU`;
+  const [targetImage, setTargetImage] = useState();
+  useEffect(() => {
+    const getImages = async () => {
+      const result = await axios.get(`${config.apiUrl}rentPost/images/get?postId=${data.rentPostId}`);
+      setTargetImage(result.data[0]);
+    };
+    getImages();
+  }, []);
+  const imgUrl: string | undefined =
+    targetImage && `${config.apiUrl}rentPost/image/get?imageId=${targetImage}`;
+
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
