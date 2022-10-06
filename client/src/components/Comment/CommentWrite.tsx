@@ -39,8 +39,12 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
   };
 
   const clickHandler = () => {
-    sendComment(comment);
-    window.location.reload();
+    if (user.memberId) {
+      sendComment(comment);
+      window.location.reload();
+    } else {
+      return;
+    }
   };
 
   const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
