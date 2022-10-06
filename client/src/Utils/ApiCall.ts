@@ -5,10 +5,9 @@ import { CommentData } from '../components/Comment/CommentWrite';
 
 //POST
 export const getPosts = async (sortType?: string) => {
-  console.log(sortType);
   try {
     const res = await AxiosInstance.get(`rentPost/posts?sort=${sortType}`);
-    console.log(res);
+    // console.log(res);
     return res.data;
   } catch (error) {
     console.log('error', error);

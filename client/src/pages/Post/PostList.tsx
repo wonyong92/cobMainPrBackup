@@ -1,23 +1,29 @@
 import { getPosts } from '../../Utils/ApiCall';
 import PostItem from '../../components/PostItem/PostItem';
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
 import { ItemContainer } from '../Main/Main';
-// import { SearchResultContext } from '../../context/context';
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+
+interface Props {
+  ref?:  React.MutableRefObject<HTMLDivElement>;
+}
 
 const PostList = () => {
-  // const { searchResultList, setSearchResultList } = useContext(SearchResultContext);
+
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
-
-  useEffect(() => {
+  
+  const fetchPosts = useCallback(async () => {
     getPosts(sortType).then((res) => {
       //   console.log(res.rentPosts);
       setPosts(res.rentPosts);
     });
   }, [sortType]);
+
+  const setObservatingTarget = useIntersectionObserver(fetchPosts);
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
@@ -36,6 +42,7 @@ const PostList = () => {
           <PostItem data={el} key={el.rentPostId} />
         ))}
       </ItemContainer>
+      <div ref={setObservatingTarget} />
     </>
   );
 };
