@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { UserContext } from '../../context/context';
 import { config } from '../../config/config';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 const UserCard = () => {
   const { user } = useContext(UserContext);
-  const imageUrl = `${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`;
+  const imageUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
   let date = user.createdAt;
   const createdAt = date?.slice(0, 10);
 

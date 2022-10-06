@@ -7,7 +7,7 @@ import TextInput from '../../UI/input/TextInput';
 import { sendComment } from '../../Utils/ApiCall';
 import { UserContext } from '../../context/context';
 import { useContext } from 'react';
-
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 export interface CommentData {
   writerId: number | undefined;
   targetPostId: number;
@@ -43,7 +43,7 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
     window.location.reload();
   };
 
-  const imgUrl = `${config.apiUrl}/member/profileImage/get?memberId=${user.memberId}`;
+  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
   return (
     <>
       <CommentWrapper>
