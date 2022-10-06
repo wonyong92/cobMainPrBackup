@@ -15,6 +15,8 @@ export interface PostItemData {
   viewCount: number | undefined;
   writeDate: string | undefined;
   writerId: number | undefined;
+  ref?: React.LegacyRef<HTMLDivElement> | undefined
+
 }
 export interface PostItemProps {
   data: PostItemData;
