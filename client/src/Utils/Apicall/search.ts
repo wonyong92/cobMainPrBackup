@@ -1,9 +1,10 @@
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import AxiosInstance from '../AxiosInstance';
 //게시글제목 검색
 export const searchkeyword = async (keyword: string) => {
   try {
     const res = await AxiosInstance.post(
-      `rentPost/search?phrase=${keyword}&rentStatus=false&sort=writeDate&size=12&page=0`,
+      `${PROXY}/rentPost/search?phrase=${keyword}&rentStatus=false&sort=writeDate&size=12&page=0`,
     );
     return res;
   } catch {
@@ -20,7 +21,7 @@ export const handleFilterForKeywordSearch = async (
 ) => {
   try {
     const res = await AxiosInstance.post(
-      `rentPost/search?phrase=${keyword}&rentStatus=${rentSortType}&sort=${sortType}&size=12&page=${page}`,
+      `${PROXY}/rentPost/search?phrase=${keyword}&rentStatus=${rentSortType}&sort=${sortType}&size=12&page=${page}`,
     );
     return res;
   } catch {
@@ -31,7 +32,7 @@ export const handleFilterForKeywordSearch = async (
 export const searchCategoryKeyword = async (targetCategory: string) => {
   try {
     const res = await AxiosInstance.get(
-      `rentPost/posts?category=category${targetCategory}&rentStatus=false&sort=writeDate&size=12&page=0`,
+      `${PROXY}/rentPost/posts?category=category${targetCategory}&rentStatus=false&sort=writeDate&size=12&page=0`,
     );
     return res;
   } catch {
@@ -47,7 +48,7 @@ export const handleFilterForCategorySearch = async (
 ) => {
   try {
     const res = await AxiosInstance.get(
-      `rentPost/posts?category=category${category}&rentStatus=${rentSortType}&sort=${sortType}&size=12&page=${page}`,
+      `${PROXY}/rentPost/posts?category=category${category}&rentStatus=${rentSortType}&sort=${sortType}&size=12&page=${page}`,
     );
     return res;
   } catch {
