@@ -66,8 +66,7 @@ const App = () => {
         <div className="App">
           {pathCondition ? undefined : <Header />}
           <Routes>
-            <Route path="/postlist" element={<PostList />} /> 
-            <Route path="/" element={<Main />} />
+            {user.loginId ? <Route path="/" element={<PostList />} /> : <Route path="/" element={<Main />} />}
             <Route path="/postedit/:id" element={<PostEdit />} />
             <Route path="/postdetail/:id" element={<PostDetail />} />
             <Route path="/postwrite" element={<PostWrite />} />

@@ -3,19 +3,21 @@ import styled from 'styled-components';
 
 interface Prop {
   type: 'text';
-  value: string | number;
+  value?: string | number;
+  defaultValue?: string;
   placeholder: string;
   name?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyup?: (e: any) => void;
 }
 
-const TextInput = ({ type, value, name, placeholder, onChange, onKeyup }: Prop) => {
+const TextInput = ({ type, value, defaultValue, name, placeholder, onChange, onKeyup }: Prop) => {
   return (
     <div>
       <TextBox
         type={type}
         value={value}
+        defaultValue={defaultValue}
         placeholder={placeholder}
         onChange={onChange}
         onKeyUp={onKeyup}

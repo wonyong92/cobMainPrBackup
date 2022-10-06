@@ -5,8 +5,6 @@ import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { Editor } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 import styled from 'styled-components';
-import { sendImage } from '../../Utils/ApiCall';
-import { useState } from 'react';
 
 export interface EditorProp {
   height?: string;
@@ -29,8 +27,6 @@ const CustomEditor = ({
   setImageFile,
   setImageUrl,
 }: EditorProp) => {
-  // const [imageUrl, setImageUrl] = useState<string>('');
-
   return (
     <>
       <EditorBorder>
@@ -74,7 +70,7 @@ const CustomEditor = ({
 
 const EditorBorder = styled.div`
   position: relative;
-  width: 800px;
+  width: 950px;
   outline: rgba(0, 0, 0, 0) solid 4px;
   border: 1px solid rgba(0, 0, 0, 0);
   svg {

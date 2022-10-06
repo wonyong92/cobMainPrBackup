@@ -7,6 +7,7 @@ import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
 import CommentList from '../../components/Comment/CommentList';
 import CommentWrite from '../../components/Comment/CommentWrite';
 import { useParams } from 'react-router-dom';
+import { config } from '../../config/config';
 
 const PostDetail = () => {
   const params = useParams<{ id: string }>();
