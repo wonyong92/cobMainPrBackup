@@ -1,6 +1,10 @@
-import { Link } from 'react-router-dom';
+//cocmponeten - psotItem.tsx
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import { config } from '../../config/config';
+import { useEffect, useState } from 'react';
+import { ImgWrapper, FirstRow, SecondRow, ThirdRow, FourthRow } from './ListItem';
 export interface PostItemData {
   catergory: string | undefined;
   image: string | undefined;
@@ -15,25 +19,52 @@ export interface PostItemData {
   viewCount: number | undefined;
   writeDate: string | undefined;
   writerId: number | undefined;
+  ref?: React.LegacyRef<HTMLDivElement> | undefined;
 }
 export interface PostItemProps {
   data: PostItemData;
 }
 
 const PostItem = ({ data }: PostItemProps) => {
-  const imgUrl = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostId}`;
+  const navigate = useNavigate();
+  const [targetImage, setTargetImage] = useState();
+  useEffect(() => {
+    const getImages = async () => {
+      const result = await axios.get(`${config.apiUrl}rentPost/images/get?postId=${data.rentPostId}`);
+      setTargetImage(result.data[0]);
+    };
+    getImages();
+  }, []);
+  const imgUrl: string | undefined =
+    targetImage && `${config.apiUrl}rentPost/image/get?imageId=${targetImage}`;
 
+  const price = data.rentPrice?.toLocaleString();
+  const location = data.location?.slice(8);
+  const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
+  const goDetailPage = () => {
+    navigate(`/postdetail/${data.rentPostId}`);
+  };
   return (
     <>
       <ListWrapper>
-        <Image src={imgUrl} />
+        <ImgWrapper onClick={goDetailPage}>
+          <img src={imgUrl} />
+        </ImgWrapper>
         <DescriptionWrapper>
-          <Link to={`/postdetail/${data.rentPostId}`}>{data.rentPostName}</Link>
-          <Region>{data.location}</Region>
-          <Price>{data.rentPrice}</Price>
-          <div style={{ color: '#868e96', fontSize: '13px' }}>
-            <span>조회:{data.viewCount}</span>
-          </div>
+          <FirstRow onClick={goDetailPage}>{data.rentPostName}</FirstRow>
+          <SecondRow>
+            <span>{location}</span>
+            <span>{createdAt}</span>
+          </SecondRow>
+          <ThirdRow>
+            <Price>{price} 원</Price>
+          </ThirdRow>
+          <FourthRow>
+            <span id="tag" className="fourthRow">
+              {data.rentStatus ? '렌트중' : '렌트가능'}
+            </span>
+            <span className="fourthRow">조회 {data.viewCount}</span>
+          </FourthRow>
         </DescriptionWrapper>
       </ListWrapper>
     </>
@@ -52,22 +83,22 @@ const PostItem = ({ data }: PostItemProps) => {
 
 const ListWrapper = styled.div`
   display: flex;
+  padding-top: 10px;
   border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  flex-basis: 33%;
+  @media screen and (max-width: 500px) {
+    width: 90%;
+    margin: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+  }
 `;
 
 const DescriptionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Image = styled.img`
-  //
-  width: 100px;
-  height: 100px;
-  /* background-image: url('https://pbs.twimg.com/profile_images/449975524350103554/zBK8lr4 */
-  background-size: 100px 100px;
-  border-radius: 12px;
-  border: 0px solid transparent;
+  width: 100%;
 `;
 
 const Title = styled.h2`

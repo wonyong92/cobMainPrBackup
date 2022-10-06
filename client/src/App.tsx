@@ -18,10 +18,10 @@ import { useEffect, useState } from 'react';
 import { IUserData } from './types';
 import { UserContext } from './context/context';
 import NotFound from './components/NotFound/NotFound';
-import Search from './pages/Search/Search';
 import { IListItemData } from './types';
 import { SearchResultContext } from './context/context';
-
+import SearchCategory from './pages/Search/SearchCategory';
+import SearchKeyword from './pages/Search/SearchKeyword';
 
 const App = () => {
   const location = useLocation();
@@ -65,12 +65,12 @@ const App = () => {
         <div className="App">
           {pathCondition ? undefined : <Header />}
           <Routes>
-            <Route path="/postlist" element={<PostList />} /> 
-            <Route path="/" element={<Main />} />
+            {user.loginId ? <Route path="/" element={<PostList />} /> : <Route path="/" element={<Main />} />}
             <Route path="/postedit/:id" element={<PostEdit />} />
             <Route path="/postdetail/:id" element={<PostDetail />} />
             <Route path="/postwrite" element={<PostWrite />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/search/category" element={<SearchCategory />} />
+            <Route path="/search/keyword" element={<SearchKeyword />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/myactivity" element={<MyActivity />} />
             <Route path="/signup" element={<Signup />} />

@@ -3,7 +3,7 @@ import { UserContext } from '../../context/context';
 import { NicknameWrapper, BtnWrapper } from './nickname-style';
 import Button from '../../UI/button/Button';
 import DefaultInput from '../../UI/input/DefaultInput';
-import { MSG_12, MSG_11, MSG_14, NICKNAME_REGEXP } from '../../constants';
+import { MSG_12, MSG_11, NICKNAME_REGEXP } from '../../constants';
 import { changeNickname, checkDuplicatedNickname } from '../../Utils';
 interface Message {
   nickname: string;
@@ -28,12 +28,12 @@ const Nickname = () => {
   };
   // 중복검사
   const DuplicatedNickname = async () => {
-    const res = await checkDuplicatedNickname(nickname);
+    const result = await checkDuplicatedNickname(nickname);
     try {
-      if (res === 'exist') {
+      if (result === 'exist') {
         setMessage({ ...message, ['nickname']: MSG_12 });
         return;
-      } else {
+      } else if (nickname && isValidNickname(nickname)) {
         return true;
       }
     } catch {
@@ -52,17 +52,12 @@ const Nickname = () => {
         nickname,
       };
       const result = await changeNickname(data);
-      console.log(result);
-      try {
-        setNickname(result.nickname);
-        setUser({ ...user, nickname: result.nickname });
-        setMessage({
-          ...message,
-          ['nickname']: `닉네임이 ${result.nickname} (으)로 변경되었습니다 :)`,
-        });
-      } catch {
-        setMessage({ ...message, ['nickname']: `죄송합니다 잠시 후 다시 시도해주세요` });
-      }
+      setNickname(result.nickname);
+      setUser({ ...user, nickname: result.nickname });
+      setMessage({
+        ...message,
+        ['nickname']: `닉네임이 ${result.nickname} (으)로 변경되었습니다 :)`,
+      });
     } else {
       return;
     }

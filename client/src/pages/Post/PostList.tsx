@@ -1,43 +1,64 @@
-import { getPosts }  from '../../Utils/ApiCall';
+import { getPosts } from '../../Utils/ApiCall';
 import PostItem from '../../components/PostItem/PostItem';
-import { useState, useEffect} from 'react';
+import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
-import { sortOptionList} from '../../constants';
-// import { SearchResultContext } from '../../context/context';
+import { sortOptionList } from '../../constants';
+import { ItemContainer } from '../Main/Main';
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 
+interface Props {
+  ref?: React.MutableRefObject<HTMLDivElement>;
+}
 
 const PostList = () => {
-    // const { searchResultList, setSearchResultList } = useContext(SearchResultContext);
-    const [posts, setPosts] = useState([]);
-    const [sortType, setSortType] = useState('writeDate');
-    
-    useEffect(() => {
-        getPosts(sortType).then((res) => {
-            console.log(res.rentPosts);
-            setPosts(res.rentPosts);
-        });
-    }, [sortType]);
+  const [posts, setPosts] = useState([]);
+  const [sortType, setSortType] = useState('writeDate');
 
-        
-      const handleSortChange = (e: any) => {
-      setSortType(e.target.value);
-      };
-      
+  const fetchPosts = useCallback(async () => {
+    getPosts(sortType).then((res) => {
+      //   console.log(res.rentPosts);
+      setPosts(res.rentPosts);
+    });
+  }, [sortType]);
 
-return (
+  const setObservatingTarget = useIntersectionObserver(fetchPosts);
+
+  const handleSortChange = (e: any) => {
+    setSortType(e.target.value);
+  };
+
+  return (
     <>
-    <SearchFilter value={sortType} onChange={handleSortChange} optionList={sortOptionList} />
+      <Top>
         <HeadRow>
-        <h2>인기리스트</h2>
+          <div>오늘은 뭐 빌리지?</div>
         </HeadRow>
-        {posts.map((el:any) => <PostItem data={el} key={el.rentPostId} />
-                       
-        )}
+        <SearchFilter value={sortType} onChange={handleSortChange} optionList={sortOptionList} />
+      </Top>
+      <ItemContainer>
+        {posts.map((el: any) => (
+          <PostItem data={el} key={el.rentPostId} />
+        ))}
+      </ItemContainer>
+      <div ref={setObservatingTarget} />
     </>
-);
+  );
 };
 
-const HeadRow = styled.div``;
+const HeadRow = styled.div`
+  width: 80%;
+  text-align: left;
+  font-size: 22px;
+  font-weight: 600;
+`;
+const Top = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  @media screen and (max-width: 500px) {
+    width: 90%;
+  }
+`;
 
 export default PostList;

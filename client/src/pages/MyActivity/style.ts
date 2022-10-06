@@ -2,10 +2,15 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 980px;
-  margin-top: 15px;
+  width: 60%;
+  min-height: 1000px;
+  .errorMsg {
+    font-size: 13px;
+  }
   @media screen and (max-width: 500px) {
-    width: 95%;
+    width: 100%;
+    padding: 0px 15px;
+    min-height: 500px;
   }
 `;
 
@@ -26,8 +31,8 @@ export const SubTitle = styled.div`
   padding-left: 10px;
   .subtitle {
     margin-left: 10px;
-    padding-top: 15px;
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
     font-size: 14px;
     color: #95d1cc;
     border-bottom: 3px solid #95d1cc;
@@ -36,8 +41,8 @@ export const SubTitle = styled.div`
   .deActive {
     font-size: 14px;
     margin-left: 15px;
-    padding-top: 15px;
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
     border-bottom: 3px solid transparent;
   }
   @media screen and (max-width: 500px) {

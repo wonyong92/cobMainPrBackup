@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 export const ModalBackDrop = styled.div`
   display: flex;
   position: fixed;
@@ -12,26 +12,27 @@ export const ModalBackDrop = styled.div`
     justify-content: center;
   }
 `;
-export const Container = styled.div`
+export const Container = styled.div<{ modalOpen: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;
-  top: 60px;
+  top: 52px;
   left: 150px;
-  padding: 10px;
+  padding: 7px;
   height: 40px;
-  width: 100%;
+  opacity: 1;
   background-color: white;
-  opacity: 0.8;
 
   @media screen and (max-width: 500px) {
     align-items: center;
     width: 340px;
-    height: 420px;
-    top: 10px;
+    height: 440px;
+    top: 5px;
     left: 0.01px;
     opacity: 1;
+    background-color: white;
     box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
+    animation: ${(props) => (props.modalOpen ? ToBottom : ToTop)} 0.4s;
   }
 `;
 export const Top = styled.div`
@@ -39,25 +40,25 @@ export const Top = styled.div`
   @media screen and (max-width: 500px) {
     display: flex;
     align-items: center;
-    padding: 10px 0px;
-    border-bottom: 1px solid #f1efef;
-    width: 90%;
-    margin-top: 5px;
-    color: #282828;
+    padding: 5px 0px;
+    padding-left: 15px;
+    width: 100%;
+    color: #474747;
     .title {
-      font-weight: 600;
-      font-size: 15px;
-      width: 95%;
+      font-weight: 500;
+      font-size: 16px;
+      width: 94%;
       text-align: center;
     }
     .icon {
-      width: 5%;
+      font-size: 17px;
       cursor: pointer;
     }
   }
 `;
-export const Bottom = styled.div`
+export const Bottom = styled.div<{ modalOpen: boolean }>`
   display: flex;
+  animation: ${(props) => (props.modalOpen ? ToBottom : ToTop)} 0.4s;
 
   @media screen and (max-width: 500px) {
     margin-top: 5px;
@@ -65,6 +66,23 @@ export const Bottom = styled.div`
     flex-direction: column;
     min-width: 280px;
     align-items: flex-start;
+    animation: none;
+  }
+`;
+const ToBottom = keyframes`
+  from {
+      transform: translateY(-100%);
+  }
+  to {
+      transform: translate(0%);
+  }
+`;
+const ToTop = keyframes`
+  from {
+    transform: translate(0%);
+  }
+  to {
+    transform: translateY(-100%);
   }
 `;
 
@@ -75,6 +93,7 @@ export const Item = styled.div`
   font-weight: 500;
   margin-right: 10px;
   white-space: nowrap;
+  color: #464646;
   &:hover {
     color: #96d1cc;
     transition: 0.2s;

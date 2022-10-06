@@ -4,19 +4,19 @@ import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import imageCompression from 'browser-image-compression';
 import { changeProfileImage } from '../../Utils';
-
+import { config } from '../../config/config';
 const ProfileImg = () => {
   const { user } = useContext(UserContext);
   const token = localStorage.getItem('token');
   const imgInput = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState('');
   useEffect(() => {
-    setImageUrl(`http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`);
+    setImageUrl(`${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`);
   }, [user]);
 
   const handleChangeBtnClick = (e: any) => {
     e.preventDefault();
-    imgInput.current?.click(); // ? Undefined일 수 있다.
+    imgInput.current?.click();
   };
   const compressImg = async (e: any) => {
     e.preventDefault();
@@ -71,9 +71,13 @@ const Container = styled.div`
   padding-top: 5px;
   padding-left: 10px;
   margin-bottom: 40px;
+  min-height: 150px;
   .title {
     color: #4a4747;
     font-size: 14px;
+  }
+  @media screen and (max-width: 500px) {
+    min-height: 0px;
   }
 `;
 const ImgWrapper = styled.div`
@@ -94,8 +98,8 @@ const ImgWrapper = styled.div`
   }
   @media screen and (max-width: 500px) {
     img {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
     }
   }
 `;

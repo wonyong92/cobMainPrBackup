@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ReactComponent as Logo } from '../../asessts/img/logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
@@ -6,14 +6,16 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/context';
 import TextButton from '../../UI/button/TextButton';
 import { useNavigate } from 'react-router-dom';
+import { config } from '../../config/config';
 interface PropsType {
   userModal: boolean;
   setUserModal: (state: boolean) => void;
 }
-const UserModal = ({ setUserModal }: PropsType) => {
+const UserModal = ({ setUserModal, userModal }: PropsType) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-  const imageUrl = `http://3.35.90.143:54130/member/profileImage/get?memberId=${user.memberId}`;
+  const modalOpen: boolean = userModal ? true : false;
+  const imageUrl = `${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`;
   const closeModal = () => {
     setUserModal(false);
   };
@@ -32,7 +34,7 @@ const UserModal = ({ setUserModal }: PropsType) => {
     navigate('/', { replace: true });
   };
   return (
-    <Container>
+    <Container modalOpen={modalOpen}>
       <Top>
         <LogoSVG />
         <FontAwesomeIcon icon={faX} onClick={closeModal} className="icon" />
@@ -70,24 +72,40 @@ const UserModal = ({ setUserModal }: PropsType) => {
 };
 export default UserModal;
 
-export const Container = styled.div`
+export const Container = styled.div<{ modalOpen: boolean }>`
   display: flex;
+  animation: ${(props) => (props.modalOpen ? ToBottom : ToTop)} 0.4s;
   flex-direction: column;
   align-items: center;
   position: absolute;
+  padding: 15px;
   top: 10px;
-  right: 270px;
+  right: 255px;
   width: 300px;
-  height: 240px;
+  height: 215px;
   background-color: white;
   z-index: 1;
-  box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 5px 5px;
+  box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
   @media screen and (max-width: 500px) {
     top: 10px;
-    left: 0.01px;
-    right: 0px;
     width: 340px;
-    left: 82px;
+    left: 75px;
+  }
+`;
+const ToBottom = keyframes`
+  from {
+      transform: translateY(-100%);
+  }
+  to {
+      transform: translate(0%);
+  }
+`;
+const ToTop = keyframes`
+  from {
+    transform: translate(0%);
+  }
+  to {
+    transform: translateY(-100%);
   }
 `;
 export const LogoSVG = styled(Logo)``;
@@ -95,8 +113,12 @@ export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  margin-top: 10px;
+  width: 95%;
+  .icon {
+    font-size: 16px;
+    cursor: pointer;
+    padding-bottom: 2px;
+  }
 `;
 export const Middle = styled.div`
   display: flex;
@@ -108,10 +130,11 @@ export const Middle = styled.div`
   border-bottom: 0.5px solid #f0ecec;
 `;
 export const ImgWrapper = styled.div`
-  padding: 10px;
+  padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 5px;
   img {
     width: 40px;
     height: 40px;
@@ -132,7 +155,7 @@ export const Bottom = styled.div`
   justify-content: space-between;
   height: 80px;
   width: 90%;
-  margin-top: 20px;
+  margin-top: 10px;
   button {
     color: #464646;
     font-size: 14px;

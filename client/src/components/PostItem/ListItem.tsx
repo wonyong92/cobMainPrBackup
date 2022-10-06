@@ -1,15 +1,27 @@
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import { IListItemData } from '../../types';
+import { config } from '../../config/config';
+import { useEffect, useState } from 'react';
 interface Props {
   data: IListItemData;
   isMyPost?: boolean;
 }
 const ListItem = ({ data, isMyPost }: Props) => {
   const navigate = useNavigate();
-  const imgUrl =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1ef0TiffQnfbIs_BKW4XXHEHDXL2GnZy0ew&usqp=CAU';
+  const [targetImage, setTargetImage] = useState();
+  useEffect(() => {
+    const getImages = async () => {
+      const result = await axios.get(`${config.apiUrl}rentPost/images/get?postId=${data.rentPostId}`);
+      setTargetImage(result.data[0]);
+    };
+    getImages();
+  }, []);
+  const imgUrl: string | undefined =
+    targetImage && `${config.apiUrl}rentPost/image/get?imageId=${targetImage}`;
+
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
@@ -48,17 +60,26 @@ const ListItem = ({ data, isMyPost }: Props) => {
 export default ListItem;
 const ListItemContainer = styled.div`
   display: flex;
+  flex-basis: 33%;
   padding-top: 10px;
   padding-bottom: 10px;
+  padding-right: 10px;
   border-bottom: #efeded 0.5px solid;
+  @media screen and (max-width: 500px) {
+    display: flex;
+    margin: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+  }
 `;
-const ImgWrapper = styled.div`
+export const ImgWrapper = styled.div`
   display: flex;
   margin-right: 10px;
   cursor: pointer;
   img {
-    width: 110px;
-    height: 110px;
+    width: 160px;
+    height: 160px;
     border-radius: 5px;
   }
   @media screen and (max-width: 500px) {
@@ -71,23 +92,23 @@ const ImgWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   width: 100%;
-  @media screen and (max-width: 500px) {
-    width: 235px;
-  }
+  white-space: nowrap;
 `;
-const FirstRow = styled.div`
-  font-size: 17px;
+
+export const FirstRow = styled.div`
+  font-size: 20px;
   font-weight: 500;
   cursor: pointer;
-  margin-bottom: 20px;
+  min-height: 80px;
   @media screen and (max-width: 500px) {
     font-size: 15px;
+    min-height: 20px;
   }
 `;
-const SecondRow = styled.div`
+export const SecondRow = styled.div`
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 15px;
   color: #aba8a8;
   span {
     margin-right: 5px;
@@ -96,47 +117,38 @@ const SecondRow = styled.div`
     font-size: 12px;
   }
 `;
-const ThirdRow = styled.div`
-  margin-top: 3px;
-  font-size: 17px;
+
+export const ThirdRow = styled.div`
+  font-size: 20px;
   font-weight: 700;
   color: #464646;
   @media screen and (max-width: 500px) {
     font-size: 14px;
   }
 `;
-const FourthRow = styled.div`
+export const FourthRow = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 3px;
-  font-size: 12px;
-
+  margin-top: 2px;
+  font-size: 14px;
   color: #727272;
-
   #tag {
     background-color: #95d1cc;
     color: white;
-    padding: 5px 12px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 12px;
-  }
-  button {
-    height: 25px;
-    width: 70px;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 500;
   }
   @media screen and (max-width: 500px) {
-    width: 235px;
-    font-size: 11px;
+    font-size: 12px;
     #tag {
-      padding: 4px 10px;
+      padding: 3px 8px;
       font-size: 11px;
     }
     button {
-      font-size: 11px;
       width: 50px;
       height: 25px;
     }
