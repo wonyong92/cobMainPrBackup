@@ -32,9 +32,11 @@ const DropdownContainer = styled.select`
   border-radius: 5px;
   outline: none;
   padding-left: 5px;
-  background-color: rgb(233, 233, 233);
+  background-color: white;
+  border-bottom: 1px solid #ececec;
   @media screen and (max-width: 500px) {
     width: 330px;
+    height: 35px;
   }
 
   &:hover {

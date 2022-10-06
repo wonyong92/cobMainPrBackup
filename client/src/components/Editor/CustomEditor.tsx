@@ -44,6 +44,7 @@ const CustomEditor = ({
       <EditorBorder>
         <Editor
           initialValue={value}
+          placeholder="사진을 올려주시고, 제품의 사용기간, 상태를 작성해주세요."
           height={height}
           useCommandShortcut
           plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} // 코드블럭 하이라이트

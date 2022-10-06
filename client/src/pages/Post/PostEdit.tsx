@@ -112,11 +112,11 @@ const PostEdit = () => {
   return (
     <>
       <Top>
-        <TopLeft>
-          <HeaderRow>
-            <div>빌려주기 작성가이드</div>
-            <Button text="수정완료" width="middle" onClick={clickHandler} />
-          </HeaderRow>
+        {/* <TopLeft> */}
+        {/* <HeaderRow> */}
+        {/* <div>빌려주기 작성가이드</div> */}
+        <Button text="수정완료" width="middle" onClick={clickHandler} />
+        {/* </HeaderRow>
           <GuideWrapper>
             <li>1. 사진을 올려주세요</li>
             <li>2. 거래지역을 명시해주세요</li>
@@ -124,12 +124,12 @@ const PostEdit = () => {
             <li>4. 글 작성과 이미지 업로드시, 타인의 지식재산권을 침해하지 않도록 유의해주세요</li>
             <li>5. 사진 크기에 따른 업로드 제한</li>
           </GuideWrapper>
-        </TopLeft>
+        </TopLeft> */}
       </Top>
       <Middle>
         <WriteWrapper>
-          <div>필수 정보 입력</div>
-          <span>글제목</span>
+          {/* <div>필수 정보 입력</div> */}
+          {/* <span>글제목</span> */}
           <TextInput
             placeholder={'글제목을 입력해주세요'}
             onChange={onChangePost}
@@ -141,7 +141,7 @@ const PostEdit = () => {
           <DropMenu props={location} onChange={handleLocationChange} state={selectedLocation} />
           <span>카테고리</span>
           <DropMenu props={copyCategory} onChange={handleCategoryChange} state={selectedCategory} />
-          <span>가격</span>
+          {/* <span>가격</span> */}
           <TextInput
             placeholder={'가격을 입력해주세요'}
             onChange={onChangePost}
@@ -149,7 +149,7 @@ const PostEdit = () => {
             value={post.rentPrice}
             name={'rentPrice'}
           />
-          <span>렌트상태</span>
+          {/* <span>렌트상태</span> */}
           <div onClick={changeBtnName}>
             <Button text={post.rentStatus ? '렌트중' : '렌트가능'} width="short" radius="deep" />
           </div>
