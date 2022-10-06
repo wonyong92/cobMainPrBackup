@@ -89,7 +89,7 @@ export const Container = styled.div<{ modalOpen: boolean }>`
   box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
   @media screen and (max-width: 500px) {
     top: 10px;
-    width: 300px;
+    width: 320px;
     left: 40px;
   }
 `;
