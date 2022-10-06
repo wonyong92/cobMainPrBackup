@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
 import { CommentData } from './CommentWrite';
 import { ChangeEvent, useContext, useState } from 'react';
@@ -16,7 +15,6 @@ const CommentItem = ({ data }: CommentDataProps) => {
   const { user } = useContext(UserContext);
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
-  const navigate = useNavigate();
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 11);
   const deleteCommentHandler = () => {
     deleteComment(data.commentId);
@@ -125,3 +123,4 @@ export const Image = styled.img`
 `;
 
 export default CommentItem;
+

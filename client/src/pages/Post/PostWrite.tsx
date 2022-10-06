@@ -237,7 +237,6 @@ export const ImgUploadeWrapper = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
-
   img {
     width: 200px;
     height: 200px;
