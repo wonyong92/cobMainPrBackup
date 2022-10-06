@@ -47,7 +47,7 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
   return (
     <>
       <CommentWrapper>
-        <Image alt="practice" src={imgUrl} />
+        {user.memberId ? <Image alt="practice" src={imgUrl} /> : null}
         <TextInput
           type={'text'}
           placeholder={'댓글을 입력하세요'}
@@ -71,7 +71,7 @@ const CommentWrapper = styled.div`
     white-space: nowrap;
   }
   input {
-    width: 600px;
+    width: 800px;
     height: 33px;
     border-radius: 0px;
   }
