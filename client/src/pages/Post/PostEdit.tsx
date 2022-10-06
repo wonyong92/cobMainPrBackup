@@ -70,7 +70,7 @@ const PostEdit = () => {
     // if (!post.rentPostName || !post.category || !post.location || !post.rentPostContents || !post.rentPrice) {
     //   return;
     // }
-    console.log(post.rentStatus);
+    // console.log(post.rentStatus);
     updatePost({
       deleteImages: [],
       rentPostId: post.rentPostId,
@@ -91,7 +91,7 @@ const PostEdit = () => {
   const handleEditorChange = () => {
     const editorInstance = editorRef.current?.getInstance();
 
-    console.log(editorInstance?.getMarkdown());
+    // console.log(editorInstance?.getMarkdown());
     if (editorInstance) {
       setPost({ ...post, rentPostContents: editorInstance.getMarkdown() });
     }

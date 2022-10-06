@@ -24,7 +24,7 @@ const Main = () => {
       })
 
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
