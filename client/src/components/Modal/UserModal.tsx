@@ -7,6 +7,7 @@ import { UserContext } from '../../context/context';
 import TextButton from '../../UI/button/TextButton';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../../config/config';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 interface PropsType {
   userModal: boolean;
   setUserModal: (state: boolean) => void;
@@ -15,7 +16,7 @@ const UserModal = ({ setUserModal, userModal }: PropsType) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   const modalOpen: boolean = userModal ? true : false;
-  const imageUrl = `${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`;
+  const imageUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
   const closeModal = () => {
     setUserModal(false);
   };
@@ -88,8 +89,8 @@ export const Container = styled.div<{ modalOpen: boolean }>`
   box-shadow: rgba(100, 100, 100, 0.1) 1px -1px 3px 2px;
   @media screen and (max-width: 500px) {
     top: 10px;
-    width: 340px;
-    left: 75px;
+    width: 320px;
+    left: 40px;
   }
 `;
 const ToBottom = keyframes`

@@ -1,3 +1,4 @@
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import { useParams } from 'react-router-dom';
 import AxiosInstance from './AxiosInstance';
 import { PostData } from '../pages/Post/PostWrite';
@@ -6,7 +7,7 @@ import { CommentData } from '../components/Comment/CommentWrite';
 //POST
 export const getPosts = async (sortType?: string) => {
   try {
-    const res = await AxiosInstance.get(`rentPost/posts?sort=${sortType}`);
+    const res = await AxiosInstance.get(`${PROXY}/rentPost/posts?sort=${sortType}`);
     // console.log(res);
     return res.data;
   } catch (error) {
@@ -16,7 +17,7 @@ export const getPosts = async (sortType?: string) => {
 
 export const getPost = async (postId: number) => {
   try {
-    const res = await AxiosInstance.post(`rentPost?postId=${postId}`);
+    const res = await AxiosInstance.post(`${PROXY}/rentPost?postId=${postId}`);
     // console.log(res);
     return res.data;
   } catch (error) {
@@ -27,7 +28,7 @@ export const getPost = async (postId: number) => {
 export const getImage = async () => {
   const params = useParams();
   try {
-    const res = await AxiosInstance.get(`rentPost/images/get?postId=${params.id}`);
+    const res = await AxiosInstance.get(`${PROXY}/rentPost/images/get?postId=${params.id}`);
     // console.log(res);
     // console.log(res.data);
     const data = res.data;
@@ -43,7 +44,7 @@ export const sendPost = async (post: any) => {
     post.category = `category${post.category}`;
     post.rentPrice = parseInt(post.rentPrice);
     // console.log(post);
-    const res = await AxiosInstance.post(`rentPost/post`, post);
+    const res = await AxiosInstance.post(`${PROXY}/rentPost/post`, post);
     // console.log(res);
     return res.data;
   } catch (error) {
@@ -54,7 +55,7 @@ export const sendPost = async (post: any) => {
 export const sendImage = async (image: FormData, postId: number) => {
   // console.log(image, postId);
   try {
-    const res = await AxiosInstance.post(`rentPost/images/?postId=${postId}`, image);
+    const res = await AxiosInstance.post(`${PROXY}/rentPost/images/?postId=${postId}`, image);
     // console.log(res);
     // console.log(res.data);
     const data = res.data;
@@ -69,7 +70,7 @@ export const updatePost = async (post: any) => {
   try {
     post.location = `location${post.location}`;
     post.category = `category${post.category}`;
-    const res = await AxiosInstance.put(`rentPost/update`, {
+    const res = await AxiosInstance.put(`${PROXY}/rentPost/update`, {
       delelteImages: post.deleteImages,
       location: post.location,
       category: post.category,
@@ -90,7 +91,7 @@ export const updatePost = async (post: any) => {
 
 export const deletePost = async (id: any) => {
   try {
-    const res = await AxiosInstance.delete(`rentPost/delete/?postId=${id}`);
+    const res = await AxiosInstance.delete(`${PROXY}/rentPost/delete/?postId=${id}`);
     // console.log(res);
     // console.log(res.data);
     const data = res.data;
@@ -103,7 +104,7 @@ export const deletePost = async (id: any) => {
 //COMMENTS
 export const getComments = async (postId: number) => {
   try {
-    const res = await AxiosInstance.get(`comment/getComments?postId=${postId}`);
+    const res = await AxiosInstance.get(`${PROXY}/comment/getComments?postId=${postId}`);
     // console.log(res);
     // console.log(res.data);
     const data = res.data;
@@ -116,7 +117,7 @@ export const getComments = async (postId: number) => {
 export const sendComment = async (comment: CommentData) => {
   // console.log(comment);
   try {
-    const res = await AxiosInstance.post(`comment/post`, comment);
+    const res = await AxiosInstance.post(`${PROXY}/comment/post`, comment);
     // console.log(res);
     // console.log(res.data);
     const data = res.data;
@@ -128,7 +129,7 @@ export const sendComment = async (comment: CommentData) => {
 
 export const updateComment = async (comment: any, commentId: number) => {
   try {
-    const res = await AxiosInstance.post(`comment/update?id=${commentId}`, {
+    const res = await AxiosInstance.post(`${PROXY}/comment/update?id=${commentId}`, {
       commentId: comment.commentId,
       writerId: comment.writerId,
       commentContents: comment.commentContents,
@@ -145,7 +146,7 @@ export const updateComment = async (comment: any, commentId: number) => {
 
 export const deleteComment = async (commentId: number) => {
   try {
-    const res = await AxiosInstance.post(`comment/delete?commentId=${commentId}`);
+    const res = await AxiosInstance.post(`${PROXY}/comment/delete?commentId=${commentId}`);
 
     // console.log(res);
     // console.log(res.data);

@@ -19,6 +19,7 @@ import TextInput from '../../UI/input/TextInput';
 import { useState, useContext } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useNavigate } from 'react-router-dom';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import { useRef } from 'react';
 import { UserContext } from '../../context/context';
 import { useLocation } from 'react-router-dom';
@@ -26,7 +27,6 @@ import DropMenu from '../../components/DropMenu/DropMenu';
 import { category, location } from '../../constants';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 const PostEdit = () => {
   const local = useLocation();
   const data = local.state.data;
@@ -34,7 +34,7 @@ const PostEdit = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [imageUrl, setImageUrl] = useState<string>(
-    `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`,
+    `${PROXY}/rentPost/image/get?imageId=${data.rentPostImages[0]}`,
   );
   const [imageFile, setImageFile] = useState<FormData>();
   const copyCategory = category.slice(1);

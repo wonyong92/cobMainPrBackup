@@ -8,6 +8,7 @@ import { UserContext } from '../../context/context';
 import TextInput from '../../UI/input/TextInput';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../../config/config';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 export interface CommentDataProps {
   data: CommentData;
 }
@@ -43,7 +44,7 @@ const CommentItem = ({ data }: CommentDataProps) => {
     window.location.reload();
   };
 
-  const imgUrl = `${config.apiUrl}/member/profileImage/get?memberId=${user.memberId}`;
+  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
   return (
     <>
       <CommentItemWrapper>

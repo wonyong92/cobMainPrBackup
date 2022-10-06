@@ -27,7 +27,7 @@ body {
 @media screen and (max-width: 500px) {
   .App {
     width: 375px;
-    border-left: 1px #464646 solid;
-    border-right: 1px #464646 solid;
+    /* border-left: 1px #464646 solid; */
+    /* border-right: 1px #464646 solid; */
   }
 }

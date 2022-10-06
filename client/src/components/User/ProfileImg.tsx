@@ -5,13 +5,14 @@ import Button from '../../UI/button/Button';
 import imageCompression from 'browser-image-compression';
 import { changeProfileImage } from '../../Utils';
 import { config } from '../../config/config';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 const ProfileImg = () => {
   const { user } = useContext(UserContext);
   const token = localStorage.getItem('token');
   const imgInput = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState('');
   useEffect(() => {
-    setImageUrl(`${config.apiUrl}member/profileImage/get?memberId=${user.memberId}`);
+    setImageUrl(`${PROXY}/member/profileImage/get?memberId=${user.memberId}`);
   }, [user]);
 
   const handleChangeBtnClick = (e: any) => {
