@@ -54,7 +54,7 @@ const Main = () => {
         </WelcomePage>
       </Section>
       <HeadRow>
-        <h2>인기리스트</h2>
+        <h2>오늘은 뭐 빌리지?</h2>
       </HeadRow>
       <ItemContainer>{posts && posts.map((el, idx) => <PostItem data={el} key={idx} />)}</ItemContainer>
     </>

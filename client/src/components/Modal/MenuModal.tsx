@@ -21,7 +21,7 @@ const MenuModal = ({ setMenuModal, menuModal }: Props) => {
 
   const getCategoryPosts = async (e: any) => {
     if (e.target.innerText === '인기리스트') {
-      navigate('/postlist');
+      navigate('/');
     } else {
       const result = await searchCategoryKeyword(e.target.innerText);
       if (result) {

@@ -1,16 +1,15 @@
-
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Button from "../../UI/button/Button";
-import {deletePost} from '../../Utils/ApiCall';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../UI/button/Button';
+import { deletePost } from '../../Utils/ApiCall';
 import { PostItemDetailData } from '../PostItem/PostDetailItem';
 
 interface deleteModalProps {
-    data: PostItemDetailData;
-    setDeleteModal: (value: boolean) => void;
+  data: PostItemDetailData;
+  setDeleteModal: (value: boolean) => void;
 }
 
-const DeleteModal=({ data, setDeleteModal }:deleteModalProps) => {
+const DeleteModal = ({ data, setDeleteModal }: deleteModalProps) => {
   const navigate = useNavigate();
 
   const closeModal = () => {
@@ -18,29 +17,28 @@ const DeleteModal=({ data, setDeleteModal }:deleteModalProps) => {
   };
 
   const deletePostHandler = () => {
-    console.log(data);
     deletePost(data.rentPostId);
-    navigate("/postlist");
+    navigate('/');
+    window.location.reload();
   };
 
   return (
     <>
-    <ModalBackdrop onClick={closeModal}>
-      <Container>
-        <Top>
-          <Title>글 삭제</Title>
-          <div>정말로 삭제하시겠습니까?</div>
-        </Top>
-        <Bottom>
-          <Button text='취소' onClick={closeModal}/>
-          <Button text='확인' onClick={deletePostHandler}/>
-        </Bottom>
-      </Container>
-    </ModalBackdrop>
+      <ModalBackdrop onClick={closeModal}>
+        <Container>
+          <Top>
+            <Title>글 삭제</Title>
+            <div>정말로 삭제하시겠습니까?</div>
+          </Top>
+          <Bottom>
+            <Button text="취소" onClick={closeModal} width={'short'} type={'white'} radius={'deep'} />
+            <Button text="확인" onClick={deletePostHandler} width={'short'} radius={'deep'} />
+          </Bottom>
+        </Container>
+      </ModalBackdrop>
     </>
   );
-  }
-
+};
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -58,17 +56,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 360px;
-  height: 200px;
+  height: 220px;
+  border-radius: 5px;
   background-color: white;
   box-shadow: 2px 2px 4px gray;
 `;
 
 const Title = styled.div`
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  `;
-
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
 
 const Top = styled.div`
   display: flex;
@@ -82,17 +80,11 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin-top: 30px;
+
   cursor: pointer;
-    &:hover {
-      transform: scale(0.95);
-    }
+  &:hover {
+    transform: scale(0.95);
+  }
 `;
 
-  export default DeleteModal;
-
-
-
-
-
-
-
+export default DeleteModal;

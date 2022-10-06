@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import TextButton from '../../UI/button/TextButton';
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import DeleteModal from '../Modal/DeleteModal';
 import { UserContext } from '../../context/context';
 // import { ImgWrapper } from './ListItem';
 import { config } from '../../config/config';
+import axios from 'axios';
 export interface PostItemDetailData {
   category: string;
   rentPostImages: number[];
@@ -46,16 +47,25 @@ interface IPostItemDetailProps {
 }
 
 const PostDetailItem = ({ data }: IPostItemDetailProps) => {
-  const imgUrl: string = `http://3.35.90.143:54130/rentPost/image/get?imageId=${data.rentPostImages[0]}`;
+  const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
   const { user } = useContext(UserContext);
-  const writerImageUrl = `${config.apiUrl}/member/profileImage/get?memberId=${data.writerId}`;
+  const writerImageUrl = `${config.apiUrl}member/profileImage/get?memberId=${data.writerId}`;
   const [deleteModal, setDeleteModal] = useState(false);
   const navigate = useNavigate();
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const category = data.category?.slice(8);
   const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
-
+  const [nickname, setNickname] = useState('');
+  useEffect(() => {
+    const getWriterInfo = async () => {
+      try {
+        const res = await axios.get(`${config.apiUrl}member/profile?memberId=${data.writerId}`);
+        setNickname(res.data.nickname);
+      } catch {}
+    };
+    getWriterInfo();
+  }, [data]);
   const editHandler = () => {
     navigate(`/postedit/${data.rentPostId}`);
   };
@@ -84,7 +94,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
               <ImgWrapper>
                 <img src={writerImageUrl} className="writerImage" />
               </ImgWrapper>
-              <div className="nickname">{user.nickname}</div>
+              <div className="nickname">{nickname}</div>
             </WriterInfo>
           </FourthRow>
           <ButtonWrapper>
