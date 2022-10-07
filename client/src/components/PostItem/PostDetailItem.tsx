@@ -49,7 +49,7 @@ interface IPostItemDetailProps {
 }
 
 const PostDetailItem = ({ data }: IPostItemDetailProps) => {
-  const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
+  // const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
   const [count, setCount] = useState(1);
   const [imageURL, setImageURL] = useState('');
   const { user } = useContext(UserContext);
@@ -106,8 +106,8 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
         <ImgWrapper>
           {/* <FontAwesomeIcon icon={faAngleLeft} onClick={getPrevImage} className="icon" /> */}
           {/* <FontAwesomeIcon icon={faAngleRight} onClick={getNextImage} className="icon" /> */}
-          {/* <GoodsImage src={imageURL} /> */}
-          <GoodsImage src={imgUrl} />
+          <GoodsImage src={imageURL} />
+          {/* <GoodsImage src={imgUrl} /> */}
         </ImgWrapper>
         <DescriptionWrapper>
           <Title>{data.rentPostName}</Title>
