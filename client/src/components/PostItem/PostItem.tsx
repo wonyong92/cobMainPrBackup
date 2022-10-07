@@ -6,8 +6,8 @@ import { config } from '../../config/config';
 import { useEffect, useState } from 'react';
 import { ImgWrapper, FirstRow, SecondRow, ThirdRow, FourthRow } from './ListItem';
 export interface PostItemData {
-  catergory: string | undefined;
-  image: string | undefined;
+  category: string ;
+  image: any;
   location: string | undefined;
   rentPostContents: string | undefined;
   rentPostId: number | undefined;
