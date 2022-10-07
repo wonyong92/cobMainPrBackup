@@ -1,5 +1,5 @@
 import CommentItem from './CommentItem';
-import { getComments } from '../../Utils/ApiCall/post';
+import { getComments } from '../../Utils/post';
 import { useState, useEffect } from 'react';
 import { PostItemDetailData } from '../PostItem/PostDetailItem';
 
