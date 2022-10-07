@@ -84,7 +84,7 @@ const PostEdit = () => {
     if (imageFile) {
       sendImage(imageFile, post.rentPostId);
     }
-    navigate(`/postdetail/${data.rentPostId}`);
+    navigate('/');
     window.location.reload();
   };
 
