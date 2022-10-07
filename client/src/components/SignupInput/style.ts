@@ -19,15 +19,15 @@ export const Container = styled.div`
   @media screen and (max-width: 500px) {
     button:first-of-type {
       top: 50.5px;
-      left: 258px;
+      left: 203px;
     }
     button:nth-of-type(2) {
       top: 362.5px;
-      left: 188px;
+      left: 134px;
     }
     button:nth-of-type(3) {
       top: 440.5px;
-      left: 118px;
+      left: 64px;
     }
   }
 `;

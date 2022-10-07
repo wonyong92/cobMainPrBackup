@@ -1,3 +1,4 @@
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import TextButton from '../../UI/button/TextButton';
@@ -52,7 +53,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   const [count, setCount] = useState(1);
   const [imageURL, setImageURL] = useState('');
   const { user } = useContext(UserContext);
-  const writerImageUrl = `${config.apiUrl}member/profileImage/get?memberId=${data.writerId}`;
+  const writerImageUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
   const [deleteModal, setDeleteModal] = useState(false);
   const navigate = useNavigate();
   const price = data.rentPrice?.toLocaleString();
@@ -63,12 +64,12 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   useEffect(() => {
     const getWriterInfo = async () => {
       try {
-        const res = await axios.get(`${config.apiUrl}member/profile?memberId=${data.writerId}`);
+        const res = await axios.get(`${PROXY}/member/profile?memberId=${data.writerId}`);
         setNickname(res.data.nickname);
       } catch {}
     };
     getWriterInfo();
-    setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`);
+    setImageURL(`${PROXY}/rentPost/image/get?imageId=${data.rentPostImages[0]}`);
   }, [data]);
   const editHandler = () => {
     navigate(`/postedit/${data.rentPostId}`);
@@ -78,7 +79,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
     setCount(count + 1);
   };
   const getNextImage = () => {
-    console.log(count);
+    // console.log(count);
     if (count >= data.rentPostImages.length - 1) {
       setCount(0);
     } else {
@@ -91,7 +92,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
     setCount(count - 1);
   };
   const getPrevImage = () => {
-    console.log(count);
+    // console.log(count);
     if (count <= 0) {
       setCount(data.rentPostImages.length);
     } else {

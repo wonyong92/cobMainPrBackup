@@ -27,7 +27,7 @@ const Signup = () => {
 export default Signup;
 const Container = styled.div`
   margin-top: 60px;
-  padding: 20px;
+  padding: 5px;
 `;
 const BtnWrapper = styled.div`
   display: flex;

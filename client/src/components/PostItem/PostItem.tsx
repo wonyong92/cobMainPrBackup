@@ -1,4 +1,4 @@
-//cocmponeten - psotItem.tsx
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -30,13 +30,12 @@ const PostItem = ({ data }: PostItemProps) => {
   const [targetImage, setTargetImage] = useState();
   useEffect(() => {
     const getImages = async () => {
-      const result = await axios.get(`${config.apiUrl}rentPost/images/get?postId=${data.rentPostId}`);
+      const result = await axios.get(`${PROXY}/rentPost/images/get?postId=${data.rentPostId}`);
       setTargetImage(result.data[0]);
     };
     getImages();
   }, []);
-  const imgUrl: string | undefined =
-    targetImage && `${config.apiUrl}rentPost/image/get?imageId=${targetImage}`;
+  const imgUrl: string | undefined = targetImage && `${PROXY}/rentPost/image/get?imageId=${targetImage}`;
 
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
@@ -90,9 +89,9 @@ const ListWrapper = styled.div`
   flex-basis: 33%;
   @media screen and (max-width: 500px) {
     width: 90%;
-    margin: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-right: 0px;
   }
 `;

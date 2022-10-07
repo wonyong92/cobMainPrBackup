@@ -1,6 +1,6 @@
 import { getPosts } from '../../Utils/ApiCall';
 import PostItem from '../../components/PostItem/PostItem';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
@@ -15,18 +15,12 @@ const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
 
-  useEffect(() => {
-    getPosts(sortType).then((res) => {
-      setPosts(res.data);
-    });
-  }, [sortType]);
-
   const fetchPosts = useCallback(async () => {
-    await getPosts(sortType).then((res) => {
-        console.log(res.rentPosts);
+    getPosts(sortType).then((res) => {
+      //   console.log(res.rentPosts);
       setPosts(res.rentPosts);
     });
-  }, []);
+  }, [sortType]);
 
   const setObservatingTarget = useIntersectionObserver(fetchPosts);
 
