@@ -32,6 +32,10 @@ spring:
   sql:
     init:
       mode: never
+  servlet:
+    multipart:
+      max-file-size: 5mb
+      max-request-size: 60mb
 
 timeZone:
   location:
