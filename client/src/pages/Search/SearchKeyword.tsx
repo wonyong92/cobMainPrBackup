@@ -5,7 +5,7 @@ import { handleFilterForKeywordSearch } from '../../Utils';
 import SearchFilter from '../../components/Search/SearchFilter';
 import PageDescript from '../../components/Descript/PageDescript';
 import { useContext, useEffect, useState } from 'react';
-import { Container, Top, Title, FilterWrapper, Bottom, ListBottom } from './style';
+import { Top, Title, FilterWrapper, Bottom, ListBottom } from './style';
 import { useLocation } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
 
@@ -50,7 +50,6 @@ const SearchKeyword = () => {
   }, [rentSortType, sortType, setPage, page, keyword]);
   return (
     <>
-      {/* <Container> */}
       <Top>
         <Title>
           {keyword} 검색결과
@@ -79,7 +78,6 @@ const SearchKeyword = () => {
           {searchResultList && searchResultList.map((el) => <ListItem data={el} key={el.rentPostId} />)}
         </ListBottom>
       )}
-      {/* </Container> */}
     </>
   );
 };
