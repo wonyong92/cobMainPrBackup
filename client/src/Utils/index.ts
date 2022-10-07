@@ -1,4 +1,4 @@
-export * from './ApiCall/post';
+export * from './post';
 export * from './ApiCall/common';
 export * from './ApiCall/user';
 export * from './ApiCall/search';
