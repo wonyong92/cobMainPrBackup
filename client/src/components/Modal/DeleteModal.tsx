@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../UI/button/Button';
-import { deletePost } from '../../Utils/ApiCall';
+import { deletePost } from '../../Utils';
 import { PostItemDetailData } from '../PostItem/PostDetailItem';
 
 interface deleteModalProps {

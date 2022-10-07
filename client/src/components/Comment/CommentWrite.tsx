@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ChangeEvent, MouseEvent } from 'react';
 import Button from '../../UI/button/Button';
 import TextInput from '../../UI/input/TextInput';
-import { sendComment } from '../../Utils/ApiCall';
+import { sendComment } from '../../Utils/ApiCall/post';
 import { UserContext } from '../../context/context';
 import { useContext } from 'react';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';

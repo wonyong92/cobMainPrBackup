@@ -5,7 +5,20 @@ import React, { ChangeEvent, useState } from 'react';
 import { trySignIn } from '../../Utils';
 import { UserContext } from '../../context/context';
 import { useNavigate } from 'react-router-dom';
-
+const LoginBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  button {
+    margin-top: 10px;
+    width: 100%;
+  }
+  p {
+    font-size: 12px;
+    color: #ff7f7f;
+  }
+`;
 export interface ILogin {
   loginId: string;
   password: string;
@@ -62,17 +75,3 @@ const LoginInput = () => {
   );
 };
 export default LoginInput;
-const LoginBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  button {
-    margin-top: 10px;
-    width: 100%;
-  }
-  p {
-    font-size: 12px;
-    color: #ff7f7f;
-  }
-`;

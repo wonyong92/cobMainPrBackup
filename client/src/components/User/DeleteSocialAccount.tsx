@@ -2,19 +2,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faG } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../UI/button/Button';
-const DeleteSocialAccount = () => {
-  return (
-    <Container>
-      <div className="title">소셜계정 연동</div>
-      <BtnWrapper>
-        <FontAwesomeIcon icon={faG} className="google" />
-        <Button type={'white'} text={'구글 해제하기'} width={'middle'}></Button>
-      </BtnWrapper>
-    </Container>
-  );
-};
-export default DeleteSocialAccount;
-
 const Container = styled.div`
   min-height: 180px;
   display: flex;
@@ -47,3 +34,15 @@ const BtnWrapper = styled.div`
     white-space: nowrap;
   }
 `;
+const DeleteSocialAccount = () => {
+  return (
+    <Container>
+      <div className="title">소셜계정 연동</div>
+      <BtnWrapper>
+        <FontAwesomeIcon icon={faG} className="google" />
+        <Button type={'white'} text={'구글 해제하기'} width={'middle'}></Button>
+      </BtnWrapper>
+    </Container>
+  );
+};
+export default DeleteSocialAccount;

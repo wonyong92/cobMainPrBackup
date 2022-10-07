@@ -7,7 +7,7 @@ import PageDescript from '../../components/Descript/PageDescript';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SearchResultContext } from '../../context/context';
-import { Container, Top, Title, FilterWrapper, Bottom, ListBottom } from './style';
+import { Top, Title, FilterWrapper, Bottom, ListBottom } from './style';
 const SearchCategory = () => {
   const location = useLocation();
   const category: string | undefined = location?.state.category;
@@ -49,7 +49,6 @@ const SearchCategory = () => {
     searchFortCategoryKeyword();
   }, [rentSortType, sortType, setPage, page, category]);
   return (
-    // <Container>
     <>
       <Top>
         <Title>
@@ -80,7 +79,6 @@ const SearchCategory = () => {
         </ListBottom>
       )}
     </>
-    // </Container>
   );
 };
 export default SearchCategory;

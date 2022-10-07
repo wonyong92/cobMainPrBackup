@@ -67,7 +67,6 @@ const ListItemContainer = styled.div`
   border-bottom: #efeded 0.5px solid;
   @media screen and (max-width: 500px) {
     width: 100%;
-    /* display: flex; */
     margin-top: 5px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -92,7 +91,6 @@ export const ImgWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  white-space: nowrap;
   width: 100%;
 `;
 
@@ -101,6 +99,14 @@ export const FirstRow = styled.div`
   font-weight: 500;
   cursor: pointer;
   min-height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.2em;
+  height: 3.6em;
   @media screen and (max-width: 500px) {
     font-size: 15px;
     min-height: 20px;

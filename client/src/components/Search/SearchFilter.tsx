@@ -8,6 +8,17 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => any;
   optionList: optionList[];
 }
+const Select = styled.select`
+  border: 0.5px solid #9a9999;
+  border-radius: 3px;
+  color: #464646;
+  background-color: #f9f9f9;
+  height: 28px;
+  font-size: 12px;
+  @media screen and (max-width: 500px) {
+    height: 25px;
+  }
+`;
 const SearchFilter = ({ value, onChange, optionList }: Props) => {
   return (
     <Select value={value} onChange={onChange}>
@@ -20,15 +31,3 @@ const SearchFilter = ({ value, onChange, optionList }: Props) => {
   );
 };
 export default SearchFilter;
-
-const Select = styled.select`
-  border: 0.5px solid #9a9999;
-  border-radius: 3px;
-  color: #464646;
-  background-color: #f9f9f9;
-  height: 28px;
-  font-size: 12px;
-  @media screen and (max-width: 500px) {
-    height: 25px;
-  }
-`;
