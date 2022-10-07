@@ -1,32 +1,32 @@
-import { getPosts } from '../../Utils/ApiCall';
+import { getPosts } from '../../Utils';
 import PostItem from '../../components/PostItem/PostItem';
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
 import { ItemContainer } from '../Main/Main';
-import  useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useScroll from '../../hooks/useScroll';
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
-  const ref = useRef<HTMLDivElement|null>(null);
-  const entry = useIntersectionObserver(ref, {})
+  const ref = useRef<HTMLDivElement | null>(null);
+  const entry = useIntersectionObserver(ref, {});
   const isVisibled = !!entry?.isIntersecting;
 
   console.log(`Render Section ${isVisibled}`);
-  
+
   useScroll();
-  useEffect (() => {
-     getPosts(sortType).then((res) => {
-     setPosts(res.rentPosts);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  useEffect(() => {
+    getPosts(sortType)
+      .then((res) => {
+        setPosts(res.rentPosts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [sortType]);
-  
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
