@@ -1,7 +1,7 @@
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import { useParams } from 'react-router-dom';
-import AxiosInstance from '../AxiosInstance';
-import { CommentData } from '../../components/Comment/CommentWrite';
+import AxiosInstance from './AxiosInstance';
+import { CommentData } from '../components/Comment/CommentWrite';
 
 //POST
 export const getPosts = async (sortType?: string) => {
