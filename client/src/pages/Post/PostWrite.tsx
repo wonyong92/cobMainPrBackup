@@ -1,5 +1,6 @@
+import { ReactComponent as Camera } from '../../asessts/img/camera.svg';
 import { ChangeEvent } from 'react';
-import { sendImage, sendPost } from '../../Utils/ApiCall';
+import { sendImage, sendPost } from '../../Utils';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import CustomEditor from '../../components/Editor/CustomEditor';
@@ -11,7 +12,7 @@ import { useRef } from 'react';
 import { UserContext } from '../../context/context';
 import DropMenu from '../../components/DropMenu/DropMenu';
 import { category, location } from '../../constants';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useScroll from '../../hooks/useScroll';
 export interface PostData {
@@ -89,26 +90,13 @@ const PostWrite = ({ formData }: any) => {
   return (
     <>
       <Top>
-        <TopLeft>
-          {/* <HeaderRow> */}
-          {/* <div>빌려주기 작성가이드</div> */}
-          <Button text="완료" width="short" onClick={clickHandler} />
-          {/* </HeaderRow> */}
-          {/* <GuideWrapper>
-            <li>1. 사진을 올려주세요</li>
-            <li>2. 거래지역을 명시해주세요</li>
-            <li>3. 제품의 사용기간, 상태를 작성해주세요</li>
-            <li>4. 글 작성과 이미지 업로드시, 타인의 지식재산권을 침해하지 않도록 유의해주세요</li>
-            <li>5. 사진 크기에 따른 업로드 제한</li>
-          </GuideWrapper> */}
-        </TopLeft>
+        <Button text="완료" width="short" onClick={clickHandler} />
       </Top>
       <Middle>
         <WriteWrapper>
-          {/* <div className="title">필수 정보 입력</div> */}
-          {/* <span>글제목</span> */}
+          <span>제목</span>
           <TextInput
-            placeholder={'글제목을 입력해주세요'}
+            placeholder={'제목을 입력해주세요'}
             onChange={onChangePost}
             type={'text'}
             value={post.rentPostName}
@@ -118,7 +106,7 @@ const PostWrite = ({ formData }: any) => {
           <DropMenu props={location} onChange={handleLocationChange} state={selectedLocation} />
           <span>카테고리</span>
           <DropMenu props={copyCategory} onChange={handleCategoryChange} state={selectedCategory} />
-          {/* <span>가격</span> */}
+          <span>가격</span>
           <TextInput
             placeholder={'가격을 입력해주세요'}
             onChange={onChangePost}
@@ -126,20 +114,17 @@ const PostWrite = ({ formData }: any) => {
             value={post.rentPrice}
             name={'rentPrice'}
           />
-        </WriteWrapper>
-        <ImgUploadeWrapper>
           {imageUrl ? (
             <ImgWrapper>
-              {/* <div>사진 미리보기</div> */}
-              <img onClick={deleteImage} src={imageUrl} />
+              <FontAwesomeIcon onClick={deleteImage} icon={faCircleXmark} className="icon" />
+              <img src={imageUrl} />
             </ImgWrapper>
           ) : (
-            <IconWrapper>
-              <FontAwesomeIcon icon={faCamera} className="icon" />
-              <span>사진</span>
-            </IconWrapper>
+            <>
+              <CameraSVG />
+            </>
           )}
-        </ImgUploadeWrapper>
+        </WriteWrapper>
       </Middle>
       <Bottom>
         <CustomEditor
@@ -155,13 +140,13 @@ const PostWrite = ({ formData }: any) => {
   );
 };
 export const Top = styled.div`
-  width: 950px;
+  width: 550px;
   display: flex;
   justify-content: flex-end;
   button {
     border-radius: 10%;
-    width: 100px;
-    height: 40px;
+    width: 80px;
+    height: 35px;
     font-size: 14px;
     white-space: nowrap;
   }
@@ -175,25 +160,7 @@ export const Top = styled.div`
     }
   }
 `;
-export const TopLeft = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-export const HeaderRow = styled.h4`
-  display: flex;
-  justify-content: space-between;
-  margin-right: 20px;
-  /* margin-top: 5px; */
-  margin-left: 20px;
-`;
 
-export const GuideWrapper = styled.ul`
-  list-style: none;
-  padding-left: 20px;
-  padding-right: 20px;
-  /* padding-bottom: 10px; */
-  border-bottom: 1px solid #e5e5e5;
-`;
 export const Middle = styled.div`
   display: flex;
   align-items: center;
@@ -207,31 +174,28 @@ export const WriteWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 15px;
+
   .title {
-    font-weight: 600;
+    font-weight: 500;
   }
   input {
     width: 550px;
     border-radius: 5px;
-    height: 50px;
+    height: 35px;
     background-color: white;
     border-bottom: 1px solid #ececec;
-  }
-  button {
-    margin-top: 10px;
   }
   span {
     padding-top: 5px;
     padding-left: 10px;
-    font-size: 14px;
+    padding-bottom: 5px;
+    font-size: 15px;
+    font-weight: 500;
   }
   @media screen and (max-width: 500px) {
     margin: 0px;
-
     input {
       width: 330px;
-      height: 50px;
     }
     span {
       width: 100%;
@@ -239,55 +203,39 @@ export const WriteWrapper = styled.div`
     }
   }
 `;
-export const ImgUploadeWrapper = styled.div`
-  border: none;
-  margin-left: 30px;
+export const CameraSVG = styled(Camera)`
   margin-top: 10px;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
+`;
 
+export const ImgWrapper = styled.div`
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-direction: column;
   img {
-    width: 120px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     border-radius: 3px;
+  }
+  .icon {
+    position: relative;
+    left: 48px;
+    top: 15px;
+    font-size: 20px;
   }
   @media screen and (max-width: 500px) {
     display: flex;
     align-items: flex-start;
-    width: 370px;
-    img {
-      width: 80px;
-      height: 80px;
+    padding-bottom: 0px;
+    .icon {
+      position: relative;
+      left: 86px;
+      top: 14px;
+      font-size: 20px;
     }
   }
 `;
-export const ImgWrapper = styled.div`
-  div {
-    font-weight: 600;
-    padding-bottom: 5px;
-  }
-  padding: 10px 20px;
-  display: flex;
-  flex-direction: column;
-`;
-export const Bottom = styled.div`
-  display: flex;
-`;
-export const IconWrapper = styled.div`
-  border: 1px solid #ececec;
-  padding: 44px 37px;
-  cursor: pointer;
-  @media screen and (max-width: 500px) {
-    width: 25%;
-    padding: 26px 16px;
-    margin-left: 10px;
-    margin-top: 5px;
-    align-items: center;
-    span {
-      white-space: nowrap;
-      padding-left: 5px;
-    }
-  }
-`;
+export const Bottom = styled.div``;
+
 export default PostWrite;
