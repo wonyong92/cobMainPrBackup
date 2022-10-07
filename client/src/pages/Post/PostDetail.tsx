@@ -49,6 +49,7 @@ const PostDetail = () => {
       <CommentWrite postId={post.rentPostId} />
       <CommentList post={post} />
     </ItemContainer>
+
   );
 };
 const ItemContainer = styled.div`
