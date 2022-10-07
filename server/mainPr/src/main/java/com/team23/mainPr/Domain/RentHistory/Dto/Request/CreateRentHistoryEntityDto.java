@@ -1,29 +1,25 @@
 package com.team23.mainPr.Domain.RentHistory.Dto.Request;
 
 import java.time.ZonedDateTime;
-
 import javax.validation.constraints.NotNull;
-
 import lombok.Data;
 
-/** rentStartDate : ISO 8601 형식 사용 ex)2018-07-18T15:16:33.647+09:00 */
+/**
+ * rentStartDate : ISO 8601 형식 사용 ex)2018-07-18T15:16:33.647+09:00
+ */
 @Data
 public class CreateRentHistoryEntityDto {
-	// Bean Validation 을 이용하여 컨트롤러에서 바로 잘못된 요청을 검출 할 수 있도록 구성하였다.
-	@NotNull(message = "targetMemberId must not be null")
-	Integer targetMemberId;
 
-	@NotNull(message = "rentStartDate must not be null")
-	ZonedDateTime rentStartDate;
+    // Bean Validation 을 이용하여 컨트롤러에서 바로 잘못된 요청을 검출 할 수 있도록 구성하였다.
+    @NotNull(message = "targetMemberId must not be null") Integer targetMemberId;
 
-	@NotNull(message = "rentEndDate must not be null")
-	ZonedDateTime rentEndDate;
+    @NotNull(message = "rentStartDate must not be null") ZonedDateTime rentStartDate;
 
-	@NotNull(message = "requesterId must not be null")
-	Integer requesterId;
+    @NotNull(message = "rentEndDate must not be null") ZonedDateTime rentEndDate;
 
-	String msg = "nothing";
+    @NotNull(message = "requesterId must not be null") Integer requesterId;
 
-	@NotNull(message = "targetPosId must not be null")
-	Integer targetPosId;
+    String msg = "nothing";
+
+    @NotNull(message = "targetPosId must not be null") Integer targetPosId;
 }

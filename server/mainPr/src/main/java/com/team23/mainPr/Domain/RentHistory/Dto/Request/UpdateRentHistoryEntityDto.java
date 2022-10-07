@@ -1,41 +1,32 @@
 package com.team23.mainPr.Domain.RentHistory.Dto.Request;
 
-import java.time.ZonedDateTime;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.team23.mainPr.Domain.RentHistory.Entity.RentHistory;
-
+import java.time.ZonedDateTime;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateRentHistoryEntityDto {
 
-	@NotNull(message = "rentHistoryId must not be null")
-	@Min(value = 1, message = "rentHistoryId must be lager than 1")
-	Integer rentHistoryId;
+    @NotNull(message = "rentHistoryId must not be null") @Min(value = 1, message = "rentHistoryId must be lager than 1") Integer rentHistoryId;
 
-	@NotNull(message = "rentStatus must not be null")
-	String rentStatus;
+    @NotNull(message = "rentStatus must not be null") String rentStatus;
 
-	@NotNull(message = "rentStartDate must not be null")
-	ZonedDateTime rentStartDate;
+    @NotNull(message = "rentStartDate must not be null") ZonedDateTime rentStartDate;
 
-	@NotNull(message = "rentEndDate must not be null")
-	ZonedDateTime rentEndDate;
+    @NotNull(message = "rentEndDate must not be null") ZonedDateTime rentEndDate;
 
-	@NotNull(message = "msg must not be null")
-	String msg;
+    @NotNull(message = "msg must not be null") String msg;
 
-	public RentHistory updateData(RentHistory rentHistory, UpdateRentHistoryEntityDto dto) {
+    public RentHistory updateData(RentHistory rentHistory, UpdateRentHistoryEntityDto dto) {
 
-		rentHistory.setRentStartDate(dto.getRentStartDate());
-		rentHistory.setRentEndDate(dto.getRentEndDate());
-		rentHistory.setMsg(dto.getMsg());
+        rentHistory.setRentStartDate(dto.getRentStartDate());
+        rentHistory.setRentEndDate(dto.getRentEndDate());
+        rentHistory.setMsg(dto.getMsg());
 
-		return rentHistory;
-	}
+        return rentHistory;
+    }
 }

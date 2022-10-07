@@ -1,5 +1,9 @@
 server:
   port: '8080'
+  ssl:
+    key-store: "classpath:keystore.p12"
+    key-store-type: PKCS12
+    key-store-password: ${ssl.password}
 spring:
   h2:
     console:
@@ -8,26 +12,30 @@ spring:
       settings:
         web-allow-others: true
   datasource:
-    url: 'jdbc:h2:~/test2;'
-    driverClassName: org.h2.Driver
-    username: sa
+    url: ${database.url}
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${database.username}
+    password: ${database.password}
   jpa:
     #defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.H2Dialect
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         show_sql: true
+        format_sql: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-
   sql:
     init:
-      mode: always
+      mode: never
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 60MB
 
 timeZone:
   location:
@@ -36,4 +44,31 @@ timeZone:
 multipart:
   upload:
     path: "/upload/"
+
+jwt:
+  token:
+    secret-key: ${jwt.secret.key}
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${aws.access.key}
+      secretKey: ${aws.secret.key}
+    s3:
+      bucket: ${aws.s3.bucket.name}
+      dir: /upload
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 

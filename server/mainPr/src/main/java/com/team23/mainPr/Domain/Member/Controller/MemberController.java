@@ -1,38 +1,36 @@
 package com.team23.mainPr.Domain.Member.Controller;
 
+import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
+import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
+import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
+import com.team23.mainPr.Domain.Member.Dto.Request.UpdateMemberDto;
+import com.team23.mainPr.Domain.Member.Dto.Request.UpdatePasswordDto;
+import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
+import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
+import com.team23.mainPr.Domain.Member.Service.MemberService;
+import com.team23.mainPr.Domain.RentPost.Dto.Response.RentPostResponseDto;
+import com.team23.mainPr.Global.Interceptor.Login;
+import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
-
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.team23.mainPr.Domain.Member.Dto.Request.CreateMemberDto;
-import com.team23.mainPr.Domain.Member.Dto.Request.FindIdDto;
-import com.team23.mainPr.Domain.Member.Dto.Request.FindPasswordDto;
-import com.team23.mainPr.Domain.Member.Dto.Request.UpdateMemberDto;
-import com.team23.mainPr.Domain.Member.Dto.Response.MemberProfileDto;
-import com.team23.mainPr.Domain.Member.Dto.Response.MemberResponseDto;
-import com.team23.mainPr.Domain.Member.Service.MemberService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-
 /**
- *
- *
  * <pre>
  * expected feature
  * create user data
@@ -49,65 +47,129 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
-	private final MemberService memberService;
+    private final MemberService memberService;
 
-	@Operation(summary = "회원 가입.", description = "데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답한다.")
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping("/post")
-	public MemberResponseDto createMember(@RequestBody @Valid CreateMemberDto dto) {
-		return memberService.createMember(dto);
-	}
+    @Operation(description = "회원 가입, 데이터베이스에 회원 정보를 저장하고, 생성된 회원정보를 응답.")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/post")
+    public MemberResponseDto createMember(
+        @RequestBody
+        @Valid CreateMemberDto dto) {
+        return memberService.createMember(dto);
+    }
 
-	@GetMapping("/{memberId}")
-	public MemberResponseDto getMember(@PathVariable @Valid @Min(value = 1) Integer memberId) {
-		return memberService.getMember(memberId);
-	}
+    @Operation(description = "회원 정보 확인, 토큰을 이용하여 본인 확인.")
+    @GetMapping
+    @Login
+    public MemberResponseDto getMember(
 
-	@GetMapping("profile/{memberId}")
-	public MemberProfileDto getProfile(@PathVariable @Valid @Min(value = 1) Integer memberId) {
-		return memberService.getProfile(memberId);
-	}
+        @RequestHeader(value = "Authorization", required = false) String token) {
+        return memberService.getMember(token);
+    }
 
-	@DeleteMapping("/delete")
-	public String deleteMember(@RequestParam @Valid @Min(value = 1) Integer memberId) {
-		return memberService.deleteMember(memberId);
-	}
+    @Operation(description = "프로필 정보 확인.")
+    @GetMapping("profile")
+    public MemberProfileDto getProfile(
+        @RequestParam
+        @Valid @Min(value = 1) Integer memberId) {
+        return memberService.getProfile(memberId);
+    }
 
-	@PutMapping("profile/{memberId}")
-	public MemberProfileDto updateProfile(
-		@RequestBody @Valid UpdateMemberDto updateMemberDto,
-		@PathVariable @Valid @Min(value = 1) Integer memberId) {
-		return memberService.updateProfile(updateMemberDto, memberId);
-	}
+    @Operation(description = "프로필 정보 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
+    @PutMapping("profile")
+    @Login
+    public MemberProfileDto updateProfile(
+        @RequestBody
+        @Valid UpdateMemberDto updateMemberDto,
+        @RequestHeader(value = "Authorization", required = false) String token) {
+        return memberService.updateProfile(updateMemberDto, token);
+    }
 
-	@PostMapping("/post/checkExistEmail")
-	public String checkExistEmail(@RequestParam String email) {
-		return memberService.checkExistEmail(email);
-	}
+    @Operation(description = "비밀번호 업데이트, 토큰을 이용하여 본인 정보인지 확인.")
+    @PutMapping("password")
+    @Login
+    public void updatePassword(
+        @RequestBody
+        @Valid UpdatePasswordDto dto,
+        @RequestHeader(value = "Authorization", required = false) String token) {
+        memberService.updatePassword(dto, token);
+    }
 
-	@PostMapping("/post/checkExistId")
-	public String checkExistId(@RequestParam String id) {
-		return memberService.checkExistId(id);
-	}
+    @Operation(description = "회원 탈퇴, 토큰을 이용하여 본인 정보인지 확인.")
+    @DeleteMapping("/delete")
+    @Login
+    public void deleteMember(
+        @RequestHeader(value = "Authorization", required = false) String token) {
+        memberService.deleteMember(token);
+    }
 
-	@PostMapping("/post/findId")
-	public String findId(@RequestBody @Valid FindIdDto findIdDto) {
-		return memberService.findId(findIdDto);
-	}
+    @Operation(description = "이메일 중복확인.")
+    @GetMapping("/checkExistEmail")
+    public String checkExistEmail(
+        @RequestParam String email) {
+        return memberService.checkExistEmail(email);
+    }
 
-	@PostMapping("/post/findPassword")
-	public String findId(@RequestBody @Valid FindPasswordDto findPasswordDto) {
-		return memberService.findPassword(findPasswordDto);
-	}
+    @Operation(description = "아이디 중복확인.")
+    @GetMapping("/checkExistId")
+    public String checkExistId(
+        @RequestParam String id) {
+        return memberService.checkExistId(id);
+    }
 
-	@PostMapping("/profileImage/post")
-	public String upload(@RequestParam MultipartFile file, @RequestParam Integer memberId)
-		throws IOException {
-		return memberService.setProfilePicture(memberId, file);
-	}
+    @Operation(description = "닉네임 중복확인.")
+    @GetMapping("/checkExistNickname")
+    public String checkNicknameId(
+        @RequestParam String nickname) {
+        return memberService.checkNickname(nickname);
+    }
 
-	@GetMapping(value = "/profileImage/get", produces = "image/png")
-	public Resource getDefaultProfileImage(@RequestParam Integer memberId) throws IOException {
-		return memberService.getProfilePicture(memberId);
-	}
+    @Operation(description = "아이디 찾기, 이름과 이메일을 확인하여 매칭되는 아이디 응답.")
+    @PostMapping("/findId")
+    public String findId(
+        @RequestBody
+        @Valid FindIdDto findIdDto) {
+        return memberService.findId(findIdDto);
+    }
+
+    @Operation(description = "비밀번호 찾기, 이름과 이메일, 아이디를 확인하여 매칭되는 비밀번호 응답.")
+    @PostMapping("/findPassword")
+    public String findPassword(
+        @RequestBody
+        @Valid FindPasswordDto findPasswordDto) {
+        return memberService.findPassword(findPasswordDto);
+    }
+
+    @Operation(description = "프로필 이미지 변경, 토큰을 이용하여 본인인지 확인.")
+    @PostMapping("/profileImage/post")
+    @Login
+    public void upload(
+        @RequestParam MultipartFile file,
+
+        @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
+        memberService.setProfilePicture(file, token);
+    }
+
+    @Operation(description = "프로필 이미지 조회.")
+    @GetMapping(value = "/profileImage/get", produces = "image/png;charset=UTF-8")
+    public Resource getDefaultProfileImage(
+        @RequestParam Integer memberId) throws IOException {
+        return memberService.getProfilePicture(memberId);
+    }
+
+    @Operation(description = "유저가 작성한 게시글 목록 확인")
+    @GetMapping("/rentPosts")
+    @Login
+    public List<RentPostResponseDto> getRentPosts(
+        @RequestHeader(value = "Authorization", required = false) String token) {
+        return memberService.getRentPostMember(token);
+    }
+
+    @Operation(description = "인터셉터 테스트")
+    @GetMapping("/inter")
+    @Login
+    public Boolean checkInter(
+        @RequestParam Integer memberId) {
+        return memberService.checkInter(memberId);
+    }
 }

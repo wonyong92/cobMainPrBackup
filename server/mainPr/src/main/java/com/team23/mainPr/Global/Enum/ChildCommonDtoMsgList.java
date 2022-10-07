@@ -13,19 +13,26 @@ import lombok.Getter;
 @Getter
 public enum ChildCommonDtoMsgList {
 
-	TRUE("true"),
-	SUCCESS("success"),
-	FAIL("fail"),
-	FALSE("false"),
-	CREATED("created"),
-	NOT_MATCH_PASSWORD("not matched password"),
-	NOT_MATCH_ID("not matched loginId"),
-	ERROR("error");
+    TRUE("true"),
+    SUCCESS("success"),
+    FAIL("fail"),
+    FALSE("false"),
+    CREATED("created"),
+    NOT_MATCH_PASSWORD("not matched password"),
+    NOT_MATCH_ID("not matched loginId"),
+    ERROR("error"),
+    NULL_NICKNAME("닉네임 정보가 누락 되었습니다.(nickname)"),
+    NULL_EMAIL("이메일 정보가 누락 되었습니다.(email)"),
+    NULL_LOGINID("로그인 아이디 정보가 누락 되었습니다.(loginId)");
 
-	private final String msg;
+    private final String msg;
 
-	// public 시 컴파일 에러 발생
-	ChildCommonDtoMsgList(String msg) {
-		this.msg = msg;
-	}
+    // public 시 컴파일 에러 발생
+    ChildCommonDtoMsgList(String msg) {
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return this.msg;
+    }
 }
