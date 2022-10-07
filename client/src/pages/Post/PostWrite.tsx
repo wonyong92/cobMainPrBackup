@@ -1,4 +1,3 @@
-//page-postwrite
 import { ChangeEvent } from 'react';
 import { sendImage, sendPost } from '../../Utils/ApiCall';
 import styled from 'styled-components';
@@ -14,7 +13,7 @@ import DropMenu from '../../components/DropMenu/DropMenu';
 import { category, location } from '../../constants';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import useScroll from '../../hooks/useScroll';
 export interface PostData {
   rentPostName: string;
   rentPostContents: string;
@@ -41,6 +40,7 @@ const PostWrite = ({ formData }: any) => {
     location: '',
     writerId: user.memberId,
   });
+  useScroll();
   const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPost({ ...post, [name]: value });

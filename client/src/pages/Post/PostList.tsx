@@ -5,11 +5,8 @@ import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
 import { ItemContainer } from '../Main/Main';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-
-interface Props {
-  ref?: React.MutableRefObject<HTMLDivElement>;
-}
+import  useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useScroll from '../../hooks/useScroll';
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -19,10 +16,11 @@ const PostList = () => {
   const isVisibled = !!entry?.isIntersecting;
 
   console.log(`Render Section ${isVisibled}`);
-
+  
+  useScroll();
   useEffect (() => {
      getPosts(sortType).then((res) => {
-      setPosts(res.rentPosts);
+     setPosts(res.rentPosts);
     })
     .catch((err) => {
       console.log(err);

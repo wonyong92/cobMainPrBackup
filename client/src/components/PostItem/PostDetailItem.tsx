@@ -107,6 +107,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
           {/* <FontAwesomeIcon icon={faAngleLeft} onClick={getPrevImage} className="icon" /> */}
           {/* <FontAwesomeIcon icon={faAngleRight} onClick={getNextImage} className="icon" /> */}
           <GoodsImage src={imageURL} />
+          {/* <GoodsImage src={imgUrl} /> */}
         </ImgWrapper>
         <DescriptionWrapper>
           <Title>{data.rentPostName}</Title>
@@ -233,7 +234,7 @@ const TextButtonWrapper = styled.div`
 const ListWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 950px;
   height: 100%;
   margin: 0;
   padding: 0;
