@@ -34,8 +34,7 @@ const CustomEditor = ({
       type: blob.type,
     });
     const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 170,
+      maxSizeMB: 5,
     };
     return await imageCompression(uploadedFile, options);
   };

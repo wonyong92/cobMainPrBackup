@@ -8,7 +8,7 @@ import CommentList from '../../components/Comment/CommentList';
 import CommentWrite from '../../components/Comment/CommentWrite';
 import { useParams } from 'react-router-dom';
 import { config } from '../../config/config';
-
+import useScroll from '../../hooks/useScroll';
 const PostDetail = () => {
   const params = useParams<{ id: string }>();
   const initialState = {
@@ -28,8 +28,8 @@ const PostDetail = () => {
     commentId: 0,
     setDeleteModal: () => {},
   };
-
   const [post, setPost] = useState<PostItemDetailData>(initialState);
+  useScroll();
   useEffect(() => {
     getPost(Number(params.id))
       .then((res) => {
