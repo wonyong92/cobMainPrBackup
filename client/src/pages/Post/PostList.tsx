@@ -1,6 +1,6 @@
 import { getPosts } from '../../Utils/ApiCall';
 import PostItem from '../../components/PostItem/PostItem';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
@@ -15,14 +15,20 @@ const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
 
-  const fetchPosts = useCallback(async () => {
+  useEffect(() => {
     getPosts(sortType).then((res) => {
-      //   console.log(res.rentPosts);
-      setPosts(res.rentPosts);
+      setPosts(res.data);
     });
   }, [sortType]);
 
-  const setObservatingTarget = useIntersectionObserver(fetchPosts());
+  const fetchPosts = useCallback(async () => {
+    await getPosts(sortType).then((res) => {
+        console.log(res.rentPosts);
+      setPosts(res.rentPosts);
+    });
+  }, []);
+
+  const setObservatingTarget = useIntersectionObserver(fetchPosts);
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
