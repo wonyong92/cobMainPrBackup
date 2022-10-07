@@ -3,25 +3,6 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/context';
 import { config } from '../../config/config';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-const UserCard = () => {
-  const { user } = useContext(UserContext);
-  const imageUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
-  let date = user.createdAt;
-  const createdAt = date?.slice(0, 10);
-
-  return (
-    <Container>
-      <ImgWrapper>
-        <img alt="profile" src={imageUrl} />
-      </ImgWrapper>
-      <InfoWrppaer>
-        <div className="nickname">{user.nickname}</div>
-        <div className="signedAt">가입일: {createdAt}</div>
-      </InfoWrppaer>
-    </Container>
-  );
-};
-export default UserCard;
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -60,3 +41,23 @@ const InfoWrppaer = styled.div`
     }
   }
 `;
+
+const UserCard = () => {
+  const { user } = useContext(UserContext);
+  const imageUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
+  let date = user.createdAt;
+  const createdAt = date?.slice(0, 10);
+
+  return (
+    <Container>
+      <ImgWrapper>
+        <img alt="profile" src={imageUrl} />
+      </ImgWrapper>
+      <InfoWrppaer>
+        <div className="nickname">{user.nickname}</div>
+        <div className="signedAt">가입일: {createdAt}</div>
+      </InfoWrppaer>
+    </Container>
+  );
+};
+export default UserCard;

@@ -6,7 +6,7 @@ import { config } from '../../config/config';
 import { useEffect, useState } from 'react';
 import { ImgWrapper, FirstRow, SecondRow, ThirdRow, FourthRow } from './ListItem';
 export interface PostItemData {
-  category: string ;
+  category: string;
   image: any;
   location: string | undefined;
   rentPostContents: string | undefined;

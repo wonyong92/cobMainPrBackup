@@ -7,10 +7,39 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { searchkeyword } from '../../Utils';
 
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 15px;
+  input {
+    min-width: 340px;
+    height: 32px;
+    text-indent: 5px;
+    font-size: 13px;
+  }
+  .magnify {
+    position: relative;
+    top: 0px;
+    right: 30px;
+    color: #c0bec8;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 500px) {
+    margin: 10px 0;
+    input {
+      min-width: 330px;
+      height: 30px;
+      font-size: 12px;
+      padding-bottom: 2px;
+    }
+  }
+`;
 interface Props {
   keyword?: string;
   setKeyword?: (state: string) => void;
 }
+
 const SearchBar = ({ keyword, setKeyword }: Props) => {
   const { setSearchResultList } = useContext(SearchResultContext);
   const navigate = useNavigate();
@@ -61,31 +90,3 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
   );
 };
 export default SearchBar;
-export const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 15px;
-  input {
-    min-width: 340px;
-    height: 32px;
-    text-indent: 5px;
-    font-size: 13px;
-  }
-  .magnify {
-    position: relative;
-    top: 0px;
-    right: 30px;
-    color: #c0bec8;
-    cursor: pointer;
-  }
-  @media screen and (max-width: 500px) {
-    margin: 10px 0;
-    input {
-      min-width: 330px;
-      height: 30px;
-      font-size: 12px;
-      padding-bottom: 2px;
-    }
-  }
-`;

@@ -1,4 +1,4 @@
-import { getPosts } from '../../Utils/ApiCall';
+import { getPosts } from '../../Utils';
 import styled from 'styled-components';
 import PostItem, { PostItemData } from '../../components/PostItem/PostItem';
 import { useEffect, useState } from 'react';
@@ -119,14 +119,16 @@ const WelcomePage = styled.article`
     flex-direction: column;
   }
   .title2 {
-    margin-right: 74px;
+    margin-right: 79px;
     @media screen and (max-width: 500px) {
+      margin-right: 78px;
       font-size: 18px;
     }
   }
   .subtitle2 {
-    margin-right: 8px;
+    margin-right: 5px;
     @media screen and (max-width: 500px) {
+      margin-right: 10px;
       font-size: 15px;
     }
   }

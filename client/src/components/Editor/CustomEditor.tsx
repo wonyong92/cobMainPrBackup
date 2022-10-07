@@ -43,7 +43,7 @@ const CustomEditor = ({
       <EditorBorder>
         <Editor
           initialValue={value}
-          placeholder="사진을 올려주시고, 제품의 사용기간, 상태를 작성해주세요."
+          placeholder="사진을 올려주시고 제품의 사용기간, 상태 등 게시글 내용을 작성해주세요."
           height={height}
           useCommandShortcut
           plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} // 코드블럭 하이라이트
@@ -61,6 +61,7 @@ const CustomEditor = ({
               formData.append('image', compressedFile);
               setImageFile && setImageFile(formData);
               setImageUrl && setImageUrl(URL.createObjectURL(blob)); //미리보기
+
               // props.sendImage(formData, 28);
               // callback(`http://3.35.90.143:54130/rentPost/image/get?imageId=28`, 'alt text');
 

@@ -1,10 +1,5 @@
 import styled from 'styled-components';
-export const Container = styled.div`
-  width: 80%;
-  @media screen and (max-width: 500px) {
-    width: 90%;
-  }
-`;
+
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
@@ -33,7 +28,6 @@ export const ListBottom = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 80%;
-  /* min-height: 700px; */
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;
