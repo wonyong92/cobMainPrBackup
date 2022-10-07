@@ -1,11 +1,11 @@
 import { getPosts } from '../../Utils/ApiCall';
 import PostItem from '../../components/PostItem/PostItem';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
 import { ItemContainer } from '../Main/Main';
-import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 
 interface Props {
   ref?: React.MutableRefObject<HTMLDivElement>;
@@ -14,15 +14,21 @@ interface Props {
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
+  const ref = useRef<HTMLDivElement|null>(null);
+  const entry = useIntersectionObserver(ref, {})
+  const isVisibled = !!entry?.isIntersecting;
 
-  const fetchPosts = useCallback(async () => {
-    getPosts(sortType).then((res) => {
-      //   console.log(res.rentPosts);
+  console.log(`Render Section ${isVisibled}`);
+
+  useEffect (() => {
+     getPosts(sortType).then((res) => {
       setPosts(res.rentPosts);
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }, [sortType]);
-
-  const setObservatingTarget = useIntersectionObserver(fetchPosts);
+  
 
   const handleSortChange = (e: any) => {
     setSortType(e.target.value);
@@ -41,7 +47,7 @@ const PostList = () => {
           <PostItem data={el} key={el.rentPostId} />
         ))}
       </ItemContainer>
-      <div ref={setObservatingTarget} />
+      <div ref={ref} />
     </>
   );
 };
