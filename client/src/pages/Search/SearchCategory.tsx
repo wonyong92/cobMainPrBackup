@@ -49,7 +49,8 @@ const SearchCategory = () => {
     searchFortCategoryKeyword();
   }, [rentSortType, sortType, setPage, page, category]);
   return (
-    <Container>
+    // <Container>
+    <>
       <Top>
         <Title>
           {category} 검색결과
@@ -78,7 +79,8 @@ const SearchCategory = () => {
           {searchResultList && searchResultList.map((el) => <ListItem data={el} key={el.rentPostId} />)}
         </ListBottom>
       )}
-    </Container>
+    </>
+    // </Container>
   );
 };
 export default SearchCategory;

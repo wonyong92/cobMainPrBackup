@@ -1,4 +1,4 @@
-// page-postEdit
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import {
   Top,
   TopLeft,
@@ -19,7 +19,6 @@ import TextInput from '../../UI/input/TextInput';
 import { useState, useContext } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useNavigate } from 'react-router-dom';
-const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import { useRef } from 'react';
 import { UserContext } from '../../context/context';
 import { useLocation } from 'react-router-dom';
@@ -27,6 +26,7 @@ import DropMenu from '../../components/DropMenu/DropMenu';
 import { category, location } from '../../constants';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useScroll from '../../hooks/useScroll';
 const PostEdit = () => {
   const local = useLocation();
   const data = local.state.data;
@@ -58,7 +58,7 @@ const PostEdit = () => {
     rentPostId: data.rentPostId,
     rentStatus: data.rentStatus,
   });
-
+  useScroll();
   const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPost({ ...post, [name]: value });
@@ -84,7 +84,7 @@ const PostEdit = () => {
     if (imageFile) {
       sendImage(imageFile, post.rentPostId);
     }
-    navigate(`/postdetail/${post.rentPostId}`);
+    navigate(`/postdetail/${data.rentPostId}`);
     window.location.reload();
   };
 
