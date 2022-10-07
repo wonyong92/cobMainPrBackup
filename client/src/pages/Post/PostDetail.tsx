@@ -2,7 +2,7 @@ import PostDetailItem from '../../components/PostItem/PostDetailItem';
 import styled from 'styled-components';
 import Button from '../../UI/button/Button';
 import { useState, useEffect } from 'react';
-import { getPost } from '../../Utils/ApiCall';
+import { getPost } from '../../Utils';
 import { PostItemDetailData } from '../../components/PostItem/PostDetailItem';
 import CommentList from '../../components/Comment/CommentList';
 import CommentWrite from '../../components/Comment/CommentWrite';
@@ -49,7 +49,6 @@ const PostDetail = () => {
       <CommentWrite postId={post.rentPostId} />
       <CommentList post={post} />
     </ItemContainer>
-
   );
 };
 const ItemContainer = styled.div`

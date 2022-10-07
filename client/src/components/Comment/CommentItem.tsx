@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
 import { CommentData } from './CommentWrite';
 import { ChangeEvent, useContext, useState } from 'react';
-import { deleteComment, updateComment } from '../../Utils/ApiCall';
+import { deleteComment, updateComment } from '../../Utils';
 import { UserContext } from '../../context/context';
 import TextInput from '../../UI/input/TextInput';
 import { useNavigate } from 'react-router-dom';
