@@ -2,11 +2,11 @@ import { getPosts } from '../../Utils/ApiCall';
 import styled from 'styled-components';
 import PostItem, { PostItemData } from '../../components/PostItem/PostItem';
 import { useEffect, useState } from 'react';
-
+import useScroll from '../../hooks/useScroll';
 const Main = () => {
   const [posts, setPosts] = useState<PostItemData[]>([]);
   const [sortType, setSortType] = useState('writeDate');
-
+  useScroll();
   useEffect(() => {
     getPosts(sortType)
       .then((res) => {
@@ -125,6 +125,7 @@ const WelcomePage = styled.article`
     }
   }
   .subtitle2 {
+    margin-right: 8px;
     @media screen and (max-width: 500px) {
       font-size: 15px;
     }

@@ -61,13 +61,13 @@ export default ListItem;
 const ListItemContainer = styled.div`
   display: flex;
   flex-basis: 33%;
-  /* width: 33%; */
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
   border-bottom: #efeded 0.5px solid;
   @media screen and (max-width: 500px) {
-    display: flex;
+    width: 100%;
+    /* display: flex; */
     margin-top: 5px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -93,6 +93,7 @@ export const ImgWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   white-space: nowrap;
+  width: 100%;
 `;
 
 export const FirstRow = styled.div`

@@ -6,7 +6,7 @@ import SearchFilter from '../../components/Search/SearchFilter';
 import { sortOptionList } from '../../constants';
 import { ItemContainer } from '../Main/Main';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
-
+import useScroll from '../../hooks/useScroll';
 interface Props {
   ref?: React.MutableRefObject<HTMLDivElement>;
 }
@@ -14,7 +14,7 @@ interface Props {
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [sortType, setSortType] = useState('writeDate');
-
+  useScroll();
   const fetchPosts = useCallback(async () => {
     getPosts(sortType).then((res) => {
       //   console.log(res.rentPosts);

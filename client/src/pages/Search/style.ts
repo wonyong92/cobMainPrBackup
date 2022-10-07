@@ -9,11 +9,13 @@ export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 80%;
   margin-bottom: 10px;
 `;
 export const Title = styled.div`
   font-weight: 500;
   font-size: 16px;
+
   span {
     color: #464646;
     font-weight: 400;
@@ -30,8 +32,8 @@ export const FilterWrapper = styled.div`
 export const ListBottom = styled.div`
   display: flex;
   flex-wrap: wrap;
-  /* width: 80%; */
-  min-height: 700px;
+  width: 80%;
+  /* min-height: 700px; */
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;

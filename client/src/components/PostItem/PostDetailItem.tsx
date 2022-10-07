@@ -49,7 +49,7 @@ interface IPostItemDetailProps {
 }
 
 const PostDetailItem = ({ data }: IPostItemDetailProps) => {
-  // const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
+  const imgUrl: string = `${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[0]}`;
   const [count, setCount] = useState(1);
   const [imageURL, setImageURL] = useState('');
   const { user } = useContext(UserContext);
@@ -106,7 +106,8 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
         <ImgWrapper>
           {/* <FontAwesomeIcon icon={faAngleLeft} onClick={getPrevImage} className="icon" /> */}
           {/* <FontAwesomeIcon icon={faAngleRight} onClick={getNextImage} className="icon" /> */}
-          <GoodsImage src={imageURL} />
+          {/* <GoodsImage src={imageURL} /> */}
+          <GoodsImage src={imgUrl} />
         </ImgWrapper>
         <DescriptionWrapper>
           <Title>{data.rentPostName}</Title>
@@ -233,7 +234,7 @@ const TextButtonWrapper = styled.div`
 const ListWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 950px;
   height: 100%;
   margin: 0;
   padding: 0;
