@@ -8,8 +8,10 @@ import { sendComment } from '../../Utils/post';
 import { UserContext } from '../../context/context';
 import { useContext } from 'react';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+import { ReactComponent as guestImg } from '../../asessts/img/guestImg.svg';
 export interface CommentData {
-  writerId: number | undefined;
+  // writerId: number | undefined;
+  writerId: number;
   targetPostId: number;
   commentContents: string;
   commentId: number;
@@ -29,9 +31,9 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
     writerId: user.memberId,
     commentId: 0,
   });
-  useEffect(() => {
-    setComment({ ...comment, targetPostId: postId });
-  }, [postId]);
+  // useEffect(() => {
+  //   setComment({ ...comment, targetPostId: postId });
+  // }, [postId]);
 
   const onChangeComment = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,10 +53,10 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
   return (
     <>
       <CommentWrapper>
-        {user.memberId ? <Image alt="practice" src={imgUrl} /> : null}
+        {user.memberId ? <Image alt="practice" src={imgUrl} /> : <GuestSVG />}
         <TextInput
           type={'text'}
-          placeholder={'댓글을 입력하세요'}
+          placeholder={user.memberId ? '댓글을 입력하세요' : '댓글을 쓰려면 로그인이 필요합니다'}
           onChange={onChangeComment}
           value={comment.commentContents}
           name={'commentContents'}
@@ -85,7 +87,10 @@ const CommentWrapper = styled.div`
     }
   }
 `;
-
+const GuestSVG = styled(guestImg)`
+  width: 60px;
+  height: 60px;
+`;
 export const Image = styled.img`
   width: 2rem;
   height: 2rem;

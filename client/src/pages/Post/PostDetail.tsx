@@ -8,7 +8,10 @@ import CommentList from '../../components/Comment/CommentList';
 import CommentWrite from '../../components/Comment/CommentWrite';
 import { useParams } from 'react-router-dom';
 import { config } from '../../config/config';
+import { CommentData } from '../../components/Comment/CommentWrite';
+import { getComments } from '../../Utils';
 import useScroll from '../../hooks/useScroll';
+
 const PostDetail = () => {
   const params = useParams<{ id: string }>();
   const initialState = {
@@ -33,21 +36,30 @@ const PostDetail = () => {
   useEffect(() => {
     getPost(Number(params.id))
       .then((res) => {
-        // console.log(res);
         setPost(res);
       })
-      .catch((err) => {
-        // console.log(err);
-      });
+      .catch((err) => {});
   }, []);
+  const compare = (a: any, b: any) => {
+    const aDate = new Date(a.updateDate).getTime();
+    const bDate = new Date(b.updateDate).getTime();
+    return bDate - aDate;
+  };
+  const [comments, setComments] = useState<CommentData[]>([]);
+  useEffect(() => {
+    getComments(post.rentPostId).then((res) => {
+      const newList = res.comments;
+      newList.sort(compare);
+      setComments(newList);
+    });
+  }, [post.rentPostId, setComments]);
 
   return (
     <ItemContainer>
       <PostDetailItem data={post} />
-      {/* <ContentContainer></ContentContainer> */}
       <CommentCount>댓글</CommentCount>
       <CommentWrite postId={post.rentPostId} />
-      <CommentList post={post} />
+      <CommentList comments={comments} />
     </ItemContainer>
   );
 };
@@ -57,26 +69,6 @@ const ItemContainer = styled.div`
   min-height: 1000px;
   @media screen and (max-width: 500px) {
     width: 95%;
-  }
-`;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  padding-top: 10px;
-  margin-bottom: 1rem;
-  padding-left: 20px;
-  font-size: 1.2rem;
-  line-height: 1.5;
-  color: #495057;
-  word-break: break-all;
-  .button {
-    display: flex;
-    flex-direction: row-reverse;
-    padding-right: 20px;
   }
 `;
 
