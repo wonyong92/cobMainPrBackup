@@ -2,21 +2,22 @@ import CommentItem from './CommentItem';
 import { getComments } from '../../Utils/post';
 import { useState, useEffect } from 'react';
 import { PostItemDetailData } from '../PostItem/PostDetailItem';
+import { CommentData } from './CommentWrite';
 
 export interface CommentListProps {
-  post: PostItemDetailData;
+  comments: CommentData[];
 }
-const CommentList = ({ post }: CommentListProps) => {
-  const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    getComments(post.rentPostId).then((res) => {
-      // console.log(res);
-      setComments(res.comments);
-    });
-  }, [post.rentPostId]);
-  // console.log(comments);
-  return <>{comments && comments.map((el, idx) => <CommentItem key={idx} data={el} />)}</>;
+const CommentList = ({ comments }: CommentListProps) => {
+  return (
+    <>
+      {comments &&
+        comments.map((el) => (
+          <div key={el.commentId}>
+            <CommentItem data={el} />
+          </div>
+        ))}
+    </>
+  );
 };
 
 export default CommentList;
