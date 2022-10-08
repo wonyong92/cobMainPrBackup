@@ -22,11 +22,11 @@ export const Container = styled.div`
       left: 203px;
     }
     button:nth-of-type(2) {
-      top: 380.5px;
+      top: 362.5px;
       left: 134px;
     }
     button:nth-of-type(3) {
-      top: 460.5px;
+      top: 440.5px;
       left: 64px;
     }
   }
