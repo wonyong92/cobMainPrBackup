@@ -15,7 +15,7 @@ const Signup = () => {
         title={'빌리지뭐는 개인간 렌탈 플랫폼입니다'}
         descript={'살까 말까 고민된다면 지금 여기서 빌리고 써보세요'}
       />
-      <ButtonSocial text={'SNS 회원가입'} />
+      {/* <ButtonSocial text={'SNS 회원가입'} /> */}
       <InputDescript text={'회원가입에 필요한 정보를 입력해주세요'} />
       <SignupInput />
       <BtnWrapper>

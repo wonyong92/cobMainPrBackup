@@ -4,7 +4,7 @@ import DeleteSocialAccount from './DeleteSocialAccount';
 const MyAccount = () => {
   return (
     <>
-      <DeleteSocialAccount />
+      {/* <DeleteSocialAccount /> */}
       <DeleteIdAccount />
       <ChangePassword />
     </>
