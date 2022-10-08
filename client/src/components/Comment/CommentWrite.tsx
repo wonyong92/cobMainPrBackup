@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ChangeEvent, MouseEvent } from 'react';
 import Button from '../../UI/button/Button';
 import TextInput from '../../UI/input/TextInput';
-import { sendComment } from '../../Utils/post';
+import { getComments, sendComment } from '../../Utils/post';
 import { UserContext } from '../../context/context';
 import { useContext } from 'react';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
@@ -20,9 +20,11 @@ export interface CommentData {
 
 export interface CommentWriteProps {
   postId: number;
+  setRenewCommentsList: (renewComments: any) => void;
+  renewComments: CommentData[];
 }
 
-const CommentWrite = ({ postId }: CommentWriteProps) => {
+const CommentWrite = ({ postId, setRenewCommentsList, renewComments }: CommentWriteProps) => {
   const { user } = useContext(UserContext);
 
   const [comment, setComment] = useState<CommentData>({
@@ -31,9 +33,9 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
     writerId: user.memberId,
     commentId: 0,
   });
-  // useEffect(() => {
-  //   setComment({ ...comment, targetPostId: postId });
-  // }, [postId]);
+  useEffect(() => {
+    setComment({ ...comment, targetPostId: postId });
+  }, [postId]);
 
   const onChangeComment = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,8 +44,9 @@ const CommentWrite = ({ postId }: CommentWriteProps) => {
 
   const clickHandler = () => {
     if (user.memberId) {
+      setRenewCommentsList([comment, ...renewComments]);
       sendComment(comment);
-      window.location.reload();
+      // window.location.reload();
     } else {
       return;
     }

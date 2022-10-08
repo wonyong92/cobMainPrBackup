@@ -6,14 +6,20 @@ import { CommentData } from './CommentWrite';
 
 export interface CommentListProps {
   comments: CommentData[];
+  setRenewCommentsList: (renewComments: any) => void;
+  renewComments: CommentData[];
 }
-const CommentList = ({ comments }: CommentListProps) => {
+const CommentList = ({ comments, setRenewCommentsList, renewComments }: CommentListProps) => {
   return (
     <>
       {comments &&
         comments.map((el) => (
           <div key={el.commentId}>
-            <CommentItem data={el} />
+            <CommentItem
+              data={el}
+              setRenewCommentsList={setRenewCommentsList}
+              renewComments={renewComments}
+            />
           </div>
         ))}
     </>

@@ -50,6 +50,7 @@ const PostDetail = () => {
     getComments(post.rentPostId).then((res) => {
       const newList = res.comments;
       newList.sort(compare);
+      console.log(res);
       setComments(newList);
     });
   }, [post.rentPostId, setComments]);
@@ -58,8 +59,8 @@ const PostDetail = () => {
     <ItemContainer>
       <PostDetailItem data={post} />
       <CommentCount>댓글</CommentCount>
-      <CommentWrite postId={post.rentPostId} />
-      <CommentList comments={comments} />
+      <CommentWrite postId={post.rentPostId} setRenewCommentsList={setComments} renewComments={comments} />
+      <CommentList comments={comments} setRenewCommentsList={setComments} renewComments={comments} />
     </ItemContainer>
   );
 };
