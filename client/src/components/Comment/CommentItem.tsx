@@ -51,10 +51,13 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
             commentContents: text,
             commentId: data.commentId,
             writerId: data.writerId,
+            writeDate: String(new Date()),
           }
         : el,
     );
     setRenewCommentsList(newCommentList);
+
+    setEditComment(false);
   };
 
   const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
