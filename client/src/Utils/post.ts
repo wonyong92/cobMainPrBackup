@@ -43,7 +43,6 @@ export const sendPost = async (post: any) => {
 };
 
 export const sendImage = async (image: FormData, postId: number) => {
-  console.log(image, postId);
   try {
     const res = await AxiosInstance.post(`${PROXY}/rentPost/images/?postId=${postId}`, image);
 

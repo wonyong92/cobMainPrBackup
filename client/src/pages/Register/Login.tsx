@@ -15,8 +15,8 @@ const Login = () => {
         title={'빌리지뭐는 개인간 렌탈 플랫폼입니다'}
         descript={'살까 말까 고민된다면 지금 여기서 빌리고 써보세요'}
       />
-      <ButtonSocial text={'SNS 로그인'} />
-      <InputDescript text={'아이디로 로그인'} />
+      {/* <ButtonSocial text={'SNS 로그인'} /> */}
+      {/* <InputDescript text={'아이디로 로그인'} /> */}
       <LoginInput />
       <FindInfo>
         <TextButton btnText={'ID 찾기'} isGray={true} onClick={() => navigate('/findid')} />

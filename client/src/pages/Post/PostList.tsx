@@ -15,7 +15,7 @@ const PostList = () => {
   const entry = useIntersectionObserver(ref, {});
   const isVisibled = !!entry?.isIntersecting;
 
-  console.log(`Render Section ${isVisibled}`);
+  // console.log(`Render Section ${isVisibled}`);
 
   useScroll();
   useEffect(() => {

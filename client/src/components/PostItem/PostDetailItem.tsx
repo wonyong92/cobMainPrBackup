@@ -79,7 +79,6 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
     setCount(count + 1);
   };
   const getNextImage = () => {
-    // console.log(count);
     if (count >= data.rentPostImages.length - 1) {
       setCount(0);
     } else {
@@ -92,7 +91,6 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
     setCount(count - 1);
   };
   const getPrevImage = () => {
-    // console.log(count);
     if (count <= 0) {
       setCount(data.rentPostImages.length);
     } else {
