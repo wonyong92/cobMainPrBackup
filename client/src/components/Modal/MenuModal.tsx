@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { category } from '../../constants';
 import { useContext } from 'react';
-import { SearchResultContext } from '../../context/context';
+import { SearchResultContext, UserContext } from '../../context/context';
 import { useNavigate } from 'react-router-dom';
 import { searchCategoryKeyword } from '../../Utils';
+import userEvent from '@testing-library/user-event';
 
 interface Props {
   menuModal?: boolean;
   setMenuModal?: (state: boolean) => void;
 }
 const MenuModal = ({ setMenuModal, menuModal }: Props) => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const { setSearchResultList } = useContext(SearchResultContext);
   const modalOpen: boolean = menuModal ? true : false;
@@ -20,8 +22,13 @@ const MenuModal = ({ setMenuModal, menuModal }: Props) => {
   };
 
   const getCategoryPosts = async (e: any) => {
-    if (e.target.innerText === '인기리스트') {
+    if (e.target.innerText === '인기리스트' && !user.memberId) {
+      alert('로그인이 필요합니다 :)');
+      navigate('/login');
+      return;
+    } else if (e.target.innerText === '인기리스트' && user.memberId) {
       navigate('/');
+      return;
     } else {
       const result = await searchCategoryKeyword(e.target.innerText);
       if (result) {
