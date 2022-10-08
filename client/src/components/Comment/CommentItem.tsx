@@ -11,9 +11,11 @@ import { config } from '../../config/config';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 export interface CommentDataProps {
   data: CommentData;
+  setRenewCommentsList: (renewComments: any) => void;
+  renewComments: CommentData[];
 }
 
-const CommentItem = ({ data }: CommentDataProps) => {
+const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataProps) => {
   const { user } = useContext(UserContext);
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
@@ -21,7 +23,9 @@ const CommentItem = ({ data }: CommentDataProps) => {
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 11);
   const deleteCommentHandler = () => {
     deleteComment(data.commentId);
-    window.location.reload();
+    const newCommentList = renewComments.filter((el) => el.commentId !== data.commentId);
+    setRenewCommentsList(newCommentList);
+    // window.location.reload();
   };
 
   const editCommentHandler = () => {
@@ -41,7 +45,16 @@ const CommentItem = ({ data }: CommentDataProps) => {
       },
       data.commentId,
     );
-    window.location.reload();
+    const newCommentList = renewComments.map((el) =>
+      el.commentId === data.commentId
+        ? {
+            commentContents: text,
+            commentId: data.commentId,
+            writerId: data.writerId,
+          }
+        : el,
+    );
+    setRenewCommentsList(newCommentList);
   };
 
   const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
