@@ -44,8 +44,10 @@ const CommentWrite = ({ postId, setRenewCommentsList, renewComments }: CommentWr
 
   const clickHandler = () => {
     if (user.memberId) {
+      comment.writeDate = String(new Date());
       setRenewCommentsList([comment, ...renewComments]);
       sendComment(comment);
+      setComment({ ...comment, commentContents: '' });
       // window.location.reload();
     } else {
       return;
