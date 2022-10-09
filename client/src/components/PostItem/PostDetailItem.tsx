@@ -232,7 +232,7 @@ const TextButtonWrapper = styled.div`
 const ListWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: 950px;
+  width: 1000px;
   height: 100%;
   margin: 0;
   padding: 0;

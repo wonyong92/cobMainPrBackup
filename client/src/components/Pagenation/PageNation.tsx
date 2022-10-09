@@ -9,7 +9,6 @@ interface Props {
   increasePage: () => void;
 }
 const PageNation = ({ page, totalPages, decreasePage, increasePage }: Props) => {
-  // const totalPage = Math.ceil(totalPost / 10);
   return (
     <Container>
       <Wrapper>
@@ -27,7 +26,7 @@ const Container = styled.div`
   padding-top: 5px;
   padding-bottom: 5px;
   display: flex;
-  width: 80%;
+  width: 90%;
   justify-content: flex-end;
   align-items: center;
 `;

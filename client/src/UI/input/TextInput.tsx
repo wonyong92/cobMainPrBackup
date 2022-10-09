@@ -9,9 +9,10 @@ interface Prop {
   name?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyup?: (e: any) => void;
+  onClick?: undefined | any;
 }
 
-const TextInput = ({ type, value, defaultValue, name, placeholder, onChange, onKeyup }: Prop) => {
+const TextInput = ({ type, value, defaultValue, name, placeholder, onChange, onKeyup, onClick }: Prop) => {
   return (
     <div>
       <TextBox
@@ -22,6 +23,7 @@ const TextInput = ({ type, value, defaultValue, name, placeholder, onChange, onK
         onChange={onChange}
         onKeyUp={onKeyup}
         name={name}
+        onClick={onClick}
       />
     </div>
   );

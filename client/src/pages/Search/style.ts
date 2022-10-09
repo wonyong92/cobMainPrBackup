@@ -4,7 +4,7 @@ export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 80%;
+  width: 90%;
   margin-bottom: 10px;
 `;
 export const Title = styled.div`
@@ -27,7 +27,7 @@ export const FilterWrapper = styled.div`
 export const ListBottom = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
+  width: 90%;
   @media screen and (max-width: 500px) {
     display: flex;
     flex-direction: column;
