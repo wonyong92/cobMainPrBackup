@@ -4,7 +4,13 @@ export const MyHeader = styled.header`
   width: 100vw;
   display: flex;
   justify-content: space-around;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  opacity: 0.95;
+  /* backdrop-filter: blur(30px); */
   border-bottom: 0.5px solid #f5f5f5;
+  box-shadow: rgba(100, 100, 100, 0.1) 0px 2px 5px;
   margin-top: 5px;
   margin-bottom: 10px;
   @media screen and (max-width: 500px) {
