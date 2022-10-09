@@ -79,6 +79,7 @@ const CommentWrapper = styled.div`
   border: 1px solid #e9ecef;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 20px;
   button {
     margin-left: 5px;
