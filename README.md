@@ -1,9 +1,11 @@
 ![Group 1428](https://user-images.githubusercontent.com/102936206/194765199-e1acbc0c-c999-4323-bbb8-075b0367bbda.svg)
-## 개인 간 렌탈 플랫폼 
-<a href="https://villagemo.netlify.app/">빌리지뭐 바로가기🎵</a>
-<br/>
+## 💜 빌리지뭐(개인 간 렌탈 플랫폼)
+
+
 살까 말까 고민 된다면,
 지금 여기서 빌리고 써보세요 :)
+<br/>
+<a href="https://villagemo.netlify.app/">빌리지뭐 바로가기🎵</a>
 > 개발기간: 2022.09.07 ~ 2022.10.12
 ## 🤔 서비스 소개
 인간은 소비를 하고 그 과정에서 항상 선택의 기로에 서게 됩니다. <br/>
