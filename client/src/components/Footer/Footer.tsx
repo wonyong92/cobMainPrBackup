@@ -31,7 +31,7 @@ const GitIconSVG = styled(Git)`
 `;
 
 const Footer = () => {
-  const gitUrl = `https://github.com/codestates-seb/seb39_main_023/tree/front`;
+  const gitUrl = `https://github.com/codestates-seb/seb39_main_023/tree/main`;
   return (
     <MyFooter>
       <div>@ 2022 빌리지뭐, All rights reserved.</div>
