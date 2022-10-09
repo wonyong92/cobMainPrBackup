@@ -113,7 +113,8 @@ const PostEdit = () => {
   return (
     <>
       <Top>
-        <Button text="수정완료" width="middle" onClick={clickHandler} />
+        <Button text="취소" type="white" width="short" onClick={() => navigate(-1)} />
+        <Button text="수정하기" width="middle" onClick={clickHandler} />
       </Top>
       <Middle>
         <WriteWrapper>

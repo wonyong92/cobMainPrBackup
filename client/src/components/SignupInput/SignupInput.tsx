@@ -194,8 +194,7 @@ const SignupInput = () => {
     <>
       <Container>
         <Button text={'중복확인'} type={'beige'} width={'short'} onClick={checkUserID} />
-        <Button text={'중복확인'} type={'beige'} width={'short'} onClick={checkNickname} />
-        <Button text={'중복확인'} type={'beige'} width={'short'} onClick={checkEmail} />
+
         <form>
           <DefaultInput
             label="아이디"
@@ -247,6 +246,8 @@ const SignupInput = () => {
             placeholder="이메일을 입력해주세요"
           />
         </form>
+        <Button text={'중복확인'} type={'beige'} width={'short'} onClick={checkNickname} />
+        <Button text={'중복확인'} type={'beige'} width={'short'} onClick={checkEmail} />
       </Container>
       <BtnWrapper>
         <Button text={'회원가입'} type={'beige'} onClick={handleRegisterUser} />

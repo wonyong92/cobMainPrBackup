@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import TextButton from '../../UI/button/TextButton';
 import { CommentData } from './CommentWrite';
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { deleteComment, updateComment } from '../../Utils';
 import { UserContext } from '../../context/context';
 import TextInput from '../../UI/input/TextInput';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../../config/config';
+import axios from 'axios';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 export interface CommentDataProps {
   data: CommentData;
@@ -19,13 +20,21 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
   const { user } = useContext(UserContext);
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
+  const [nickname, setNickname] = useState('');
+
+  useEffect(() => {
+    const getCommtentUserNickname = async () => {
+      const result = await axios.get(`${PROXY}/member/profile?memberId=${data.writerId}`);
+      setNickname(result.data.nickname);
+    };
+    getCommtentUserNickname();
+  }, []);
   const navigate = useNavigate();
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 11);
   const deleteCommentHandler = () => {
     deleteComment(data.commentId);
     const newCommentList = renewComments.filter((el) => el.commentId !== data.commentId);
     setRenewCommentsList(newCommentList);
-    // window.location.reload();
   };
 
   const editCommentHandler = () => {
@@ -60,12 +69,12 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
     setEditComment(false);
   };
 
-  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
+  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
   return (
     <>
       <CommentItemWrapper>
         <Image alt="practice" src={imgUrl} />
-        <div>{user.nickname}</div>
+        <div>{nickname}</div>
         <CommentItemHeader>
           <span>{createdAt}</span>
         </CommentItemHeader>
@@ -75,6 +84,12 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
             {editComment ? (
               <>
                 <TextInput type="text" value={text} onChange={commentHandler} placeholder={''} />
+                <TextButton
+                  text="text"
+                  isGray={true}
+                  btnText={'취소'}
+                  onClick={() => setEditComment(false)}
+                />
                 <TextButton text="확인" isGray={true} btnText={'확인'} onClick={updateCommentHandler} />
               </>
             ) : (

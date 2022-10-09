@@ -9,6 +9,7 @@ import { UserContext } from '../../context/context';
 import { useContext } from 'react';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 import { ReactComponent as guestImg } from '../../asessts/img/guestImg.svg';
+import { useNavigate } from 'react-router-dom';
 export interface CommentData {
   // writerId: number | undefined;
   writerId: number;
@@ -26,7 +27,7 @@ export interface CommentWriteProps {
 
 const CommentWrite = ({ postId, setRenewCommentsList, renewComments }: CommentWriteProps) => {
   const { user } = useContext(UserContext);
-
+  const navigate = useNavigate();
   const [comment, setComment] = useState<CommentData>({
     commentContents: '',
     targetPostId: postId,
@@ -48,12 +49,13 @@ const CommentWrite = ({ postId, setRenewCommentsList, renewComments }: CommentWr
       setRenewCommentsList([comment, ...renewComments]);
       sendComment(comment);
       setComment({ ...comment, commentContents: '' });
-      // window.location.reload();
     } else {
       return;
     }
   };
-
+  const goLoginPage = () => {
+    navigate('/login');
+  };
   const imgUrl = `${PROXY}/member/profileImage/get?memberId=${user.memberId}`;
   return (
     <>
@@ -65,8 +67,9 @@ const CommentWrite = ({ postId, setRenewCommentsList, renewComments }: CommentWr
           onChange={onChangeComment}
           value={comment.commentContents}
           name={'commentContents'}
+          onClick={user.memberId ? undefined : goLoginPage}
         />
-        <Button text="댓글작성" width="short" onClick={clickHandler} />
+        <Button text="작성" width="short" onClick={clickHandler} />
       </CommentWrapper>
     </>
   );

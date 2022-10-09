@@ -87,9 +87,11 @@ const PostWrite = ({ formData }: any) => {
   const deleteImage = () => {
     setImageUrl('');
   };
+
   return (
     <>
       <Top>
+        <Button text="취소" type="white" width="short" onClick={() => navigate(-1)} />
         <Button text="완료" width="short" onClick={clickHandler} />
       </Top>
       <Middle>
@@ -149,6 +151,7 @@ export const Top = styled.div`
     height: 35px;
     font-size: 14px;
     white-space: nowrap;
+    margin-left: 3px;
   }
   @media screen and (max-width: 500px) {
     width: 90%;
