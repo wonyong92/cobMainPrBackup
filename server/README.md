@@ -155,7 +155,7 @@
         
         
 
-    6. 기초적인 레이어드 아키텍쳐 적용
+    6. 기초적인 레이어드 아키텍쳐 + 인터셉터 적용
         
         
         <img src="https://user-images.githubusercontent.com/80381715/194753320-01aa6b70-9af9-4619-ae4a-d1fa237bdbfb.png" width="350" height="450">
