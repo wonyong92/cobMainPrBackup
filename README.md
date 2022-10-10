@@ -25,5 +25,4 @@
 <img width="430" alt="스크린샷 2022-10-10 오전 12 50 52" src="https://user-images.githubusercontent.com/102936206/194766558-9de68ba4-9c44-4b80-9fdd-a56460ca90b7.png">
 
 ### Backend
-<img width="428" alt="스크린샷 2022-10-10 오전 12 51 01" src="https://user-images.githubusercontent.com/102936206/194766569-0d93267a-bd6b-47f2-929d-6a64f6f91e14.png">
-
+<img width="428" alt="스크린샷 2022-10-10 오전 12 51 01" src="https://user-images.githubusercontent.com/80381715/194793504-32238a50-c4d6-45b1-ad1c-444990f5265a.png">
