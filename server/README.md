@@ -143,7 +143,9 @@
 
 - ## 설계 컨셉
     1. 기초적인 REST API 설계
-    3. 불필요한 프레임워크 의존 줄이기(Spring security)
+    3. 불필요한 프레임워크 의존 줄이기(Spring security) -> Interceptor 적용
+    ![서버아키텍쳐-인터셉터 drawio (2)](https://user-images.githubusercontent.com/80381715/194796829-beeeab4c-52cb-4ee1-aaf0-9a353ba971fc.png)
+
     4. 개발 기간에 맞추어 필요한 기능을 먼저 빠르게 구현 -> 기능 추가 -> 반복
     5. MODEL DRIVEN DESIGN의 적용
     
@@ -155,9 +157,8 @@
         
         
 
-    6. 기초적인 레이어드 아키텍쳐 + 인터셉터 적용
-        
-        
+    6. 기초적인 레이어드 아키텍쳐
+    
         <img src="https://user-images.githubusercontent.com/80381715/194753320-01aa6b70-9af9-4619-ae4a-d1fa237bdbfb.png" width="350" height="450">
 
     7. 컨트롤러 중심의 예외 처리 코드 구현
