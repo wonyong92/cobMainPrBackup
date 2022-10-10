@@ -26,3 +26,6 @@
 
 ### Backend
 <img width="428" alt="스크린샷 2022-10-10 오전 12 51 01" src="https://user-images.githubusercontent.com/80381715/194793504-32238a50-c4d6-45b1-ad1c-444990f5265a.png">
+
+## 📃 개인 개발 README
+> BackEnd Server 개발 :https://github.com/codestates-seb/seb39_main_023/tree/main/server
