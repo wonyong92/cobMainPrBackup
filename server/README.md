@@ -172,7 +172,10 @@
     9. JWT에 TTL 설정으로 토큰 탈취에 대하여 최소한의 대비책 마련 - 인터셉터에 토큰 만료 확인 코드 작성
          ![image](https://user-images.githubusercontent.com/80381715/194765018-b2ee2118-230c-42e0-8e63-d78bbd44e412.png)
 
-        
+    10. 토큰 만료시 DB에서 로그아웃 상태 확인 후 새로운 토큰 발행 기능 추가 - 리프레시 토큰 대신 토큰 블랙리스트(로그아웃 플래그) 사용으로 토큰 탈취 대응
+        ![image](https://user-images.githubusercontent.com/80381715/194793880-b79c5528-522e-48f6-ac87-fdfb2727c20c.png)
+        ![서버아키텍쳐-토큰 블랙리스트 drawio](https://user-images.githubusercontent.com/80381715/194794265-7be9b880-1070-4a25-a2eb-7cc619e29465.png)
+
  
      
 
