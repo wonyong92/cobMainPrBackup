@@ -68,13 +68,14 @@ public class Interceptor implements HandlerInterceptor {
 
         String referer = request.getHeader("Referer");
         String host = request.getHeader("Host");
+        String origin = request.getHeader("Origin");
 
-        if (referer == null || !referer.contains(host)) {
-            response.setStatus(403);
-            System.out.println(host);
-            System.out.println(referer);
-            return false;
-        }
+//        if (referer == null || !referer.contains(host)) {
+//            response.setStatus(403);
+//            System.out.println(host);
+//            System.out.println(referer);
+//            return false;
+//        }
 
         return true;
     }
