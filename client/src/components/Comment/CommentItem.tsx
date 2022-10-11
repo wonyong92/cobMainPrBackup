@@ -111,6 +111,7 @@ const CommentItemWrapper = styled.div`
   border-radius: 4px;
   padding: 1rem;
   margin-top: 1rem;
+  width: 1000px;
 `;
 
 const CommentItemHeader = styled.div`

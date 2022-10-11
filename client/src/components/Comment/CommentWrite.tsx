@@ -75,7 +75,7 @@ const CommentWrite = ({ postId, setRenewCommentsList, renewComments }: CommentWr
   );
 };
 const CommentWrapper = styled.div`
-  width: 100%;
+  width: 1000px;
   border: 1px solid #e9ecef;
   display: flex;
   align-items: center;
