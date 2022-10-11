@@ -21,14 +21,20 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
   const [nickname, setNickname] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageURL, setImageURL] = useState('');
+  // const imgUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
 
   useEffect(() => {
     const getCommtentUserNickname = async () => {
       const result = await axios.get(`${PROXY}/member/profile?memberId=${data.writerId}`);
       setNickname(result.data.nickname);
+      setImageURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
+      setIsLoading(false);
     };
     getCommtentUserNickname();
   }, []);
+  if (isLoading) return <p>loading...</p>;
   const navigate = useNavigate();
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 13);
   const processedDate = createdAt.slice(0, -1);
@@ -70,11 +76,10 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
     setEditComment(false);
   };
 
-  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
   return (
     <>
       <CommentItemWrapper>
-        <Image alt="practice" src={imgUrl} />
+        <Image alt="practice" src={imageURL} />
         <div>{nickname}</div>
         <CommentItemHeader>
           <span>{processedDate}</span>
@@ -112,6 +117,9 @@ const CommentItemWrapper = styled.div`
   padding: 1rem;
   margin-top: 1rem;
   width: 1000px;
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const CommentItemHeader = styled.div`

@@ -91,6 +91,7 @@ const CommentWrapper = styled.div`
     border-radius: 0px;
   }
   @media screen and (max-width: 500px) {
+    width: 100%;
     input {
       width: 230px;
     }
