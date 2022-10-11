@@ -24,7 +24,8 @@ const ListItem = ({ data, isMyPost }: Props) => {
 
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
-  const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
+  const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 13);
+  const processedDate = createdAt.slice(0, -1);
   const goDetailPage = () => {
     navigate(`/postdetail/${data.rentPostId}`);
   };
@@ -37,7 +38,7 @@ const ListItem = ({ data, isMyPost }: Props) => {
         <FirstRow onClick={goDetailPage}>{data.rentPostName}</FirstRow>
         <SecondRow>
           <span>{location}</span>
-          <span>{createdAt}</span>
+          <span>{processedDate}</span>
         </SecondRow>
         <ThirdRow>
           <div className="thirdRow">{price}원</div>
