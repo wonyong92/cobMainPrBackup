@@ -21,9 +21,6 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
   const [nickname, setNickname] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [imageURL, setImageURL] = useState('');
-  // const imgUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
 
   useEffect(() => {
     const getCommtentUserNickname = async () => {
@@ -31,10 +28,8 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
       setNickname(result.data.nickname);
     };
     getCommtentUserNickname();
-    setImageURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
-    setIsLoading(false);
   }, []);
-  if (isLoading) return <p>loading...</p>;
+
   const navigate = useNavigate();
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 13);
   const processedDate = createdAt.slice(0, -1);
@@ -76,10 +71,11 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
     setEditComment(false);
   };
 
+  const imgUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
   return (
     <>
       <CommentItemWrapper>
-        <Image alt="practice" src={imageURL} />
+        <Image alt="practice" src={imgUrl} />
         <div>{nickname}</div>
         <CommentItemHeader>
           <span>{processedDate}</span>
