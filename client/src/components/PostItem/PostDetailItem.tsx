@@ -53,7 +53,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   const [count, setCount] = useState(1);
   const [imageURL, setImageURL] = useState('');
   const { user } = useContext(UserContext);
-  // const writerImageUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
+
   const [writerImgURL, setWriterImgURL] = useState('');
   const [deleteModal, setDeleteModal] = useState(false);
   const navigate = useNavigate();
@@ -69,12 +69,12 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
       try {
         const res = await axios.get(`${PROXY}/member/profile?memberId=${data.writerId}`);
         setNickname(res.data.nickname);
+        setImageURL(`${PROXY}/rentPost/image/get?imageId=${data.rentPostImages[0]}`);
+        setWriterImgURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
+        setIsLoading(false);
       } catch {}
     };
     getWriterInfo();
-    setImageURL(`${PROXY}/rentPost/image/get?imageId=${data.rentPostImages[0]}`);
-    setWriterImgURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
-    setIsLoading(false);
   }, [data]);
 
   if (isLoading) return <p>loading...</p>;
