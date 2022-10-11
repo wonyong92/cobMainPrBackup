@@ -53,7 +53,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   const [count, setCount] = useState(1);
   const [imageURL, setImageURL] = useState('');
   const { user } = useContext(UserContext);
-  const [writerImgURL, setWriterImgURL] = useState('');
+  const writerImageUrl = `${PROXY}/member/profileImage/get?memberId=${data.writerId}`;
   const [deleteModal, setDeleteModal] = useState(false);
   const navigate = useNavigate();
   const price = data.rentPrice?.toLocaleString();
@@ -62,7 +62,6 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 13);
   const processedDate = createdAt.slice(0, -1);
   const [nickname, setNickname] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getWriterInfo = async () => {
       try {
@@ -72,35 +71,34 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
     };
     getWriterInfo();
     setImageURL(`${PROXY}/rentPost/image/get?imageId=${data.rentPostImages[0]}`);
-    setWriterImgURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
-    setIsLoading(false);
   }, [data]);
-
-  if (isLoading) return <p>loading...</p>;
-  // //증가
-  // const increaseCount = () => {
-  //   setCount(count + 1);
-  // };
-  // const getNextImage = () => {
-  //   if (count >= data.rentPostImages.length - 1) {
-  //     setCount(0);
-  //   } else {
-  //     increaseCount();
-  //     setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[count]}`);
-  //   }
-  // };
-  // //감소
-  // const decreaseCount = () => {
-  //   setCount(count - 1);
-  // };
-  // const getPrevImage = () => {
-  //   if (count <= 0) {
-  //     setCount(data.rentPostImages.length);
-  //   } else {
-  //     decreaseCount();
-  //     setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[count]}`);
-  //   }
-  // };
+  const editHandler = () => {
+    navigate(`/postedit/${data.rentPostId}`);
+  };
+  //증가
+  const increaseCount = () => {
+    setCount(count + 1);
+  };
+  const getNextImage = () => {
+    if (count >= data.rentPostImages.length - 1) {
+      setCount(0);
+    } else {
+      increaseCount();
+      setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[count]}`);
+    }
+  };
+  //감소
+  const decreaseCount = () => {
+    setCount(count - 1);
+  };
+  const getPrevImage = () => {
+    if (count <= 0) {
+      setCount(data.rentPostImages.length);
+    } else {
+      decreaseCount();
+      setImageURL(`${config.apiUrl}rentPost/image/get?imageId=${data.rentPostImages[count]}`);
+    }
+  };
   return (
     <>
       <ListWrapper>
@@ -127,7 +125,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
             <Button text={data.rentStatus === false ? '렌트가능' : '렌트중'} radius="deep" width="short" />
             <WriterInfo>
               <ImgWrapper>
-                <img src={writerImgURL} className="writerImage" />
+                <img src={writerImageUrl} className="writerImage" />
               </ImgWrapper>
               <div className="nickname">{nickname}</div>
             </WriterInfo>
