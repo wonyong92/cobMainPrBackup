@@ -74,7 +74,7 @@ const ItemContainer = styled.div`
 `;
 
 const CommentCount = styled.div`
-  width: 100%;
+  width: 1000px;
   padding: 10px;
   font-size: 15px;
   line-height: 1.5;
