@@ -30,7 +30,8 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
     getCommtentUserNickname();
   }, []);
   const navigate = useNavigate();
-  const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 11);
+  const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 13);
+  const processedDate = createdAt.slice(0, -1);
   const deleteCommentHandler = () => {
     deleteComment(data.commentId);
     const newCommentList = renewComments.filter((el) => el.commentId !== data.commentId);
@@ -76,7 +77,7 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
         <Image alt="practice" src={imgUrl} />
         <div>{nickname}</div>
         <CommentItemHeader>
-          <span>{createdAt}</span>
+          <span>{processedDate}</span>
         </CommentItemHeader>
         <CommentItemContent>{data.commentContents}</CommentItemContent>
         {user.memberId === data.writerId ? (

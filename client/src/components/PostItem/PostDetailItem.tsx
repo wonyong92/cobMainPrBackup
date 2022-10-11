@@ -59,7 +59,8 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
   const price = data.rentPrice?.toLocaleString();
   const location = data.location?.slice(8);
   const category = data.category?.slice(8);
-  const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 11);
+  const createdAt = new Date(String(data.updateDate)).toLocaleDateString().slice(0, 13);
+  const processedDate = createdAt.slice(0, -1);
   const [nickname, setNickname] = useState('');
   useEffect(() => {
     const getWriterInfo = async () => {
@@ -115,7 +116,7 @@ const PostDetailItem = ({ data }: IPostItemDetailProps) => {
               <span>{category}</span>
             </PostInfo>
             <PostInfo>
-              <span>{createdAt}</span>
+              <span>{processedDate}</span>
               <span>조회 {data.viewCount}</span>
             </PostInfo>
           </InfoWrapper>
