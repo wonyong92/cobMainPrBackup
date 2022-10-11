@@ -177,7 +177,14 @@
         ![image](https://user-images.githubusercontent.com/80381715/194793880-b79c5528-522e-48f6-ac87-fdfb2727c20c.png)
         ![서버아키텍쳐-토큰 블랙리스트 drawio](https://user-images.githubusercontent.com/80381715/194794265-7be9b880-1070-4a25-a2eb-7cc619e29465.png)
 
- 
+    11. 권한 확인 flow
+        
+
+    12. 시큐리티 미적용 - CSRF 미적용 - 공격 대비 - REFERER CHECK 적용
+
+         ![image](https://user-images.githubusercontent.com/80381715/195079808-a4a94a1e-023a-44b4-889f-1fe5fb13c8b7.png)
+
+    
      
 
 
