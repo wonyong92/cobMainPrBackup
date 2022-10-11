@@ -80,6 +80,9 @@ const CommentCount = styled.div`
   line-height: 1.5;
   color: #464646;
   word-break: break-all;
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 export default PostDetail;
