@@ -21,7 +21,7 @@
 <a href="https://github.com/wonyong92">@wonyong92</a>|<a href="https://github.com/davidnam0514">@davidnam0514</a>|<a href="https://github.com/Moondoyeon">@Moondoyeon</a>
 
 ## 🌈 기술 스택
-![Group 1459](https://user-images.githubusercontent.com/102936206/195038386-7e9ddf8c-8a91-43f6-a819-21c33ba03595.svg)
+![Group 1459 (2)](https://user-images.githubusercontent.com/102936206/195040792-2d5bda15-6f4f-40ab-ba4f-e84eb6e5e3c1.svg)
 
 
 ## 💙 프로젝트 아키텍쳐
