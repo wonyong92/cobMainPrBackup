@@ -21,14 +21,16 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
   const [editComment, setEditComment] = useState(false);
   const [text, setText] = useState(data.commentContents);
   const [nickname, setNickname] = useState('');
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getCommtentUserNickname = async () => {
       const result = await axios.get(`${PROXY}/member/profile?memberId=${data.writerId}`);
       setNickname(result.data.nickname);
+      setIsLoading(false);
     };
     getCommtentUserNickname();
   }, []);
+  if (isLoading) return <p>loading...</p>;
   const navigate = useNavigate();
   const createdAt = new Date(String(data.writeDate)).toLocaleDateString().slice(0, 13);
   const processedDate = createdAt.slice(0, -1);
