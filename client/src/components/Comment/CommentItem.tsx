@@ -29,10 +29,10 @@ const CommentItem = ({ data, setRenewCommentsList, renewComments }: CommentDataP
     const getCommtentUserNickname = async () => {
       const result = await axios.get(`${PROXY}/member/profile?memberId=${data.writerId}`);
       setNickname(result.data.nickname);
-      setImageURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
-      setIsLoading(false);
     };
     getCommtentUserNickname();
+    setImageURL(`${PROXY}/member/profileImage/get?memberId=${data.writerId}`);
+    setIsLoading(false);
   }, []);
   if (isLoading) return <p>loading...</p>;
   const navigate = useNavigate();
