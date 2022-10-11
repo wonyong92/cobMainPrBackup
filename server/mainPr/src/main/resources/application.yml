@@ -1,9 +1,9 @@
 server:
   port: '8080'
-  ssl:
-    key-store: "classpath:keystore.p12"
-    key-store-type: PKCS12
-    key-store-password: ${ssl.password}
+#  ssl:
+#    key-store: "classpath:keystore.p12"
+#    key-store-type: PKCS12
+#    key-store-password: ${ssl.password}
 spring:
   h2:
     console:
@@ -70,5 +70,10 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+aws:
+  s3:
+    url: ${s3.bucket.url}
 
+front:
+  url: ${front.server.url}
 

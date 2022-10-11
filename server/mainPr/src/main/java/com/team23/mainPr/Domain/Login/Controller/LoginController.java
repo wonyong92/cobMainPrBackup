@@ -34,7 +34,7 @@ public class LoginController {
     @PostMapping("/refeshToken")
     @ResponseStatus(HttpStatus.CREATED)
     public void refeshToken(
-        @RequestHeader(value = "Authorization", required = false) String token, HttpServletResponse response) {
+        @RequestHeader(value = "Authorization", required = true) String token, HttpServletResponse response) {
         response.setHeader("Authorization", loginService.refreshToken(token));
     }
 }

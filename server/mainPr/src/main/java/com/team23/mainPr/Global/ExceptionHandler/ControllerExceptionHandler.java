@@ -15,7 +15,9 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> methodArgumentValidException(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>(e.getMessage().split(";")[5].replace("default message [", "").replace("]] ", ""), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage().split(";")[5]
+            .replace("default message [", "")
+            .replace("]] ", ""), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})

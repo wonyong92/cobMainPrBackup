@@ -21,7 +21,7 @@ public class JwtBuilder {
     @Value("${jwt.token.secret-key}") String key;
 
     public String buildJwt(Member member) {
-        return "Bearer " + JWT.create().withSubject("JWT").withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10000)))
+        return "Bearer " + JWT.create().withSubject("JWT").withExpiresAt(new Date(System.currentTimeMillis() + (1000*60*30)))
             .withClaim("memberId", member.getMemberId())
             .withClaim("loginId",member.getLoginId())
             .withClaim("nickname",member.getNickname())

@@ -4,11 +4,14 @@ import static com.team23.mainPr.Global.CustomException.ErrorData.NOT_EXIST_LOGIN
 import static com.team23.mainPr.Global.CustomException.ErrorData.NOT_MATCHED_ID;
 import static com.team23.mainPr.Global.CustomException.ErrorData.NOT_MATCHED_PASSWORD;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.team23.mainPr.Domain.Login.Dto.Request.DoLoginDto;
 import com.team23.mainPr.Domain.Login.Entity.Login;
 import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
 import com.team23.mainPr.Domain.Member.Entity.Member;
 import com.team23.mainPr.Domain.Member.Repository.MemberRepository;
+import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
 import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.DefaultTimeZone;
 import com.team23.mainPr.Global.Jwt.Service.JwtBuilder;
@@ -26,6 +29,7 @@ public class LoginService {
     private final LoginRepository loginRepository;
     private final DefaultTimeZone defaultTimeZone;
     private final JwtBuilder jwtBuilder;
+    private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
 
     public String[] doLogin(DoLoginDto dto) {
         final String[] token = new String[1];
@@ -71,11 +75,14 @@ public class LoginService {
 
         final String[] newToken = new String[1];
 
-        loginRepository.findByToken(token).ifPresent(login -> {
-            String createdToken = jwtBuilder.buildJwt(memberRepository.getReferenceById(login.getMemberId()));
-            login.setToken(createdToken);
-            loginRepository.flush();
-            newToken[0] = createdToken;
+        loginRepository.findByMemberId(memberIdExtractorFromJwt.getMemberId(token)).ifPresent(login -> {
+            if(!login.getLogouted())
+            {
+                String createdToken = jwtBuilder.buildJwt(memberRepository.getReferenceById(login.getMemberId()));
+                login.setToken(createdToken);
+                loginRepository.flush();
+                newToken[0] = createdToken;
+            }
         });
 
         return newToken[0];
