@@ -21,11 +21,13 @@
 <a href="https://github.com/wonyong92">@wonyong92</a>|<a href="https://github.com/davidnam0514">@davidnam0514</a>|<a href="https://github.com/Moondoyeon">@Moondoyeon</a>
 
 ## 🌈 기술 스택
-### Frontend
-<img width="430" alt="스크린샷 2022-10-10 오전 12 50 52" src="https://user-images.githubusercontent.com/102936206/194766558-9de68ba4-9c44-4b80-9fdd-a56460ca90b7.png">
+![Group 1459](https://user-images.githubusercontent.com/102936206/195038386-7e9ddf8c-8a91-43f6-a819-21c33ba03595.svg)
 
-### Backend
-<img width="428" alt="스크린샷 2022-10-10 오전 12 51 01" src="https://user-images.githubusercontent.com/80381715/194793504-32238a50-c4d6-45b1-ad1c-444990f5265a.png">
+
+## 💙 프로젝트 아키텍쳐
+![Group 1458](https://user-images.githubusercontent.com/102936206/195037989-f99a06b3-699a-44b8-bdc6-43d72e2bafa8.svg)
+
+
 
 ## 📃 개인 개발 README
 > BackEnd Server 개발 :https://github.com/codestates-seb/seb39_main_023/tree/main/server
