@@ -1,3 +1,5 @@
 
 server/mainPr/src/main/resources/env.properties
 *.p12
+server/mainPr/src/main/resources-dev/env.properties
+server/mainPr/src/main/resources-test/env.properties

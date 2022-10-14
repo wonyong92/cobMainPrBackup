@@ -1,5 +1,7 @@
 package com.team23.mainPr.Global.Interceptor;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.team23.mainPr.Domain.Comment.Repository.CommentRepository;
 import com.team23.mainPr.Domain.Login.Repository.LoginRepository;
 import com.team23.mainPr.Domain.Member.Repository.MemberRepository;
@@ -7,6 +9,7 @@ import com.team23.mainPr.Domain.RentPost.Repository.RentPostRepository;
 import com.team23.mainPr.Global.CommonMethod.MemberIdExtractorFromJwt;
 import com.team23.mainPr.Global.CustomException.CustomException;
 import com.team23.mainPr.Global.CustomException.ErrorData;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,13 @@ public class Interceptor implements HandlerInterceptor {
             return true;
         }
         String token = request.getHeader("Authorization");
+
+        DecodedJWT jwt = JWT.decode(token.replace("Bearer ", ""));
+        if( jwt.getExpiresAt().before(new Date())) {
+            throw new CustomException(ErrorData.EXPIRED_TOKEN_ERROR);
+        }
+
+
         loginRepository.findByToken(token).ifPresentOrElse(login -> {
             if (login.getLogouted()) {
                 throw new CustomException(ErrorData.NOT_EXIST_LOGIN_INFORMATION);
@@ -55,6 +65,18 @@ public class Interceptor implements HandlerInterceptor {
             response.setStatus(403);
             return false;
         }
+
+        String referer = request.getHeader("Referer");
+        String host = request.getHeader("Host");
+        String origin = request.getHeader("Origin");
+
+//        if (referer == null || !referer.contains(host)) {
+//            response.setStatus(403);
+//            System.out.println(host);
+//            System.out.println(referer);
+//            return false;
+//        }
+
         return true;
     }
 }

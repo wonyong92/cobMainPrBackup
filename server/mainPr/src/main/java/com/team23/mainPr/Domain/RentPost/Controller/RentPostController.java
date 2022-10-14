@@ -68,13 +68,23 @@ public class RentPostController {
      * 별도의 응답을 출력하지 않고, 200 ok 상태코드를 확인하면 되도록 수정
      * </p>
      */
+//    @Operation(description = "게시글 삭제, 토큰을 이용하여 작성자 본인이 맞는지 확인, 성공시 200 응답.")
+//    @DeleteMapping("/delete")
+//    @Login
+//    public void deleteRentPost(
+//        @RequestParam Integer postId,
+//        @RequestHeader(value = "Authorization", required = false) String token) {
+//        rentPostService.deleteRentPost(postId, token);
+//    }
+    
+    //s3 적용 코드
     @Operation(description = "게시글 삭제, 토큰을 이용하여 작성자 본인이 맞는지 확인, 성공시 200 응답.")
     @DeleteMapping("/delete")
     @Login
-    public void deleteRentPost(
+    public void deleteS3RentPost(
         @RequestParam Integer postId,
         @RequestHeader(value = "Authorization", required = false) String token) {
-        rentPostService.deleteRentPost(postId, token);
+        rentPostService.deleteS3RentPost(postId, token);
     }
 
     /**
@@ -105,6 +115,7 @@ public class RentPostController {
      * 별도의 응답을 출력하지 않고, 200 ok 상태코드를 확인하면 되도록 수정
      * </p>
      */
+    //s3 적용 코드
     @Operation(description = "게시글 이미지 등록, 토큰을 이용하여 해당 게시글 작성자인지 확인")
     @PostMapping("/images")
     @Login
@@ -114,7 +125,7 @@ public class RentPostController {
         @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         rentPostService.postImages(image, postId, token);
     }
-
+    
     @Operation(description = "게시글 이미지 조회 - 이미지 식별 번호만 리턴 - 실제 이미지 조회는 해당 api의 식별번호들을 이용하여 /image/get api를 통해 렌더링.")
     @GetMapping("/images/get")
     public List<Integer> getImages(
@@ -122,11 +133,18 @@ public class RentPostController {
         return rentPostService.getPostImages(postId);
     }
 
-    @Operation(description = "게시글 이미지 조회.")
+//    @Operation(description = "게시글 이미지 조회.")
+//    @GetMapping(value = "/image/get", produces = "image/png")
+//    public Resource getImage(
+//        @RequestParam Integer imageId) throws IOException {
+//        return rentPostService.getImage(imageId);
+//    }
+
+    //s3 적용 코드
     @GetMapping(value = "/image/get", produces = "image/png")
-    public Resource getImage(
+    public Resource gets3Image(
         @RequestParam Integer imageId) throws IOException {
-        return rentPostService.getImage(imageId);
+        return rentPostService.getS3Image(imageId);
     }
 
     @Operation(description = "검색 기능, 게시글 제목 검색, 카테고리 category -렌트상태 rentStatus 필터링 가능, sort - 최신순-조회수순 정렬 가능(내림차순)")

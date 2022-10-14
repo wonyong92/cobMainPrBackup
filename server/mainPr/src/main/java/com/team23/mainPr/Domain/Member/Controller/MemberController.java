@@ -165,7 +165,7 @@ public class MemberController {
         return memberService.getRentPostMember(token);
     }
 
-    @Operation(description = "인터셉터 테스트")
+
     @GetMapping("/inter")
     @Login
     public Boolean checkInter(

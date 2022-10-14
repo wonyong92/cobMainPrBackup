@@ -1,5 +1,14 @@
 package com.team23.mainPr.Domain.RentPost.Service;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.team23.mainPr.Domain.Comment.Entity.Comment;
 import com.team23.mainPr.Domain.Comment.Repository.CommentRepository;
 import com.team23.mainPr.Domain.Picture.Entity.Picture;
@@ -60,8 +69,11 @@ public class RentPostService {
     private final LocationMapper locationMapper;
     private final MemberIdExtractorFromJwt memberIdExtractorFromJwt;
     private final CommentRepository commentRepository;
-
+    private final AmazonS3 amazonS3;
     @Value("${multipart.upload.path}") String uploadPath;
+    @Value("${cloud.aws.s3.bucket}") private String bucket;
+    @Value("${cloud.aws.credentials.accessKey}") private String accesskey;
+    @Value("${cloud.aws.credentials.secretKey}") private String secretkey;
 
     public RentPostResponseDto createRentPost(CreateRentPostEntityDto dto, String token) {
         if (!memberIdExtractorFromJwt.getMemberId(token).equals(dto.getWriterId())) {
@@ -72,31 +84,41 @@ public class RentPostService {
         return rentPostMapper.RentPostToRentPostResponseDto(result);
     }
 
+    public com.amazonaws.services.s3.AmazonS3 getAmazonS3() {
+        return AmazonS3ClientBuilder.standard().withCredentials(new AWSCredentialsProvider() {
+            @Override
+            public AWSCredentials getCredentials() {
+                return new BasicAWSCredentials(accesskey, secretkey);
+            }
+
+            @Override
+            public void refresh() {
+
+            }
+        }).withRegion("ap-northeast-2").build();
+    }
+
     public RentPostResponseDto updateRentPost(@Valid UpdateRentPostDto dto, String token) {
         RentPost post = rentPostRepository.getReferenceById(dto.getPostId());
 
         if (!memberIdExtractorFromJwt.getMemberId(token).equals(post.getWriterId())) {
             throw new CustomException(ErrorData.NOT_ALLOWED_ACCESS_RESOURCE);
         }
-
+        AmazonS3 s3client = this.getAmazonS3();
         for (Integer pictureId : dto.getDeleteImages()) {
             if (this.getPostImages(dto.getPostId()).contains(pictureId)) {
-                File file = new File(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(pictureId).getFileName());
-                if (!file.exists()) {
-                    throw new CustomException(ErrorData.FILE_NOT_FOUND);
-                }
-                if (!file.delete()) {
-                    throw new CustomException(ErrorData.FILE_DELETE_ERROR);
-                }
-                pictureRepository.deleteById(pictureId);
+                Picture picture = pictureRepository.getReferenceById(pictureId);
+                s3client.deleteObject(new DeleteObjectRequest(bucket, picture.getFileName()));
+                pictureRepository.delete(picture);
             }
         }
 
         RentPost updatedPost = dto.updateData(post, dto);
 
         rentPostRepository.flush();
-
-        return rentPostMapper.RentPostToRentPostResponseDto(updatedPost);
+        RentPostResponseDto result = rentPostMapper.RentPostToRentPostResponseDto(updatedPost);
+        result.setRentPostImages(pictureRepository.findByRentPostId(updatedPost.getRentPostId()).stream().map(picture -> picture.getPictureId()).collect(Collectors.toList()));
+        return result;
     }
 
     /**
@@ -106,7 +128,7 @@ public class RentPostService {
      */
     public void deleteRentPost(Integer postId, String token) {
         for (Picture picture : pictureRepository.findByRentPostId(postId)) {
-            File file = new File(System.getProperty("user.home")+"/" + uploadPath + pictureRepository.getReferenceById(picture.getPictureId()).getFileName());
+            File file = new File(System.getProperty("user.home") + "/" + uploadPath + pictureRepository.getReferenceById(picture.getPictureId()).getFileName());
             if (!file.exists()) {
                 throw new CustomException(ErrorData.FILE_NOT_FOUND);
             }
@@ -138,12 +160,14 @@ public class RentPostService {
 
     public void postImages(List<MultipartFile> files, Integer postId, String token) throws IOException {
         if (!files.isEmpty()) {
+            ObjectMetadata objMeta = new ObjectMetadata();
             for (MultipartFile file : files) {
-                String uuid = UUID.randomUUID().toString();
-                File newFileName = new File(System.getProperty("user.home") + uploadPath + uuid + "_" + file.getOriginalFilename());
-                file.transferTo(newFileName);
+                String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+                objMeta.setContentType(file.getContentType());
+                objMeta.setContentLength(file.getInputStream().available());
+                amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
 
-                pictureRepository.save(new Picture(uuid + "_" + file.getOriginalFilename(), postId)).getPictureId();
+                pictureRepository.save(new Picture(s3FileName, postId)).getPictureId();
             }
         }
     }
@@ -155,6 +179,28 @@ public class RentPostService {
     public Resource getImage(Integer imageId) throws IOException {
         Path path = Paths.get(System.getProperty("user.home") + uploadPath + pictureRepository.getReferenceById(imageId).getFileName());
         return new InputStreamResource(Files.newInputStream(path));
+    }
+
+    public Resource getS3Image(Integer imageId) {
+        AmazonS3 s3client = this.getAmazonS3();
+        S3Object s3object = s3client.getObject(bucket, pictureRepository.getReferenceById(imageId).getFileName());
+        S3ObjectInputStream inputStream = s3object.getObjectContent();
+
+        return new InputStreamResource(inputStream);
+    }
+
+    public void deleteS3RentPost(Integer postId, String token) {
+        AmazonS3 s3client = this.getAmazonS3();
+        for (Picture picture : pictureRepository.findByRentPostId(postId)) {
+            s3client.deleteObject(new DeleteObjectRequest(bucket, picture.getFileName()));
+            pictureRepository.delete(picture);
+        }
+
+        for (Comment comment : commentRepository.findAllByTargetPostId(postId)) {
+            commentRepository.delete(comment);
+        }
+
+        rentPostRepository.deleteById(rentPostRepository.getReferenceById(postId).getRentPostId());
     }
 
     public PagedRentPostResponseDtos getRentPosts(RentPostPageRequestDto dto, Boolean rentStatus, String category, String location) {
