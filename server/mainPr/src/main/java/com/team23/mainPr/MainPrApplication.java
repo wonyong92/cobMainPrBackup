@@ -22,7 +22,7 @@ public class MainPrApplication {
 
         return args -> {
             //rentPostRepository.ftInit();
-            pictureService.setDefaultImage();
+            //pictureService.setDefaultImage();
         };
     }
 }
